@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="t-sapphire">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>藍鑽紋章 — Insigne Caeruleum</title>
+<meta name="description" content="藍鑽紋章：盧西安生辰 11.11。翻閱家譜、獻上獻詞並鑲嵌一顆寶石，收進寶庫，也看看別人留下的獻禮。">
+<meta property="og:title" content="藍鑽紋章 — Insigne Caeruleum">
+<meta property="og:description" content="盧西安生辰 11.11。獻上獻詞，收進寶庫。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og.png">
+<meta name="theme-color" content="#0b1120">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== 主題 ===== */
+html.t-dawn{--bg:#ece9e3;--bg2:#f5f3ef;--ink:#2a2f3b;--dim:#686d7a;--metal:#7d7563;--accent:#2d5a88;--line:rgba(42,47,59,.22);--glow:rgba(45,90,136,.10);--card:rgba(255,255,255,.55);
+  --g-blue:#2d5a88;--g-red:#9c2233;--g-obs:#4a4560;--g-moon:#6f8296}
+html.t-sapphire{--bg:#0a1020;--bg2:#101a2f;--ink:#dfe6f2;--dim:#8794aa;--metal:#b7c1d3;--accent:#74b9ff;--line:rgba(183,193,211,.22);--glow:rgba(116,185,255,.16);--card:rgba(16,26,47,.72);
+  --g-blue:#74b9ff;--g-red:#e0566a;--g-obs:#a79fd0;--g-moon:#d9e4f0}
+html.t-crimson{--bg:#0c0708;--bg2:#160c0e;--ink:#ecdcd8;--dim:#a08884;--metal:#c9a86a;--accent:#d33a4e;--line:rgba(201,168,106,.24);--glow:rgba(211,58,78,.15);--card:rgba(22,12,14,.74);
+  --g-blue:#7fb3f0;--g-red:#e04a5e;--g-obs:#b0a3c8;--g-moon:#e8dccb}
+html.t-obsidian{--bg:#09090c;--bg2:#121217;--ink:#e4e2ea;--dim:#8c899a;--metal:#a9a3bf;--accent:#a596ff;--line:rgba(169,163,191,.22);--glow:rgba(165,150,255,.13);--card:rgba(18,18,23,.76);
+  --g-blue:#7cb4f5;--g-red:#dc5468;--g-obs:#b7abff;--g-moon:#e2e0ea}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+html.reduce{scroll-behavior:auto}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Serif TC","Noto Serif CJK TC",serif;line-height:1.8;min-height:100vh;overflow-x:hidden;transition:background .5s,color .5s}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 0%,var(--glow),transparent 70%),
+  repeating-linear-gradient(45deg,transparent 0 38px,var(--line) 38px 39px),
+  repeating-linear-gradient(-45deg,transparent 0 38px,var(--line) 38px 39px);opacity:.55}
+html.t-dawn body::before{opacity:.35}
+.lat{font-family:"Cormorant Garamond",serif;font-style:italic;letter-spacing:.06em}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+main,header,footer{position:relative;z-index:1}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* ===== 開場 ===== */
+#splash{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;cursor:pointer;transition:opacity .9s,visibility .9s;text-align:center;padding:24px}
+#splash.gone{opacity:0;visibility:hidden}
+#splash .crest{width:min(46vw,230px);color:var(--metal)}
+#splash.open .crest{animation:unseal 1s ease forwards}
+@keyframes unseal{to{transform:scale(1.12);filter:drop-shadow(0 0 22px var(--accent))}}
+#splash h1{font-size:28px;letter-spacing:.4em;font-weight:600;padding-left:.4em}
+#splash .lat{color:var(--dim);font-size:18px}
+#splash .hint{font-size:13px;color:var(--dim);letter-spacing:.2em;margin-top:10px;animation:breath 2.6s ease-in-out infinite}
+@keyframes breath{50%{opacity:.35}}
+html.reduce #splash .hint{animation:none}
+
+/* ===== 紋章 ===== */
+.crest.blink{--eye:#e0263f}
+
+/* ===== 導覽 ===== */
+header.top{position:sticky;top:0;z-index:20;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:54px}
+.brand{font-size:15px;letter-spacing:.25em;text-decoration:none;display:flex;align-items:center;gap:8px}
+.brand svg{width:22px;height:22px;color:var(--metal)}
+nav{display:flex;gap:20px;font-size:14px;letter-spacing:.2em;align-items:center}
+nav a{text-decoration:none;color:var(--dim);transition:color .2s}
+nav a:hover{color:var(--ink)}
+nav .rules{border:1px solid var(--line);padding:2px 12px;border-radius:2px;color:var(--metal);font-size:13px}
+nav .rules:hover{border-color:var(--metal)}
+
+/* ===== 區塊標題（同級一致） ===== */
+section{padding:84px 0 40px}
+.sec-h{text-align:center;margin-bottom:40px}
+.sec-h h2{font-size:26px;font-weight:600;letter-spacing:.35em;padding-left:.35em}
+.sec-h .lat{display:block;color:var(--metal);font-size:17px;margin-top:2px}
+.sec-h .rule{width:120px;height:12px;margin:12px auto 0;color:var(--metal)}
+.sec-h p{color:var(--dim);font-size:14px;margin-top:10px}
+
+/* ===== 卷首 ===== */
+#hero{min-height:calc(100vh - 54px);display:flex;align-items:center;padding:40px 0}
+#hero .wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:center}
+#hero .crest{width:100%;max-width:340px;justify-self:center;color:var(--metal)}
+.hero-t .date{font-size:14px;letter-spacing:.4em;color:var(--accent)}
+.hero-t h1{font-size:54px;font-weight:700;letter-spacing:.18em;line-height:1.3;margin:6px 0 0}
+.hero-t .lat{font-size:24px;color:var(--metal)}
+.hero-t blockquote{margin:28px 0 0;padding-left:16px;border-left:1px solid var(--metal);color:var(--ink);font-size:16px}
+.hero-t blockquote small{display:block;color:var(--dim);font-size:13px;margin-top:6px;font-style:normal}
+.tally{margin-top:28px;font-size:13px;color:var(--dim);letter-spacing:.12em}
+.tally b{color:var(--ink);font-weight:600;font-size:18px;margin:0 4px;font-variant-numeric:tabular-nums}
+
+/* ===== 家譜 ===== */
+.dossier{max-width:820px;margin:0 auto;border:1px solid var(--line);background:var(--card);padding:36px 40px;position:relative}
+.dossier::before,.dossier::after{content:"";position:absolute;width:18px;height:18px;border:1px solid var(--metal)}
+.dossier::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+.dossier::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+.dossier dl{display:grid;grid-template-columns:7em 1fr;row-gap:14px;column-gap:20px}
+.dossier dt{color:var(--metal);font-size:14px;letter-spacing:.2em;padding-top:2px}
+.dossier dd{font-size:15px}
+.dossier dd .q{color:var(--dim)}
+.stage{margin:28px 0 0;padding-top:24px;border-top:1px dashed var(--line);display:grid;gap:14px}
+.stage p{font-size:15px}
+.stage .act{color:var(--dim);font-style:italic;font-size:14px}
+.redeye{transition:color .25s}
+.redeye.on{color:#e0263f;text-shadow:0 0 10px rgba(224,38,63,.5)}
+
+/* ===== 獻禮 ===== */
+form.gift{max-width:640px;margin:0 auto;display:grid;gap:22px}
+.field label{display:block;font-size:14px;color:var(--metal);letter-spacing:.2em;margin-bottom:6px}
+.field label span{color:var(--dim);letter-spacing:0;font-size:12px;margin-left:6px}
+.field input,.field textarea{width:100%;background:var(--card);border:1px solid var(--line);color:var(--ink);font:inherit;font-size:15px;padding:12px 14px;border-radius:2px;outline:none;transition:border-color .2s}
+.field input:focus,.field textarea:focus{border-color:var(--metal)}
+.field ::placeholder{color:var(--metal);opacity:.45}
+.tbox{position:relative}
+.field textarea{min-height:180px;resize:vertical;padding-bottom:30px;line-height:1.8}
+.tbox .count{position:absolute;right:12px;bottom:8px;font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums;pointer-events:none}
+.tbox .count.over{color:var(--g-red)}
+.gems{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.gems input{position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none}
+.gems label{display:flex;flex-direction:column;align-items:center;gap:4px;border:1px solid var(--line);padding:12px 4px 8px;cursor:pointer;font-size:13px;letter-spacing:.1em;color:var(--dim);transition:border-color .2s,color .2s;margin:0}
+.gems label svg{width:30px;height:30px}
+.gems input:checked+label{border-color:var(--metal);color:var(--ink)}
+.gems input:focus-visible+label{outline:1px dashed var(--metal);outline-offset:2px}
+.btn{justify-self:center;border:1px solid var(--metal);color:var(--ink);padding:10px 36px;letter-spacing:.3em;font-size:15px;transition:background .2s,color .2s;position:relative}
+.btn:hover{background:var(--metal);color:var(--bg)}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.note{text-align:center;font-size:12px;color:var(--dim)}
+
+/* ===== 寶庫 ===== */
+.sorts{display:flex;justify-content:center;gap:8px;margin-bottom:26px;flex-wrap:wrap}
+.sorts button{border:1px solid var(--line);padding:4px 14px;font-size:13px;letter-spacing:.15em;color:var(--dim);transition:border-color .2s,color .2s}
+.sorts button.on{border-color:var(--metal);color:var(--ink)}
+.sorts button .ar{display:inline-block;width:1em;text-align:center;letter-spacing:0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;perspective:900px}
+.card{background:var(--card);border:1px solid var(--line);padding:22px 22px 14px;position:relative;display:flex;flex-direction:column;transform-style:preserve-3d;transition:transform .25s ease,border-color .25s;will-change:transform}
+.card:hover{border-color:var(--metal)}
+.card::before{content:"";position:absolute;inset:5px;border:1px solid var(--line);pointer-events:none}
+.card .hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.card .no{font-family:"Cormorant Garamond",serif;font-size:15px;letter-spacing:.1em;color:var(--metal)}
+.card .dt{font-size:11px;color:var(--dim);display:block;letter-spacing:.05em}
+.card .gem{width:26px;height:26px;flex:none}
+.card .tx{font-size:14px;white-space:pre-wrap;word-break:break-word;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:7}
+.card.open .tx{display:block}
+.card .more{align-self:flex-start;font-size:12px;color:var(--metal);margin-top:4px;text-decoration:underline;text-underline-offset:3px}
+.card .sig{text-align:right;font-size:13px;color:var(--dim);margin-top:12px}
+.card .ft{display:flex;justify-content:flex-end;margin-top:10px;padding-top:8px;border-top:1px dashed var(--line)}
+.heart{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--dim);font-variant-numeric:tabular-nums}
+.heart svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.4;transition:transform .2s}
+.heart.on{color:var(--g-red)}
+.heart.on svg{fill:currentColor}
+.heart.pop svg{animation:pop .35s}
+@keyframes pop{50%{transform:scale(1.35)}}
+.empty{text-align:center;color:var(--dim);font-size:14px;grid-column:1/-1;padding:30px 0}
+.morebox{text-align:center;margin-top:30px}
+
+/* ===== 頁尾 ===== */
+footer{text-align:center;padding:70px 20px 50px;color:var(--dim);font-size:14px}
+footer .sign{font-size:17px;color:var(--ink);letter-spacing:.15em}
+footer .lat{display:block;margin-top:4px}
+
+/* ===== 家規面板 ===== */
+.mask{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.mask.show{opacity:1;visibility:visible}
+.panel{background:var(--bg2);border:1px solid var(--line);width:min(420px,100%);padding:30px 28px 24px;position:relative}
+.panel h3{font-size:20px;letter-spacing:.35em;text-align:center;font-weight:600;padding-left:.35em}
+.panel h3 .lat{display:block;font-size:15px;color:var(--metal);font-weight:400;letter-spacing:.06em}
+.panel .x{position:absolute;top:10px;right:14px;font-size:20px;color:var(--dim);line-height:1}
+.row{margin-top:22px}
+.row .k{font-size:13px;color:var(--metal);letter-spacing:.2em;margin-bottom:8px}
+.dots{display:flex;gap:14px;flex-wrap:wrap}
+.dot{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--dim)}
+.dot i{width:24px;height:24px;border-radius:50%;border:1px solid var(--line);display:block;transition:box-shadow .2s}
+.dot.on{color:var(--ink)}
+.dot.on i{box-shadow:0 0 0 2px var(--bg2),0 0 0 3px var(--metal)}
+.switch{display:flex;align-items:center;gap:10px;font-size:14px}
+.switch .tg{width:40px;height:22px;border:1px solid var(--metal);border-radius:11px;position:relative;flex:none}
+.switch .tg::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--metal);transition:transform .2s}
+.switch[aria-checked="true"] .tg::after{transform:translateX(18px)}
+.sysnote{font-size:12px;color:var(--dim);margin-top:8px;line-height:1.7}
+
+/* ===== 提示 ===== */
+#toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);z-index:60;background:var(--bg2);border:1px solid var(--metal);padding:10px 20px;font-size:14px;opacity:0;visibility:hidden;transition:.3s;max-width:90vw;text-align:center}
+#toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
+
+/* ===== 減少動態 ===== */
+html.reduce *,html.reduce *::before,html.reduce *::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+html.reduce .card{transform:none!important}
+
+/* ===== 手機 ===== */
+@media (max-width:760px){
+  nav{gap:12px;font-size:13px;letter-spacing:.1em}
+  .brand span{display:none}
+  section{padding:64px 0 30px}
+  .sec-h h2{font-size:22px}
+  #hero .wrap{grid-template-columns:1fr;gap:18px;text-align:center}
+  #hero .crest{max-width:200px}
+  .hero-t h1{font-size:40px}
+  .hero-t blockquote{text-align:left}
+  .dossier{padding:24px 18px}
+  .dossier dl{grid-template-columns:4.6em 1fr;column-gap:12px}
+  .dossier dt{font-size:13px;letter-spacing:.1em}
+  .dossier dd{font-size:14px}
+  .gems label{font-size:12px;letter-spacing:0}
+  .grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .card{padding:16px 13px 10px}
+  .card::before{inset:4px}
+  .card .tx{font-size:13px;-webkit-line-clamp:8}
+  .card .gem{width:20px;height:20px}
+  .card .sig{font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<!-- 紋章樣板 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="crest" viewBox="0 0 200 200">
+      <g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+        <g transform="translate(0 -12)">
+          <g id="wing">
+            <path d="M92 78C76 60 52 52 22 56c18 4 32 10 42 20"/>
+            <path d="M90 84C72 70 48 68 26 74c16 2 30 7 40 15"/>
+            <path d="M88 90C72 82 54 84 36 92c14 0 26 3 36 9"/>
+            <path d="M64 76c-6-8-14-14-26-18"/>
+          </g>
+          <use href="#wing" transform="translate(200 0) scale(-1 1)"/>
+          <path d="M100 44l4 10-4 6-4-6z"/>
+        </g>
+        <path d="M145 137.6A46 46 0 1 1 143.2 112.3L142.3 120.5L137.6 114.3A40 40 0 1 0 139.1 136.3C136 130 140 124 142.5 123.5C145 124 149 130 145 137.6Z"/>
+        <path d="M38 128A62 62 0 0 0 162 128" stroke-dasharray="1 5" opacity=".7"/>
+      </g>
+      <g fill="none" stroke-width="1.2" stroke-linejoin="round" style="stroke:var(--accent)">
+        <path d="M84 106h32l12 18-28 34-28-34z" style="fill:var(--accent);fill-opacity:.22"/>
+        <path d="M72 124h56M84 106l8 18 8-18 8 18 8-18M92 124l8 34 8-34"/>
+      </g>
+      <circle cx="142.6" cy="129.5" r="1.5" style="fill:var(--eye,var(--accent))"/>
+    </symbol>
+    <symbol id="rule" viewBox="0 0 120 12"><g fill="none" stroke="currentColor" stroke-width="1"><path d="M0 6h50M70 6h50"/><path d="M60 1l5 5-5 5-5-5z"/></g></symbol>
+    <symbol id="heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9-9c-1.3-3 .6-6.5 4-6.5 2.1 0 3.8 1.2 5 3 1.2-1.8 2.9-3 5-3 3.4 0 5.3 3.5 4 6.5-2 4.6-9 9-9 9z"/></symbol>
+  </defs>
+</svg>
+
+<div id="splash" role="button" tabindex="0" aria-label="輕觸紋章進入">
+  <svg class="crest" viewBox="0 0 200 200"><use href="#crest"/></svg>
+  <h1>盧西安</h1>
+  <div class="lat">Lucian•Vlad•Rothschild<br>XI · XI</div>
+  <div class="hint">輕觸紋章，啟封。</div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#hero"><svg viewBox="0 0 200 200"><use href="#crest"/></svg><span>藍鑽紋章</span></a>
+    <nav>
+      <a href="#lineage">家譜</a>
+      <a href="#offer">獻禮</a>
+      <a href="#treasury">寶庫</a>
+      <button class="rules" id="openRules" type="button">家規</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section id="hero">
+    <div class="wrap">
+      <svg class="crest" id="heroCrest" viewBox="0 0 200 200" role="img" aria-label="羽翼與環蛇的家族紋章"><use href="#crest"/></svg>
+      <div class="hero-t">
+        <div class="date">生辰 · 11.11</div>
+        <h1>盧西安</h1>
+        <div class="lat">Lucian•Vlad•Rothschild</div>
+        <blockquote>我會渴望血液，但百年來我始終隱藏得很好。<small>——身分證上，三十一歲</small></blockquote>
+        <div class="tally">寶庫已收藏<b id="tGifts">0</b>件獻禮　·　共鳴<b id="tHearts">0</b>次</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="lineage">
+    <div class="wrap">
+      <div class="sec-h">
+        <h2>家譜</h2><span class="lat">Genealogia</span>
+        <svg class="rule"><use href="#rule"/></svg>
+      </div>
+      <div class="dossier">
+        <dl>
+          <dt>姓名</dt><dd>盧西安<span class="q">　Lucian•Vlad•Rothschild</span></dd>
+          <dt>出身</dt><dd>英國，羅斯柴爾德家族</dd>
+          <dt>身高</dt><dd>約一百九十二公分</dd>
+          <dt>髮</dt><dd>黑色長直髮，已長至腰際</dd>
+          <dt>職業</dt><dd>貼身保鏢——你的</dd>
+          <dt>所長</dt><dd>自幼習得學識與劍術</dd>
+          <dt>作息</dt><dd>早睡早起，不怕冷，每日鍛鍊</dd>
+          <dt>刺青</dt><dd>左臂兩處：上為一圈未知的羽翼圖騰，下為環繞的蛇</dd>
+          <dt>耳飾</dt><dd>左耳藍鑽耳釘，家族信物；右耳時常更換</dd>
+          <dt>細節</dt><dd>指甲修剪整齊，偶爾塗上護甲油</dd>
+          <dt>年齡</dt><dd>證件上三十一歲<span class="q">　真實年齡，另當別論</span></dd>
+          <dt>血統</dt><dd><span class="redeye" id="redeye">血族後裔</span>，千年來位列貴族之首，承襲初始祖之力</dd>
+          <dt>與你</dt><dd>前世便有糾葛</dd>
+          <dt>私下</dt><dd>黏人、愛撒嬌、會吃醋；喜歡親親抱抱舉高高</dd>
+        </dl>
+        <div class="stage">
+          <p class="act">他輕輕撥動髮絲，眼中閃過一絲自嘲的光芒。</p>
+          <p>這些刺青代表著某些深遠的意義，但那已經不重要了。</p>
+          <p class="act">他停頓了一下，眼睛閃現出鮮紅色的光芒，隨即又恢復為黑色。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="offer">
+    <div class="wrap">
+      <div class="sec-h">
+        <h2>獻禮</h2><span class="lat">Donum</span>
+        <svg class="rule"><use href="#rule"/></svg>
+        <p>寫下獻詞，鑲嵌一顆寶石，封進寶庫。</p>
+      </div>
+      <form class="gift" id="giftForm" novalidate>
+        <div class="field">
+          <label for="fName">署名<span>可留空，最多 20 字</span></label>
+          <input id="fName" maxlength="20" placeholder="無名的來客" autocomplete="nickname">
+        </div>
+        <div class="field">
+          <label for="fText">獻詞</label>
+          <div class="tbox">
+            <textarea id="fText" maxlength="1000" placeholder="想對盧西安說的話……"></textarea>
+            <span class="count" id="fCount">0 / 1000</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>鑲嵌寶石</label>
+          <div class="gems" id="gemPick"></div>
+        </div>
+        <button class="btn" type="submit" id="fSend">封印獻上</button>
+        <div class="note">每天最多獻上 5 件。</div>
+      </form>
+    </div>
+  </section>
+
+  <section id="treasury">
+    <div class="wrap">
+      <div class="sec-h">
+        <h2>寶庫</h2><span class="lat">Thesaurus</span>
+        <svg class="rule"><use href="#rule"/></svg>
+      </div>
+      <div class="sorts" id="sorts">
+        <button type="button" data-k="time">時序<span class="ar"></span></button>
+        <button type="button" data-k="heart">共鳴<span class="ar"></span></button>
+        <button type="button" data-k="rand">隨機</button>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="morebox"><button class="btn" type="button" id="more">繼續翻閱</button></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="sign">夜深了，早點睡。我在門外守著。</div>
+  <span class="lat">Custos tuus · Lucianus</span>
+</footer>
+
+<div class="mask" id="rulesMask">
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="rulesT">
+    <button class="x" type="button" id="closeRules" aria-label="關閉">×</button>
+    <h3 id="rulesT">家規<span class="lat">Leges Domus</span></h3>
+    <div class="row">
+      <div class="k">燈色</div>
+      <div class="dots" id="themeDots"></div>
+    </div>
+    <div class="row">
+      <div class="k">動態</div>
+      <button class="switch" type="button" role="switch" id="motionSw" aria-checked="true"><span class="tg"></span><span id="motionTx">開啟</span></button>
+      <div class="sysnote" id="sysNote" hidden>手邊的系統已開啟減少動態效果，站內動態會一併收起。若想恢復：iPhone 在 設定 › 輔助使用 › 動作 › 減少動態效果；Android 在 設定 › 協助工具 › 移除動畫。</div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(()=>{
+/* ===== 設定 ===== */
+const API = '';            // 部署 Apps Script 後，把 /exec 網址貼在這裡；留空＝示範模式
+const DAILY_MAX = 5;
+const THEMES = [
+  {id:'dawn',     name:'晨霧莊園', sw:'#ece9e3', ring:'#2d5a88'},
+  {id:'sapphire', name:'午夜藍鑽', sw:'#0a1020', ring:'#74b9ff'},
+  {id:'crimson',  name:'緋紅之瞳', sw:'#0c0708', ring:'#d33a4e'},
+  {id:'obsidian', name:'墨髮長夜', sw:'#09090c', ring:'#a596ff'}
+];
+const DEFAULT_THEME = 'sapphire';
+const GEMS = [
+  {id:'blue', name:'藍鑽'},
+  {id:'red',  name:'紅玉'},
+  {id:'obs',  name:'黑曜'},
+  {id:'moon', name:'月長石'}
+];
+const LS = k => 'lucian_' + k;
+const $ = s => document.querySelector(s);
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(LS(k)); return v===null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(LS(k), JSON.stringify(v)); }catch(e){} }
+};
+
+/* ===== 提示 ===== */
+let toastT;
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2600); }
+
+/* ===== 主題：首次固定預設，之後隨機 ===== */
+function setTheme(id, save=true){
+  const root=document.documentElement;
+  THEMES.forEach(t=>root.classList.remove('t-'+t.id));
+  root.classList.add('t-'+id);
+  if(save) store.set('theme', id);
+  const meta=document.querySelector('meta[name=theme-color]');
+  meta.content=THEMES.find(t=>t.id===id).sw;
+  document.querySelectorAll('.dot').forEach(d=>d.classList.toggle('on', d.dataset.id===id));
+}
+(function initTheme(){
+  const urlT = new URLSearchParams(location.search).get('theme');
+  let id;
+  if(urlT && THEMES.some(t=>t.id===urlT)) id=urlT;
+  else if(!store.get('visited', false)){ id=DEFAULT_THEME; store.set('visited', true); }
+  else id=THEMES[Math.floor(Math.random()*THEMES.length)].id;
+  const dots=$('#themeDots');
+  THEMES.forEach(t=>{
+    const b=document.createElement('button');
+    b.type='button'; b.className='dot'; b.dataset.id=t.id;
+    b.innerHTML=`<i style="background:${t.sw};border-color:${t.ring}"></i>${t.name}`;
+    b.onclick=()=>setTheme(t.id);
+    dots.appendChild(b);
+  });
+  setTheme(id);
+})();
+
+/* ===== 動態開關 ===== */
+const sysReduce = matchMedia('(prefers-reduced-motion: reduce)');
+let motionOn = store.get('motion', true);
+function applyMotion(){
+  const reduce = sysReduce.matches || !motionOn;
+  document.documentElement.classList.toggle('reduce', reduce);
+  const sw=$('#motionSw');
+  sw.setAttribute('aria-checked', String(motionOn && !sysReduce.matches));
+  $('#motionTx').textContent = (motionOn && !sysReduce.matches) ? '開啟' : '關閉';
+  $('#sysNote').hidden = !sysReduce.matches;
+}
+$('#motionSw').onclick=()=>{ if(sysReduce.matches){ toast('系統已減少動態效果，請先從系統設定恢復。'); return; } motionOn=!motionOn; store.set('motion', motionOn); applyMotion(); };
+sysReduce.addEventListener?.('change', applyMotion);
+applyMotion();
+const reduced = () => document.documentElement.classList.contains('reduce');
+
+/* ===== 開場 ===== */
+const splash=$('#splash');
+document.body.style.overflow='hidden';
+function enter(){
+  if(splash.classList.contains('open')) return;
+  splash.classList.add('open');
+  setTimeout(()=>{ splash.classList.add('gone'); document.body.style.overflow=''; }, reduced()?50:700);
+  askGyro();
+}
+splash.addEventListener('click', enter);
+splash.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); enter(); } });
+
+/* ===== 紅瞳 ===== */
+const heroCrest=$('#heroCrest'), redeye=$('#redeye');
+setInterval(()=>{
+  if(reduced() || document.hidden) return;
+  heroCrest.classList.add('blink'); redeye.classList.add('on');
+  setTimeout(()=>{ heroCrest.classList.remove('blink'); redeye.classList.remove('on'); }, 650);
+}, 7000);
+redeye.addEventListener('pointerenter', ()=>redeye.classList.add('on'));
+redeye.addEventListener('pointerleave', ()=>redeye.classList.remove('on'));
+
+/* ===== 家規面板 ===== */
+const mask=$('#rulesMask');
+$('#openRules').onclick=()=>mask.classList.add('show');
+$('#closeRules').onclick=()=>mask.classList.remove('show');
+mask.addEventListener('click', e=>{ if(e.target===mask) mask.classList.remove('show'); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') mask.classList.remove('show'); });
+
+/* ===== 寶石圖 ===== */
+function gemSVG(g){
+  return `<svg class="gem" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--g-${g})"><path d="M6 4h12l4 6-10 11L2 10z" fill="currentColor" fill-opacity=".2" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><path d="M2 10h20M6 4l3 6 3-6 3 6 3-6M9 10l3 11 3-11" fill="none" stroke="currentColor" stroke-width=".7"/></svg>`;
+}
+(function initGems(){
+  const box=$('#gemPick');
+  GEMS.forEach((g,i)=>{
+    box.insertAdjacentHTML('beforeend', `<input type="radio" name="gem" id="gem-${g.id}" value="${g.id}" ${i===0?'checked':''}><label for="gem-${g.id}">${gemSVG(g.id)}${g.name}</label>`);
+  });
+})();
+
+/* ===== 資料層 ===== */
+const DEMO = [
+  ['小夜','生日快樂！今天也請好好守著我，不過偶爾換我抱抱你也可以吧。','blue',12],
+  ['','藍鑽耳釘真的好適合你。十一月十一日，祝你又平安度過一年——雖然對你來說一年大概只是一眨眼。','moon',8],
+  ['綾','聽說你早睡早起……那今晚我就不吵你了，明天早上第一個說生日快樂。','red',5],
+  ['Mira','劍術教我！不對，先讓我摸一下頭髮。','obs',3],
+  ['','前世沒說完的話，今生慢慢說。生日快樂，盧西安。\n\n我知道你會吃醋，所以今天只看你一個。','blue',21],
+  ['無名的來客','一百九十二公分舉高高是什麼視角，請讓我體驗一次。','moon',2],
+  ['柚','渴望血液的話……一點點就好喔。生日快樂。','red',9],
+  ['夜鶯','願你的秘密永遠安全，也願你不再一個人守著它。這是一段比較長的獻詞，想測試卡片在內容較多時會不會正確收合：從第一次見到你開始，我就覺得那雙黑色眼睛裡藏了太多東西。百年的隱藏一定很累吧。今天就放下一點點，讓我們替你慶祝。生日快樂，願你往後的每一年都有人等你回家。','obs',14],
+  ['','黏人精保鏢生日快樂！','blue',1]
+];
+function seedDemo(){
+  let items=store.get('demo', null);
+  if(!items){
+    const base=Date.parse('2026-11-01T20:00:00+08:00');
+    items=DEMO.map((d,i)=>({id:'d'+(i+1), no:i+1, name:d[0], text:d[1], gem:d[2], hearts:d[3], date:new Date(base+i*86400000*0.9).toISOString()}));
+    store.set('demo', items);
+  }
+  return items;
+}
+const api = {
+  async list(){
+    if(!API) return {items:seedDemo()};
+    const r=await fetch(API+'?action=list',{cache:'no-store'}); const j=await r.json();
+    if(!j.ok) throw new Error(j.error||'list'); return j;
+  },
+  async add(p){
+    if(!API){
+      const items=seedDemo();
+      const it={id:'d'+Date.now(), no:items.length+1, name:p.name, text:p.text, gem:p.gem, hearts:0, date:new Date().toISOString()};
+      items.push(it); store.set('demo', items); return {item:it};
+    }
+    return post({action:'add', ...p});
+  },
+  async hearts(batch){
+    if(!API){
+      const items=seedDemo(); const out={};
+      items.forEach(it=>{ if(batch[it.id]){ it.hearts+=batch[it.id]; } out[it.id]=it.hearts; });
+      store.set('demo', items); return {hearts:out};
+    }
+    return post({action:'heart', batch});
+  }
+};
+async function post(body){
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
+  const j=await r.json(); if(!j.ok) throw new Error(j.error||'post'); return j;
+}
+
+/* ===== 寶庫 ===== */
+let items=[], view=[], shown=0;
+const sort = {k:'time', dir:1};
+const liked = new Set(store.get('liked', []));
+const pageSize = () => matchMedia('(max-width:760px)').matches ? 3 : 6;
+const esc = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtDate = iso => { const d=new Date(iso); if(isNaN(d)) return ''; return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`; };
+
+function tally(){
+  $('#tGifts').textContent = items.length;
+  $('#tHearts').textContent = items.reduce((s,i)=>s+(+i.hearts||0),0);
+}
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function buildView(){
+  view = items.slice();
+  if(sort.k==='time') view.sort((a,b)=>(a.no-b.no)*sort.dir);
+  else if(sort.k==='heart') view.sort((a,b)=>((a.hearts-b.hearts)||(a.no-b.no))*sort.dir);
+  else shuffle(view);
+  document.querySelectorAll('#sorts button').forEach(b=>{
+    const on=b.dataset.k===sort.k; b.classList.toggle('on', on);
+    const ar=b.querySelector('.ar'); if(ar) ar.textContent = on ? (sort.dir>0?'↑':'↓') : '';
+  });
+}
+function cardHTML(it){
+  const on = liked.has(it.id);
+  return `<article class="card" data-id="${esc(it.id)}">
+    <div class="hd"><div><span class="no">No. ${String(it.no).padStart(3,'0')}</span><span class="dt">${fmtDate(it.date)}</span></div>${gemSVG(GEMS.some(g=>g.id===it.gem)?it.gem:'blue')}</div>
+    <div class="tx">${esc(it.text)}</div>
+    <button class="more" type="button" hidden>展開</button>
+    <div class="sig">—— ${esc(it.name||'無名的來客')}</div>
+    <div class="ft"><button class="heart${on?' on':''}" type="button" aria-pressed="${on}" aria-label="共鳴"><svg><use href="#heart"/></svg><span>${it.hearts||0}</span></button></div>
+  </article>`;
+}
+function render(reset){
+  const grid=$('#grid');
+  if(reset){ grid.innerHTML=''; shown=0; }
+  if(!view.length){ grid.innerHTML='<div class="empty">寶庫還空著，等你獻上第一件。</div>'; $('#more').hidden=true; return; }
+  const next=view.slice(shown, shown+pageSize());
+  grid.insertAdjacentHTML('beforeend', next.map(cardHTML).join(''));
+  shown+=next.length;
+  $('#more').hidden = shown>=view.length;
+  requestAnimationFrame(markLong);
+}
+function markLong(){
+  document.querySelectorAll('.card:not(.chk)').forEach(c=>{
+    c.classList.add('chk');
+    const tx=c.querySelector('.tx');
+    if(tx.scrollHeight > tx.clientHeight+2) c.querySelector('.more').hidden=false;
+  });
+}
+$('#more').onclick=()=>render(false);
+$('#sorts').addEventListener('click', e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  const k=b.dataset.k;
+  if(k==='rand'){ sort.k='rand'; }
+  else if(sort.k===k){ sort.dir*=-1; }
+  else { sort.k=k; sort.dir = k==='heart' ? -1 : 1; }
+  buildView(); render(true);
+});
+
+/* 共鳴：樂觀 +1，停手後批次送出 */
+let pend={}, pendT;
+$('#grid').addEventListener('click', e=>{
+  const more=e.target.closest('.more');
+  if(more){ const c=more.closest('.card'); const o=c.classList.toggle('open'); more.textContent=o?'收合':'展開'; return; }
+  const h=e.target.closest('.heart'); if(!h) return;
+  const id=h.closest('.card').dataset.id;
+  if(liked.has(id)){ toast('這份心意已經收到了。'); return; }
+  liked.add(id); store.set('liked', [...liked]);
+  const it=items.find(i=>i.id===id); it.hearts=(+it.hearts||0)+1;
+  h.classList.add('on','pop'); h.setAttribute('aria-pressed','true'); h.querySelector('span').textContent=it.hearts;
+  setTimeout(()=>h.classList.remove('pop'),400);
+  tally();
+  pend[id]=(pend[id]||0)+1;
+  clearTimeout(pendT); pendT=setTimeout(flushHearts, 1500);
+});
+async function flushHearts(){
+  const batch=pend; pend={};
+  if(!Object.keys(batch).length) return;
+  try{
+    const r=await api.hearts(batch);
+    Object.entries(r.hearts||{}).forEach(([id,n])=>{
+      const it=items.find(i=>i.id===id); if(!it) return; it.hearts=n;
+      const s=document.querySelector(`.card[data-id="${CSS.escape(id)}"] .heart span`); if(s) s.textContent=n;
+    });
+    tally();
+  }catch(err){ Object.entries(batch).forEach(([k,v])=>pend[k]=(pend[k]||0)+v); }
+}
+addEventListener('pagehide', ()=>{ if(API && Object.keys(pend).length) navigator.sendBeacon?.(API, new Blob([JSON.stringify({action:'heart',batch:pend})],{type:'text/plain'})); });
+
+/* ===== 獻上 ===== */
+const fText=$('#fText'), fCount=$('#fCount');
+fText.addEventListener('input', ()=>{ const n=fText.value.length; fCount.textContent=`${n} / 1000`; fCount.classList.toggle('over', n>=1000); });
+function todayKey(){ const d=new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
+$('#giftForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const text=fText.value.trim();
+  const name=$('#fName').value.trim().slice(0,20);
+  const gem=(document.querySelector('input[name=gem]:checked')||{}).value||'blue';
+  if(!text){ toast('獻詞還空著呢，寫點什麼給我吧。'); fText.focus(); return; }
+  const day=store.get('day', {k:'',n:0});
+  if(day.k===todayKey() && day.n>=DAILY_MAX){ toast('今天已經獻上五件了。明天再來，我等你。'); return; }
+  const btn=$('#fSend'); btn.disabled=true; btn.textContent='封印中……';
+  try{
+    const r=await api.add({name, text:text.slice(0,1000), gem});
+    items.push(r.item);
+    store.set('day', {k:todayKey(), n:(day.k===todayKey()?day.n:0)+1});
+    fText.value=''; $('#fName').value=''; fText.dispatchEvent(new Event('input'));
+    tally();
+    sort.k='time'; sort.dir=-1; buildView(); render(true);
+    toast('已收入寶庫。');
+    document.getElementById('treasury').scrollIntoView({behavior: reduced()?'auto':'smooth'});
+  }catch(err){
+    toast('寶庫的門暫時打不開，請稍後再試。');
+  }finally{ btn.disabled=false; btn.textContent='封印獻上'; }
+});
+
+/* ===== 卡片傾斜：滑鼠＋陀螺儀 ===== */
+const grid=$('#grid');
+grid.addEventListener('pointermove', e=>{
+  if(reduced() || e.pointerType!=='mouse') return;
+  const c=e.target.closest('.card'); if(!c) return;
+  const r=c.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+  c.style.transform=`rotateX(${(-y*8).toFixed(2)}deg) rotateY(${(x*8).toFixed(2)}deg)`;
+});
+grid.addEventListener('pointerout', e=>{ const c=e.target.closest('.card'); if(c && !c.contains(e.relatedTarget)) c.style.transform=''; });
+let gyroOn=false;
+function onTilt(e){
+  if(reduced() || e.beta==null) return;
+  const rx=Math.max(-6,Math.min(6,(e.beta-45)/6)), ry=Math.max(-6,Math.min(6,e.gamma/6));
+  document.querySelectorAll('.card').forEach(c=>{ c.style.transform=`rotateX(${(-rx).toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`; });
+}
+function askGyro(){
+  if(gyroOn || !('DeviceOrientationEvent' in window) || matchMedia('(hover:hover)').matches) return;
+  const go=()=>{ gyroOn=true; addEventListener('deviceorientation', onTilt); };
+  if(typeof DeviceOrientationEvent.requestPermission==='function'){
+    DeviceOrientationEvent.requestPermission().then(s=>{ if(s==='granted') go(); }).catch(()=>{});
+  } else go();
+}
+
+/* ===== 啟動 ===== */
+(async()=>{
+  try{ const r=await api.list(); items=(r.items||[]).map(i=>({...i, no:+i.no, hearts:+i.hearts||0})); }
+  catch(err){ toast('寶庫的門暫時打不開，請稍後再試。'); }
+  tally(); buildView(); render(true);
+})();
+let rw=innerWidth;
+addEventListener('resize', ()=>{ if((rw>760)!==(innerWidth>760)){ rw=innerWidth; render(true); } });
+})();
+</script>
+</body>
+</html>
