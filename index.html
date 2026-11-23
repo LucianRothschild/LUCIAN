@@ -15,10 +15,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ================= 主題 ================= */
-html.t-parch{--bg:#e8e0d1;--bg2:#f2ece0;--ink:#2a2026;--dim:rgba(42,32,38,.62);--gold:#8a6d3b;--wine:#8c2338;--wine2:#e2cfc4;--wineD:#5e1424;--sap:#2b5b9e;--line:rgba(138,109,59,.32);--paper:#f6f0e4;--pink:#a8344d;--glowA:rgba(140,35,56,.10);--card:rgba(255,255,255,.4)}
-html.t-rose{--bg:#100D12;--bg2:#17121B;--ink:#D8CBB9;--dim:rgba(216,203,185,.62);--gold:#C5A66A;--wine:#791F32;--wine2:#30131D;--wineD:#1D0B12;--sap:#2b5b9e;--line:rgba(197,166,106,.28);--paper:#D8CBB9;--pink:#c0405a;--glowA:rgba(48,19,29,.6);--card:rgba(23,18,27,.7)}
-html.t-sapphire{--bg:#0a0f1d;--bg2:#111a2d;--ink:#dbe3ef;--dim:rgba(219,227,239,.6);--gold:#b9c4d6;--wine:#7a2340;--wine2:#16203a;--wineD:#0b1224;--sap:#5c94e8;--line:rgba(185,196,214,.25);--paper:#dbe3ef;--pink:#c4506c;--glowA:rgba(23,60,112,.45);--card:rgba(17,26,45,.72)}
-html.t-black{--bg:#09080a;--bg2:#141216;--ink:#e3dee6;--dim:rgba(227,222,230,.58);--gold:#a99fc0;--wine:#5c1528;--wine2:#1d1219;--wineD:#0d070a;--sap:#7d9fe0;--line:rgba(169,159,192,.24);--paper:#d9d2dd;--pink:#b23a55;--glowA:rgba(70,20,40,.42);--card:rgba(20,18,22,.75)}
+/* 角色色：耳環藍（淺／正／深）、眼睛紅（亮／深）——四個主題共用 */
+:root{--earL:#8ebfe1;--ear:#025ee2;--earD:#4b7080;--eye:#ff393f;--eyeD:#890b0d}
+html.t-parch{--bg:#e8e0d1;--bg2:#f2ece0;--ink:#2a2026;--dim:rgba(42,32,38,.62);--gold:#8a6d3b;--wine:#8c2338;--wine2:#e2cfc4;--wineD:#5e1424;--sap:var(--ear);--line:rgba(138,109,59,.32);--paper:#f6f0e4;--pink:#a8344d;--glowA:rgba(140,35,56,.10);--card:rgba(255,255,255,.4)}
+html.t-rose{--bg:#100D12;--bg2:#17121B;--ink:#D8CBB9;--dim:rgba(216,203,185,.62);--gold:#C5A66A;--wine:#791F32;--wine2:#30131D;--wineD:#1D0B12;--sap:var(--ear);--line:rgba(197,166,106,.28);--paper:#D8CBB9;--pink:#c0405a;--glowA:rgba(48,19,29,.6);--card:rgba(23,18,27,.7)}
+html.t-sapphire{--bg:#0a0f1d;--bg2:#111a2d;--ink:#dbe3ef;--dim:rgba(219,227,239,.6);--gold:#b9c4d6;--wine:#7a2340;--wine2:#16203a;--wineD:#0b1224;--sap:var(--ear);--line:rgba(185,196,214,.25);--paper:#dbe3ef;--pink:#c4506c;--glowA:rgba(23,60,112,.45);--card:rgba(17,26,45,.72)}
+html.t-black{--bg:#09080a;--bg2:#141216;--ink:#e3dee6;--dim:rgba(227,222,230,.58);--gold:#a99fc0;--wine:#5c1528;--wine2:#1d1219;--wineD:#0d070a;--sap:var(--ear);--line:rgba(169,159,192,.24);--paper:#d9d2dd;--pink:#b23a55;--glowA:rgba(70,20,40,.42);--card:rgba(20,18,22,.75)}
 
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -90,7 +92,7 @@ html.t-parch .rose .ri,html.t-parch .rose .rs{stroke:#f6e9e0}
 header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 header.top .wrap{height:60px;display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.brand i{width:10px;height:10px;transform:rotate(45deg);background:var(--sap);border:1px solid var(--gold);display:block}
+.brand i{width:10px;height:10px;transform:rotate(45deg);background:linear-gradient(135deg,var(--earL),var(--ear) 55%,var(--earD));border:1px solid var(--gold);display:block}
 .brand span{font-size:15px;letter-spacing:.25em;color:var(--gold)}
 nav{display:flex;align-items:center;gap:22px;font-size:14px;letter-spacing:.18em}
 nav a{text-decoration:none;color:var(--dim);transition:color .2s}
@@ -133,10 +135,10 @@ html.reduce .dr{stroke-dashoffset:0;transition:none}
 .portrait svg.rose{width:62%;height:auto}
 .portrait .eyes{position:absolute;bottom:18%;left:50%;transform:translateX(-50%);display:flex;gap:16px}
 .portrait .eyes i{width:6px;height:3px;border-radius:50%;background:var(--ink);opacity:.6;transition:background .2s,box-shadow .2s}
-.portrait.red .eyes i{background:#e0263f;opacity:1;box-shadow:0 0 8px #e0263f}
+.portrait.red .eyes i{background:var(--eye);opacity:1;box-shadow:0 0 8px var(--eye)}
 .portrait svg.rose{transition:filter .3s,transform .4s}
-.portrait.red svg.rose{filter:drop-shadow(0 0 14px #e0263f);transform:scale(1.08)}
-.portrait.red{box-shadow:0 0 50px rgba(224,38,63,.45),inset 0 0 30px rgba(224,38,63,.3)}
+.portrait.red svg.rose{filter:drop-shadow(0 0 14px var(--eye));transform:scale(1.08)}
+.portrait.red{border-color:var(--eye);box-shadow:0 0 50px color-mix(in srgb,var(--eye) 45%,transparent),inset 0 0 30px color-mix(in srgb,var(--eyeD) 70%,transparent)}
 .count{width:min(92vw,440px);margin:0 auto 30px}
 .count .lab{font-size:11px;letter-spacing:.28em;color:var(--gold);margin-bottom:10px;text-transform:uppercase}
 .count .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
@@ -155,7 +157,7 @@ html.reduce .dr{stroke-dashoffset:0;transition:none}
 .corner.c{bottom:10px;left:10px;border-width:0 0 1px 1px}.corner.d{bottom:10px;right:10px;border-width:0 1px 1px 0}
 .d-left{border-right:1px solid var(--line);padding-right:36px}
 .d-left .tag{font-size:11px;letter-spacing:.25em;color:var(--gold);display:flex;align-items:center;gap:8px}
-.d-left .tag i{width:8px;height:8px;transform:rotate(45deg);background:var(--sap);border:1px solid var(--gold)}
+.d-left .tag i{width:8px;height:8px;transform:rotate(45deg);background:linear-gradient(135deg,var(--earL),var(--ear) 55%,var(--earD));border:1px solid var(--gold)}
 .d-left h3{font-size:40px;color:var(--gold);letter-spacing:.18em;font-weight:500;line-height:1.3;margin-top:4px}
 .d-left .zhname{font-size:18px;letter-spacing:.25em}
 .d-left .full{font-size:16px;color:var(--dim);letter-spacing:.08em}
@@ -171,7 +173,7 @@ html.reduce .dr{stroke-dashoffset:0;transition:none}
 .d-right blockquote .hl{color:var(--gold)}
 .d-foot{border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:14px;color:var(--dim)}
 .d-foot .eyes{color:var(--gold);font-size:16px;cursor:default;transition:color .25s,text-shadow .25s}
-.d-foot .eyes:hover,.d-foot .eyes.on{color:#e0263f;text-shadow:0 0 10px rgba(224,38,63,.6)}
+.d-foot .eyes:hover,.d-foot .eyes.on{color:var(--eye);text-shadow:0 0 10px var(--eyeD),0 0 4px var(--eye)}
 .private{margin-top:4px;font-size:14px;color:var(--dim)}
 
 /* ================= 六大象徵 ================= */
@@ -199,7 +201,7 @@ html.reduce .dr{stroke-dashoffset:0;transition:none}
 .sym:hover .medal .spin{animation:spin 6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .glint{animation:glint 6s ease-in-out infinite}
-@keyframes glint{0%,72%,100%{filter:drop-shadow(0 0 4px rgba(43,91,158,.5))}80%{filter:drop-shadow(0 0 16px rgba(92,148,232,.95))}}
+@keyframes glint{0%,72%,100%{filter:drop-shadow(0 0 4px rgba(75,112,128,.55))}80%{filter:drop-shadow(0 0 16px rgba(142,191,225,.95))}}
 
 /* ================= 薔薇園 ================= */
 .garden{position:relative;height:420px;border:1px solid var(--line);background:radial-gradient(ellipse 80% 60% at 50% 100%,color-mix(in srgb,var(--wine) 26%,transparent),transparent 70%),linear-gradient(var(--bg),var(--bg2));overflow:hidden;cursor:crosshair;touch-action:manipulation}
@@ -230,6 +232,7 @@ form.letter{max-width:680px;margin:0 auto 70px;border:1px solid var(--line);back
 .seals{position:relative}
 .seals label{display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid var(--line);padding:10px 2px 8px;font-size:12px;letter-spacing:.08em;color:var(--dim);cursor:pointer;margin:0;transition:border-color .2s,color .2s,box-shadow .2s}
 .seals label svg{width:22px;height:22px}
+.seals label[for=seal-diamond] svg{color:var(--ear)}
 .seals input:checked+label{border-color:var(--gold);color:var(--gold);box-shadow:0 0 14px color-mix(in srgb,var(--gold) 25%,transparent)}
 .seals input:focus-visible+label{outline:1px dashed var(--gold);outline-offset:2px}
 .send{justify-self:center;display:inline-flex;align-items:center;gap:12px;border:1px solid var(--gold);padding:13px 36px;letter-spacing:.22em;font-size:14px;text-transform:uppercase;background:linear-gradient(90deg,var(--wine2),color-mix(in srgb,var(--wine) 70%,transparent),var(--wine2));color:var(--ink);transition:box-shadow .3s,transform .3s}
@@ -263,6 +266,7 @@ html.t-parch .card.p2{color:var(--ink)}
 .card .sl b{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold)}
 .card.p0 .sl b{color:var(--wine);border-color:rgba(121,31,50,.35)}
 .card .sl b svg{width:15px;height:15px}
+.card .sl b svg.dia{color:var(--ear)}
 .card .no{font-size:11px;letter-spacing:.2em;color:var(--gold)}
 .card.p0 .no{color:#5e4a2a}
 .card .dt{font-size:11px;letter-spacing:.08em;opacity:.65}
@@ -422,6 +426,7 @@ html.reduce .card{transform:none!important}
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="gEar" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8ebfe1"/><stop offset=".5" stop-color="#025ee2"/><stop offset="1" stop-color="#4b7080"/></linearGradient>
   <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></symbol>
   <symbol id="i-diamond" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6M2 9h20"/></g></symbol>
   <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
@@ -484,7 +489,7 @@ html.reduce .card{transform:none!important}
           <path class="dr" pathLength="1" d="M150 262c-8-6-12-14-12-20M178 286c-2-8 0-16 6-20M300 270c8-6 12-14 10-22M272 290c4-6 4-14-2-20M118 196c-8 0-14 4-16 10M342 196c8 0 14 4 16 10" style="stroke-width:1"/>
         </g>
         <g id="vineRoses"></g>
-        <g class="glint"><polygon points="230,14 246,32 230,54 214,32" style="fill:var(--sap);stroke:var(--gold);stroke-width:1.5"/><line x1="214" y1="32" x2="246" y2="32" style="stroke:var(--paper);stroke-width:.8"/></g>
+        <g class="glint"><polygon points="230,14 246,32 230,54 214,32" style="fill:url(#gEar);stroke:var(--gold);stroke-width:1.5"/><polygon points="230,14 237,32 230,54 223,32" style="fill:rgba(255,255,255,.12);stroke:var(--earL);stroke-width:.6"/><line x1="214" y1="32" x2="246" y2="32" style="stroke:var(--earL);stroke-width:.8"/></g>
         <path d="M170 292c25 18 95 18 120 0" style="fill:none;stroke:var(--gold);stroke-width:1.3"/>
       </svg>
       <div class="portrait" id="portrait" title="盧西安">
@@ -699,7 +704,7 @@ const DAILY_GIFTS = 5, DAILY_ROSES = 30, DAILY_ACTS = 60;
 const THEMES = [
   {id:'parch',    name:'羊皮紙晨', sw:'#e8e0d1', ring:'#8c2338', meta:'#e8e0d1'},
   {id:'rose',     name:'薔薇夜宴', sw:'#100D12', ring:'#C5A66A', meta:'#100D12'},
-  {id:'sapphire', name:'藍鑽深夜', sw:'#0a0f1d', ring:'#5c94e8', meta:'#0a0f1d'},
+  {id:'sapphire', name:'藍鑽深夜', sw:'#0a0f1d', ring:'#8ebfe1', meta:'#0a0f1d'},
   {id:'black',    name:'黑玫瑰',   sw:'#09080a', ring:'#b23a55', meta:'#09080a'}
 ];
 const DEFAULT_THEME = 'rose';
@@ -897,7 +902,7 @@ const SYM = [
    art:`<g class="spin"><circle cx="50" cy="50" r="32" style="fill:none;stroke:var(--gold);stroke-dasharray:3 3;opacity:.5"/><path d="M50 16c19 0 32 14 32 34s-14 34-34 34c-18 0-30-13-30-31 0-16 11-28 26-28 13 0 22 9 22 22 0 11-8 19-19 19-9 0-15-6-15-15 0-7 5-12 12-12" style="fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round"/><path d="M44 39l7-3-2 6z" style="fill:var(--wine);stroke:var(--gold)"/></g>`},
   {id:'diamond', zh:'藍鑽｜身分與傳承', en:'THE BLUE DIAMOND', tag:'HOUSE OF ROTHSCHILD', mean:'血脈榮耀與永不磨滅的印記',
    desc:'羅斯柴爾德家族的標誌，每位家族成員皆會佩戴。他把它戴在左耳；右耳的飾品，則時常更換。', say:'想戴戴看嗎？',
-   art:`<g class="glint"><polygon points="50,12 80,38 50,88 20,38" style="fill:var(--sap);fill-opacity:.75;stroke:var(--gold);stroke-width:1.6"/><polygon points="50,12 66,38 50,88 34,38" style="fill:rgba(255,255,255,.1);stroke:var(--gold);stroke-width:.9"/><line x1="20" y1="38" x2="80" y2="38" style="stroke:var(--gold)"/></g>`},
+   art:`<g class="glint"><polygon points="50,12 80,38 50,88 20,38" style="fill:url(#gEar);stroke:var(--gold);stroke-width:1.6"/><polygon points="50,12 66,38 50,88 34,38" style="fill:rgba(255,255,255,.12);stroke:var(--earL);stroke-width:.9"/><line x1="20" y1="38" x2="80" y2="38" style="stroke:var(--gold)"/></g>`},
   {id:'rose', zh:'薔薇與玫瑰｜高貴與堅韌', en:'BRIAR & ROSE', tag:'EMBLEMATIC FLORA', mean:'帶刺的優雅與絕不退讓的守護',
    desc:'薔薇攀附古堡的石牆，玫瑰綻放於夜宴的長桌。高貴、堅韌，也帶著不讓人輕易靠近的刺。', say:'刺是給別人的，你不用怕。',
    art:null},
@@ -1051,7 +1056,7 @@ function buildView(){
 function cardHTML(it){
   const seal=SEALS.some(s=>s.id===it.seal)?it.seal:'rose', on=liked.has(it.id);
   return `<article class="card p${(it.no-1)%3}" data-id="${esc(it.id)}">
-    <div class="hd"><div class="sl"><b><svg><use href="#i-${seal}"/></svg></b><span class="no cz">No. ${String(it.no).padStart(3,'0')}</span></div><span class="dt cz">${fmtDate(it.date)}</span></div>
+    <div class="hd"><div class="sl"><b><svg${seal==='diamond'?' class="dia"':''}><use href="#i-${seal}"/></svg></b><span class="no cz">No. ${String(it.no).padStart(3,'0')}</span></div><span class="dt cz">${fmtDate(it.date)}</span></div>
     <div class="tx">${esc(it.text)}</div>
     <button class="more zh" type="button" hidden>展開</button>
     <div class="sig">${esc(it.name||'無名的賓客')}</div>
