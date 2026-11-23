@@ -143,8 +143,8 @@ html.reduce .dr{stroke-dashoffset:0;transition:none}
 .portrait .eyes{position:absolute;bottom:18%;left:50%;transform:translateX(-50%);display:flex;gap:16px}
 .portrait .eyes i{width:6px;height:3px;border-radius:50%;background:var(--ink);opacity:.6;transition:background .2s,box-shadow .2s}
 .portrait.red .eyes i{background:var(--eye);opacity:1;box-shadow:0 0 8px var(--eye)}
-.portrait svg.rose{transition:filter .3s,transform .4s}
-.portrait.red svg.rose{filter:drop-shadow(0 0 14px var(--eye));transform:scale(1.08)}
+.portrait svg.cr{height:74%;width:auto;overflow:visible;transition:filter .3s,transform .4s}
+.portrait.red svg.cr{filter:drop-shadow(0 0 14px var(--eye));transform:scale(1.08)}
 .portrait.red{border-color:var(--eye);box-shadow:0 0 50px color-mix(in srgb,var(--eye) 45%,transparent),inset 0 0 30px color-mix(in srgb,var(--eyeD) 70%,transparent)}
 .count{width:min(92vw,440px);margin:0 auto 30px}
 .count .lab{font-size:11px;letter-spacing:.28em;color:var(--gold);margin-bottom:10px;text-transform:uppercase}
@@ -653,8 +653,8 @@ html.reduce .card{transform:none!important}
           <dl class="zh">
             <div><dt>國度</dt><dd>英格蘭　<span class="it">England</span></dd></div>
             <div><dt>家族</dt><dd>羅斯柴爾德　<span class="it">Rothschild</span></dd></div>
-            <div><dt>血統</dt><dd><span class="redact" role="img" aria-label="此欄已被塗去"><span class="rt">初始之祖・千年之首</span><svg viewBox="0 0 120 24" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8C14 2 20 16 32 7s18 12 30 2 18 12 30 1 18 10 26 5M3 15c12-6 20 8 31 0s19 9 30 0 18 9 29-1 16 8 25 3M6 20c10-5 22 4 33-2s20 5 31-1 21 4 30-2 12 3 16 1" /></svg></span></dd></div>
-            <div><dt>身分</dt><dd>貴族・您的貼身保鏢</dd></div>
+            <div><dt>血統</dt><dd class="it" style="color:var(--gold);font-size:17px">Unknown</dd></div>
+            <div><dt>身分</dt><dd><span class="it" style="color:var(--gold);font-size:17px">???</span>・您的保鏢</dd></div>
             <div><dt>證件年齡</dt><dd>31 歲</dd></div>
             <div><dt>真實年齡</dt><dd class="it" style="color:var(--gold);font-size:17px">Unknown</dd></div>
             <div><dt>身形</dt><dd>192 公分・及腰黑長直髮</dd></div>
@@ -1026,7 +1026,7 @@ $('#restartBtn').addEventListener('click', ()=>{
   obs.observe($('#frame'),{attributes:true});
   const pt=$('#portrait');
   if(PORTRAIT){ pt.insertAdjacentHTML('afterbegin', `<img src="${esc(PORTRAIT)}" alt="盧西安" referrerpolicy="no-referrer">`); pt.querySelector('.eyes').remove(); }
-  else { pt.insertAdjacentHTML('afterbegin', roseSVG('', false)); pt.querySelector('.eyes').remove(); }
+  else { pt.insertAdjacentHTML('afterbegin', '<svg class="cr" viewBox="0 8 80 116" aria-hidden="true"><use href="#crossrose"/></svg>'); pt.querySelector('.eyes').remove(); }
   let redT;
   pt.addEventListener('click', ()=>{
     pt.classList.add('red'); clearTimeout(redT);
