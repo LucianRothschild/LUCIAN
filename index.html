@@ -14,835 +14,300 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-/* ================= 主題 ================= */
-/* 角色色：耳環藍（淺／正／深）、眼睛紅（亮／深）——四個主題共用 */
-:root{--icon:var(--gold);--earL:#8ebfe1;--ear:#025ee2;--earD:#4b7080;--eye:#ff393f;--eyeD:#890b0d}
-html.t-parch{--bg:#e8e0d1;--bg2:#f2ece0;--ink:#2a2026;--dim:rgba(42,32,38,.62);--gold:#8a6d3b;--wine:#8c2338;--wine2:#e2cfc4;--wineD:#5e1424;--sap:var(--ear);--line:rgba(138,109,59,.32);--paper:#f6f0e4;--pink:#a8344d;--glowA:rgba(140,35,56,.10);--card:rgba(255,255,255,.4)}
-html.t-rose{--bg:#100D12;--bg2:#17121B;--ink:#D8CBB9;--dim:rgba(216,203,185,.62);--gold:#C5A66A;--wine:#791F32;--wine2:#30131D;--wineD:#1D0B12;--sap:var(--ear);--line:rgba(197,166,106,.28);--paper:#D8CBB9;--pink:#c0405a;--glowA:rgba(48,19,29,.6);--card:rgba(23,18,27,.7)}
-html.t-sapphire{--icon:#c9ced6;--bg:#0a0f1d;--bg2:#111a2d;--ink:#dbe3ef;--dim:rgba(219,227,239,.6);--gold:#b9c4d6;--wine:#7a2340;--wine2:#16203a;--wineD:#0b1224;--sap:var(--ear);--line:rgba(185,196,214,.25);--paper:#dbe3ef;--pink:#c4506c;--glowA:rgba(23,60,112,.45);--card:rgba(17,26,45,.72)}
-html.t-black{--icon:#c9ced6;--bg:#09080a;--bg2:#141216;--ink:#e3dee6;--dim:rgba(227,222,230,.58);--gold:#a99fc0;--wine:#5c1528;--wine2:#1d1219;--wineD:#0d070a;--sap:var(--ear);--line:rgba(169,159,192,.24);--paper:#d9d2dd;--pink:#b23a55;--glowA:rgba(70,20,40,.42);--card:rgba(20,18,22,.75)}
-
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-html.reduce{scroll-behavior:auto}
-body{background:var(--bg);color:var(--ink);font-family:"Cormorant Garamond","Noto Serif TC","Noto Serif CJK TC",Georgia,serif;line-height:1.8;overflow-x:hidden;transition:background .5s,color .5s}
-.zh{font-family:"Noto Serif TC","Noto Serif CJK TC",serif}
-.cz{font-family:"Cinzel","Noto Serif TC",serif}
-.it{font-family:"Cormorant Garamond",serif;font-style:italic}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-a{color:inherit}
-::selection{background:var(--wine);color:var(--paper)}
-.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
-#bgGlow{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(circle at 50% 18%,var(--glowA) 0%,transparent 62%)}
-main,header,footer{position:relative;z-index:2}
-
-/* ================= 氛圍：花瓣與金塵 ================= */
-#ambient{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:1}
-.petal{position:absolute;top:-30px;animation:fall linear infinite;opacity:0}
-.petal svg{display:block}
-@keyframes fall{0%{transform:translate(0,-5vh) rotate(0);opacity:0}15%{opacity:.6}50%{transform:translate(24px,50vh) rotate(140deg)}85%{opacity:.45}100%{transform:translate(-18px,105vh) rotate(290deg);opacity:0}}
-.star{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--paper);animation:twinkle ease-in-out infinite;opacity:.2}
-@keyframes twinkle{50%{opacity:.85;box-shadow:0 0 6px var(--paper)}}
-html.t-parch .star{display:none}
-.dust{position:absolute;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:dust ease-in-out infinite}
-@keyframes dust{0%,100%{transform:translate(0,0);opacity:.15}50%{transform:translate(12px,-28px);opacity:.6}}
-.trail{position:fixed;pointer-events:none;z-index:70;width:9px;height:12px;animation:trail .9s ease-out forwards}
-@keyframes trail{to{transform:translate(var(--tx),40px) rotate(var(--tr));opacity:0}}
-html.reduce #ambient,html.reduce .trail{display:none}
-
-/* ================= 開場：按住玫瑰 ================= */
-#splash{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;user-select:none;-webkit-user-select:none;touch-action:none}
-#splash .door{position:absolute;top:0;bottom:0;width:50.5%;background:var(--bg);transition:transform 1.1s cubic-bezier(.7,0,.2,1)}
-#splash .door.l{left:0;border-right:1px solid var(--line)}
-#splash .door.r{right:0;border-left:1px solid var(--line)}
-#splash .door::after{content:"";position:absolute;inset:18px;border:1px solid var(--line)}
-#splash.open .door.l{transform:translateX(-101%)}
-#splash.open .door.r{transform:translateX(101%)}
-#splash .inner{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;transition:opacity .5s}
-#splash.open .inner{opacity:0}
-#splash.gone{display:none}
-#splash .kicker{font-size:12px;letter-spacing:.35em;color:var(--gold)}
-#splash h1{font-size:34px;letter-spacing:.32em;color:var(--gold);font-weight:600;padding-left:.32em}
-#holdRose{position:relative;width:min(56vw,230px);aspect-ratio:1;cursor:pointer;margin:6px 0;touch-action:none}
-#holdRose svg.rose{width:100%;height:100%;overflow:visible}
-#holdRing{position:absolute;inset:-6%;width:112%;height:112%;transform:rotate(-90deg);pointer-events:none}
-#holdRing circle{fill:none;stroke:var(--gold);stroke-width:1.2}
-#holdRing .bgc{opacity:.2}
-#splash .hint{font-size:14px;letter-spacing:.22em;color:var(--dim);animation:breath 2.6s ease-in-out infinite}
-#splash .sub{font-size:16px;color:var(--dim);letter-spacing:.15em}
-@keyframes breath{50%{opacity:.35}}
-html.reduce #splash .hint{animation:none}
-
-/* ================= 玫瑰（共用） ================= */
-.rose .ro{fill:var(--wine);fill-opacity:.55;stroke:var(--gold);stroke-width:1.3}
-.rose .rm{fill:var(--wine);fill-opacity:.85;stroke:var(--gold);stroke-width:1.2}
-.rose .ri,.rose .rs,.rose .re{fill:none;stroke:var(--paper);stroke-width:1;stroke-linecap:round;opacity:.85}
-.rose .re{stroke:var(--gold);opacity:.7}
-.rose .st{fill:none;stroke:var(--gold);stroke-width:1.3;stroke-linecap:round}
-.rose .lf{fill:var(--gold);fill-opacity:.12;stroke:var(--gold);stroke-width:1.1}
-.rose g{transform-box:view-box}
-.rose .L3,.rose .L2,.rose .L1,.rose .L0{transform-origin:50px 46px}
-.rose.bloom .L3{animation:bl .7s cubic-bezier(.2,1.4,.4,1) both}
-.rose.bloom .L2{animation:bl .7s .12s cubic-bezier(.2,1.4,.4,1) both}
-.rose.bloom .L1{animation:bl .7s .24s cubic-bezier(.2,1.4,.4,1) both}
-.rose.bloom .L0{animation:bl .7s .36s cubic-bezier(.2,1.4,.4,1) both}
-.rose.bloom .S{animation:stem .5s ease-out both;transform-origin:50px 98px}
-@keyframes bl{from{transform:scale(0) rotate(-40deg)}to{transform:scale(1) rotate(0)}}
-@keyframes stem{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-html.t-parch .rose .ri,html.t-parch .rose .rs{stroke:#f6e9e0}
-
-/* ================= 導覽 ================= */
-header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-header.top .wrap{height:60px;display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.brand i{width:10px;height:10px;transform:rotate(45deg);background:linear-gradient(135deg,var(--earL),var(--ear) 55%,var(--earD));border:1px solid var(--gold);display:block}
-.brand svg.crossrose{width:30px;height:44px;overflow:visible}
-.brand span{font-size:15px;letter-spacing:.25em;color:var(--gold)}
-nav{display:flex;align-items:center;gap:22px;font-size:14px;letter-spacing:.18em}
-nav a{text-decoration:none;color:var(--dim);transition:color .2s}
-nav a:hover{color:var(--gold)}
-nav .rules{border:1px solid var(--line);padding:3px 12px;color:var(--gold);font-size:13px}
-
-/* ================= 共用區塊 ================= */
-section{padding:96px 0 40px}
-.sec-h{text-align:center;margin-bottom:44px}
-.sec-h h2{font-size:32px;font-weight:500;letter-spacing:.2em;padding-left:.2em}
-.sec-h .en{display:block;font-size:12px;letter-spacing:.35em;color:var(--gold);margin-top:6px;text-transform:uppercase}
-.sec-h p{font-size:14px;color:var(--dim);letter-spacing:.12em;margin-top:12px}
-.divider{display:flex;align-items:center;justify-content:center;gap:14px;margin:18px auto 0}
-.divider b{height:1px;width:100px;background:linear-gradient(90deg,transparent,var(--gold))}
-.divider b:last-child{background:linear-gradient(-90deg,transparent,var(--gold))}
-.divider svg{width:64px;height:20px;color:var(--gold)}
-.reveal{opacity:0;transform:translateY(28px);transition:opacity 1s ease,transform 1s ease}
-.reveal.in{opacity:1;transform:none}
-html.reduce .reveal{opacity:1;transform:none}
-
-/* ================= 卷首 ================= */
-#hero{min-height:calc(100svh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px 70px;position:relative}
-.candle{position:absolute;top:44%;left:50%;width:min(90vw,520px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--wine) 32%,transparent) 0%,color-mix(in srgb,var(--gold) 8%,transparent) 45%,transparent 72%);animation:candle 5s ease-in-out infinite;pointer-events:none}
-@keyframes candle{0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}}
-.hero-k{font-size:12px;letter-spacing:.35em;color:var(--gold);text-transform:uppercase}
-.datepill{margin:14px auto 0;display:inline-flex;align-items:center;gap:12px;padding:5px 20px;border:1px solid var(--line);border-radius:99px}
-.datepill i{width:6px;height:6px;transform:rotate(45deg);border:1px solid var(--gold);display:block}
-.datepill span{letter-spacing:.3em;font-size:15px}
-.hero-t{font-size:clamp(46px,9vw,88px);font-weight:600;color:var(--gold);letter-spacing:.32em;padding-left:.32em;margin-top:22px;line-height:1.1;text-shadow:0 4px 24px color-mix(in srgb,var(--gold) 30%,transparent);animation:expand 1.8s cubic-bezier(.22,1,.36,1) both}
-@keyframes expand{from{opacity:0;letter-spacing:.08em;transform:translateY(12px)}to{opacity:1;letter-spacing:.32em;transform:none}}
-.hero-s{font-size:clamp(20px,3vw,30px);letter-spacing:.18em;margin-top:8px}
-.greet{max-width:540px;margin:18px auto 0;font-size:16px;line-height:1.9;color:var(--dim);letter-spacing:.06em;min-height:3.8em}
-.greet b{color:var(--gold);font-weight:500}
-.frame{position:relative;width:min(62vw,280px);aspect-ratio:1;margin:34px auto 30px}
-.frame>svg{width:100%;height:auto;display:block;overflow:visible}
-.frame .vine path,.frame .vine circle{fill:none;stroke:var(--gold);stroke-width:1.2}
-.dr{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 2.4s ease}
-.in .dr,.drawn .dr{stroke-dashoffset:0}
-html.reduce .dr{stroke-dashoffset:0;transition:none}
-.portrait{position:absolute;left:50%;top:50%;width:100%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:1.5px solid var(--gold);overflow:hidden;background:radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--wine) 45%,transparent),var(--bg) 75%);box-shadow:0 0 45px rgba(0,0,0,.6),inset 0 0 25px color-mix(in srgb,var(--gold) 20%,transparent);display:flex;align-items:center;justify-content:center;cursor:pointer}
-.portrait img{width:100%;height:100%;object-fit:cover;object-position:top}
-.portrait svg.rose{width:62%;height:auto}
-.portrait .eyes{position:absolute;bottom:18%;left:50%;transform:translateX(-50%);display:flex;gap:16px}
-.portrait .eyes i{width:6px;height:3px;border-radius:50%;background:var(--ink);opacity:.6;transition:background .2s,box-shadow .2s}
-.portrait.red .eyes i{background:var(--eye);opacity:1;box-shadow:0 0 8px var(--eye)}
-.portrait svg.cr{height:74%;width:auto;overflow:visible;transition:filter .3s,transform .4s}
-.portrait.red svg.cr{filter:drop-shadow(0 0 14px var(--eye));transform:scale(1.08)}
-.portrait.red{border-color:var(--eye);box-shadow:0 0 50px color-mix(in srgb,var(--eye) 45%,transparent),inset 0 0 30px color-mix(in srgb,var(--eyeD) 70%,transparent)}
-.count{width:min(92vw,440px);margin:0 auto 30px}
-.count .lab{font-size:11px;letter-spacing:.28em;color:var(--gold);margin-bottom:10px;text-transform:uppercase}
-.count .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.count .u{border:1px solid var(--line);padding:9px 4px;background:color-mix(in srgb,var(--bg) 70%,transparent)}
-.count .u b{display:block;font-size:24px;color:var(--gold);font-weight:600;font-variant-numeric:tabular-nums}
-.count .u span{font-size:9px;letter-spacing:.2em;color:var(--dim)}
-.count .today{border:1px solid var(--line);padding:12px 20px;letter-spacing:.2em}
-.cta{display:inline-flex;align-items:center;gap:12px;border:1px solid var(--gold);padding:13px 30px;font-size:14px;letter-spacing:.25em;text-transform:uppercase;text-decoration:none;transition:box-shadow .3s,transform .3s}
-.cta:hover{box-shadow:0 0 30px color-mix(in srgb,var(--gold) 40%,transparent);transform:scale(1.03)}
-.cta i{width:6px;height:6px;transform:rotate(45deg);border:1px solid var(--gold);display:block}
-
-/* ================= 間奏：時鐘 ================= */
-#interlude{height:260svh;padding:0;position:relative}
-#interlude .pin{position:sticky;top:0;height:100svh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px;max-width:1120px;margin:0 auto;padding:60px 20px 0}
-.clockwrap{display:flex;justify-content:center}
-.clock{width:min(40vw,400px);height:auto;overflow:visible}
-.clock .dr2 *{fill:none;stroke:var(--gold);stroke-width:1.2}
-.clock #ticks line{stroke:var(--gold);stroke-width:1}
-.clock .roman text{fill:var(--gold);font-size:13px;text-anchor:middle;dominant-baseline:middle;font-family:Cinzel,serif}
-.clock .hand{fill:var(--gold);stroke:var(--gold);stroke-width:.6}
-#hHand,#mHand{transform-origin:100px 140px;transform-box:view-box}
-.lines p{opacity:0;transform:translateY(14px);transition:opacity .8s,transform .8s}
-.lines p.on{opacity:1;transform:none}
-.lines .ln1,.lines .ln2{font-size:clamp(26px,3.4vw,42px);line-height:1.35}
-.lines .ln3{font-size:16px;color:var(--dim);margin-top:18px;letter-spacing:.08em}
-.lines .ln4{font-size:14px;letter-spacing:.4em;color:var(--gold);margin-top:22px}
-html.reduce #interlude{height:auto;padding:80px 0 40px}
-html.reduce #interlude .pin{position:static;height:auto}
-html.reduce .lines p{opacity:1;transform:none}
-
-/* ================= 家族檔案 ================= */
-.dossier{position:relative;border:1px solid var(--line);background:linear-gradient(135deg,var(--bg2),var(--bg) 55%,color-mix(in srgb,var(--wine2) 70%,var(--bg)));padding:48px;box-shadow:0 20px 60px rgba(0,0,0,.45);display:grid;grid-template-columns:5fr 7fr;gap:48px}
-.corner{position:absolute;width:24px;height:24px;border-color:var(--gold);border-style:solid;opacity:.7}
-.corner.a{top:10px;left:10px;border-width:1px 0 0 1px}.corner.b{top:10px;right:10px;border-width:1px 1px 0 0}
-.corner.c{bottom:10px;left:10px;border-width:0 0 1px 1px}.corner.d{bottom:10px;right:10px;border-width:0 1px 1px 0}
-.d-left{border-right:1px solid var(--line);padding-right:36px}
-.d-left .tag{font-size:11px;letter-spacing:.25em;color:var(--gold);display:flex;align-items:center;gap:8px}
-.d-left .tag i{width:8px;height:8px;transform:rotate(45deg);background:linear-gradient(135deg,var(--earL),var(--ear) 55%,var(--earD));border:1px solid var(--gold)}
-.d-left h3{font-size:40px;color:var(--gold);letter-spacing:.18em;font-weight:500;line-height:1.3;margin-top:4px}
-.d-left .zhname{font-size:18px;letter-spacing:.25em}
-.d-left .full{font-size:16px;color:var(--dim);letter-spacing:.08em}
-.d-left dl{margin-top:22px}
-.d-left dl div{display:flex;justify-content:space-between;gap:16px;align-items:baseline;border-bottom:1px solid var(--line);padding:8px 0;font-size:15px}
-.d-left dt{color:var(--gold);letter-spacing:.12em;flex:none}
-.d-left dd{text-align:right}
-.d-right{display:flex;flex-direction:column;gap:26px;justify-content:center}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chips span{border:1px solid var(--line);padding:3px 12px;font-size:13px;letter-spacing:.1em;display:inline-flex;align-items:center;gap:6px}
-.chips svg{width:14px;height:14px}
-.d-right blockquote{border-left:2px solid var(--gold);padding-left:24px;font-size:17px;line-height:2;display:grid;gap:14px}
-.d-right blockquote .hl{color:var(--gold)}
-.d-foot{border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:14px;color:var(--dim)}
-.d-foot .eyes{color:var(--gold);font-size:16px;cursor:default;transition:color .25s,text-shadow .25s}
-.d-foot .eyes:hover,.d-foot .eyes.on{color:var(--eye);text-shadow:0 0 10px var(--eyeD),0 0 4px var(--eye)}
-.redact{position:relative;display:inline-block;padding:0 4px}
-.redact .rt{opacity:.28;filter:blur(.6px)}
-.redact svg{position:absolute;inset:-3px -2px;width:calc(100% + 4px);height:calc(100% + 6px)}
-.redact path{fill:none;stroke:var(--ink);stroke-width:3.2;stroke-linecap:round;opacity:.82}
-html.t-parch .redact path{stroke:#1a1216}
-.private{margin-top:4px;font-size:14px;color:var(--dim)}
-
-/* ================= 七間廳室 ================= */
-#symbols{height:calc(100svh + 6 * 80svh);padding:0;position:relative}
-#symbols .pin{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column}
-.ch-top{display:flex;justify-content:space-between;align-items:flex-end;max-width:1120px;width:100%;margin:0 auto;padding:78px 20px 0}
-.ch-title span{display:block}
-.ch-title .zh{font-size:22px;letter-spacing:.2em}
-.ch-title .cz{font-size:11px;letter-spacing:.32em;color:var(--gold);margin-top:2px}
-.ch-nav{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.22em;color:var(--gold)}
-.ch-nav button{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;font-size:20px;line-height:1;color:var(--gold)}
-.ch-nav button:hover{border-color:var(--gold)}
-.track{flex:1;display:flex;width:700vw;will-change:transform}
-.chamber{width:100vw;flex:none;display:flex;align-items:center;justify-content:center;padding:10px 20px 30px}
-.ch-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center;max-width:1000px;width:100%}
-.arch{position:relative;width:min(34vw,360px,46svh);aspect-ratio:3/4.2;margin:0 auto}
-.arch>svg.frame{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.arch .frame path,.arch .frame circle{fill:none;stroke:var(--gold);stroke-width:1.2}
-.arch .glow{position:absolute;left:12%;right:12%;top:14%;bottom:6%;border-radius:999px 999px 0 0;background:radial-gradient(ellipse at 50% 60%,color-mix(in srgb,var(--wine) 40%,transparent),transparent 70%);opacity:.35;transition:opacity 1s}
-.chamber.open .arch .glow{opacity:1}
-.arch .art{position:absolute;left:22%;right:22%;top:30%;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
-.arch .art svg{width:100%;height:auto;overflow:visible}
-.ch-no{font-size:12px;letter-spacing:.3em;color:var(--gold)}
-.ch-tx h3{font-size:30px;font-weight:500;letter-spacing:.14em;margin-top:6px;line-height:1.4}
-.ch-tx .en{font-size:12px;letter-spacing:.22em;color:var(--gold);margin-top:6px}
-.ch-tx .tag{font-size:11px;letter-spacing:.2em;color:var(--dim);margin-top:4px}
-.key{margin-top:26px;display:inline-flex;align-items:center;gap:10px;border:1px solid var(--gold);padding:8px 18px;font-size:13px;letter-spacing:.2em}
-.key svg{width:26px;height:26px;transition:transform .9s cubic-bezier(.5,1.6,.5,1);color:var(--gold)}
-.chamber.open .key svg{transform:rotate(90deg)}
-.chamber.open .key{border-color:var(--line);color:var(--dim)}
-.secret{margin-top:20px;filter:blur(7px);opacity:.25;transition:filter 1s,opacity 1s;user-select:none}
-.chamber.open .secret{filter:none;opacity:1;user-select:auto}
-.secret h4{font-size:17px;font-weight:600;letter-spacing:.08em}
-.secret p{font-size:15px;line-height:1.95;margin-top:8px;color:var(--ink)}
-.secret .say{color:var(--gold);margin-top:10px}
-.ch-hint{text-align:center;font-size:12px;letter-spacing:.2em;color:var(--dim);padding-bottom:18px}
-html.reduce #symbols{height:auto;padding:80px 0 0}
-html.reduce #symbols .pin{position:static;height:auto;overflow:visible}
-html.reduce .track{flex-direction:column;width:auto;transform:none!important}
-html.reduce .chamber{width:auto;padding:30px 20px}
-html.reduce .ch-hint,html.reduce .ch-nav{display:none}
-
-/* ================= （舊）六大象徵 ================= */
-.sym-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:28px}
-.sym-grid .sym{flex:0 0 calc((100% - 56px)/3)}
-.sym{height:330px;perspective:1000px;cursor:pointer;outline:none}
-.sym .in3{position:relative;width:100%;height:100%;transition:transform .8s cubic-bezier(.3,.9,.3,1);transform-style:preserve-3d}
-.sym.flip .in3{transform:rotateY(180deg)}
-@media (hover:hover){.sym:hover .in3{transform:rotateY(180deg)}.sym.flip:hover .in3{transform:rotateY(180deg)}}
-.sym .f,.sym .b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--line);padding:24px;display:flex;flex-direction:column;text-align:center;box-shadow:0 12px 35px rgba(0,0,0,.4)}
-.sym .f{background:linear-gradient(var(--bg2),var(--bg));justify-content:space-between;align-items:center}
-.sym .b{transform:rotateY(180deg);background:linear-gradient(135deg,var(--wine2),var(--bg2) 55%,var(--bg));border-color:var(--gold);justify-content:space-between}
-.sym .tg{width:100%;display:flex;justify-content:space-between;font-size:10px;letter-spacing:.22em;color:var(--gold);opacity:.8}
-.sym .medal{width:92px;height:92px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:inset 0 0 15px color-mix(in srgb,var(--gold) 15%,transparent)}
-.sym .medal svg{width:58px;height:58px;overflow:visible}
-.sym h3{font-size:20px;font-weight:500;letter-spacing:.14em}
-.sym .en{font-size:11px;letter-spacing:.22em;color:var(--gold);margin-top:6px}
-.sym .bar{width:48px;height:1px;background:var(--gold);opacity:.4}
-.sym .b .k{font-size:10px;letter-spacing:.28em;color:var(--gold)}
-.sym .b h4{font-size:17px;font-weight:600;letter-spacing:.1em;margin-top:6px}
-.sym .b p{font-size:14px;line-height:1.85}
-.sym .b .say{font-size:15px;color:var(--gold)}
-.sym .medal .wg{transform-box:fill-box;transform-origin:right center;transition:transform .8s}
-.sym.flip .medal .wg,.sym:hover .medal .wg{transform:rotate(-10deg)}
-.sym .medal .spin{transform-origin:50px 50px;transform-box:view-box}
-.sym:hover .medal .spin{animation:spin 6s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.glint{animation:glint 6s ease-in-out infinite}
-@keyframes glint{0%,72%,100%{filter:drop-shadow(0 0 4px rgba(75,112,128,.55))}80%{filter:drop-shadow(0 0 16px rgba(142,191,225,.95))}}
-
-/* ================= 玫瑰園 ================= */
-.garden{position:relative;height:420px;border:1px solid var(--line);background:radial-gradient(ellipse 80% 60% at 50% 100%,color-mix(in srgb,var(--wine) 26%,transparent),transparent 70%),linear-gradient(var(--bg),var(--bg2));overflow:hidden;cursor:crosshair;touch-action:manipulation}
-.garden::before{content:"";position:absolute;left:0;right:0;bottom:0;height:46px;background:linear-gradient(transparent,color-mix(in srgb,var(--wineD) 80%,transparent));pointer-events:none}
-.garden .r{position:absolute;width:56px;height:56px;transform:translate(-50%,-80%);pointer-events:none}
-.garden .r svg{width:100%;height:100%;overflow:visible}
-.garden .r.out{opacity:0;transform:translate(-50%,-80%) scale(.6);transition:opacity .8s,transform .8s}
-.garden .tip{position:absolute;left:50%;top:22px;transform:translateX(-50%);font-size:14px;letter-spacing:.2em;color:var(--dim);pointer-events:none;white-space:nowrap}
-.garden .whisper{position:absolute;pointer-events:none;font-size:14px;color:var(--gold);white-space:nowrap;transform:translate(-50%,-150%);animation:whisper 2.2s ease forwards}
-@keyframes whisper{0%{opacity:0;transform:translate(-50%,-120%)}15%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-190%)}}
-.g-stat{text-align:center;margin-top:16px;font-size:15px;letter-spacing:.14em;color:var(--dim)}
-.g-stat b{color:var(--gold);font-size:22px;margin:0 6px;font-weight:600;font-variant-numeric:tabular-nums}
-
-/* ================= 獻詞 ================= */
-form.letter{max-width:680px;margin:0 auto 70px;border:1px solid var(--line);background:linear-gradient(var(--bg2),var(--bg));padding:44px 40px;box-shadow:0 24px 60px rgba(0,0,0,.45);display:grid;gap:22px;position:relative}
-.letter .lh{text-align:center}
-.letter .lh .en{font-size:15px;letter-spacing:.18em;color:var(--gold)}
-.letter .lh h3{font-size:22px;font-weight:500;letter-spacing:.16em;margin-top:2px}
-.field label{display:block;font-size:14px;letter-spacing:.16em;color:var(--gold);margin-bottom:8px}
-.field label span{font-size:12px;letter-spacing:0;color:var(--dim);margin-left:6px}
-.field input,.field textarea{width:100%;background:color-mix(in srgb,var(--bg) 85%,transparent);border:1px solid var(--line);color:var(--ink);font:inherit;font-family:"Noto Serif TC",serif;font-size:15px;padding:12px 14px;outline:none;transition:border-color .2s}
-.field input:focus,.field textarea:focus{border-color:var(--gold)}
-.field ::placeholder{color:var(--gold);opacity:.45}
-.tbox{position:relative}
-.field textarea{min-height:170px;resize:vertical;padding-bottom:30px;line-height:1.85}
-.tbox .cnt{position:absolute;right:12px;bottom:8px;font-size:12px;color:var(--dim);pointer-events:none;font-variant-numeric:tabular-nums}
-.seals{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
-.seals input{position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none}
-.seals{position:relative}
-.seals label{display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid var(--line);padding:10px 2px 8px;font-size:12px;letter-spacing:.08em;color:var(--dim);cursor:pointer;margin:0;transition:border-color .2s,color .2s,box-shadow .2s}
-.seals label svg{width:22px;height:22px}
-.seals label[for=seal-diamond] svg{color:var(--ear)}
-.seals input:checked+label{border-color:var(--gold);color:var(--gold);box-shadow:0 0 14px color-mix(in srgb,var(--gold) 25%,transparent)}
-.seals input:focus-visible+label{outline:1px dashed var(--gold);outline-offset:2px}
-.send{justify-self:center;display:inline-flex;align-items:center;gap:12px;border:1px solid var(--gold);padding:13px 36px;letter-spacing:.22em;font-size:14px;text-transform:uppercase;background:linear-gradient(90deg,var(--wine2),color-mix(in srgb,var(--wine) 70%,transparent),var(--wine2));color:var(--ink);transition:box-shadow .3s,transform .3s}
-html.t-parch .send{color:#f6efe4}
-.send:hover{box-shadow:0 0 30px color-mix(in srgb,var(--gold) 45%,transparent);transform:scale(1.02)}
-.send[disabled]{opacity:.5;pointer-events:none}
-.note{text-align:center;font-size:12px;color:var(--dim)}
-#sealFx{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0}
-#sealFx.go{animation:sealfx 1.3s ease forwards}
-#sealFx .wax{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 38% 35%,var(--pink),var(--wine) 55%,var(--wineD));box-shadow:0 10px 40px rgba(0,0,0,.6),inset 0 -6px 14px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;color:var(--gold)}
-#sealFx .wax svg{width:64px;height:64px}
-@keyframes sealfx{0%{opacity:0;transform:scale(2.2)}30%{opacity:1;transform:scale(.94)}42%{transform:scale(1)}75%{opacity:1}100%{opacity:0;transform:scale(1)}}
-
-/* ================= 獻詞牆 ================= */
-.sorts{display:flex;justify-content:center;gap:8px;margin-bottom:26px;flex-wrap:wrap}
-.sorts button{border:1px solid var(--line);padding:4px 16px;font-size:13px;letter-spacing:.15em;color:var(--dim)}
-.sorts button.on{border-color:var(--gold);color:var(--ink)}
-.sorts .ar{display:inline-block;width:1em;letter-spacing:0}
-.wall{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;perspective:900px;align-items:start}
-.card{position:relative;border:1px solid var(--line);padding:24px 24px 14px;transition:transform .25s,box-shadow .3s;transform-style:preserve-3d}
-.card::before{content:"";position:absolute;inset:7px;border:1px solid var(--line);pointer-events:none;opacity:.8}
-.card.p0{background:var(--paper);background-image:radial-gradient(rgba(16,13,18,.06) 1px,transparent 0);background-size:16px 16px;color:#1D1621;border-color:#8A6D3B}
-.card.p0::before{border-color:rgba(138,109,59,.35)}
-.card.p1{background:linear-gradient(var(--bg2),var(--bg))}
-.card.p2{background:linear-gradient(135deg,var(--wine2),color-mix(in srgb,var(--wineD) 80%,var(--bg)));}
-html.t-parch .card.p2{color:var(--ink)}
-.card:hover{box-shadow:0 14px 38px color-mix(in srgb,var(--gold) 22%,transparent)}
-.card .hd{display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;margin-bottom:12px;border-bottom:1px solid var(--line)}
-.card.p0 .hd{border-color:rgba(138,109,59,.3)}
-.card .sl{display:flex;align-items:center;gap:8px}
-.card .sl b{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold)}
-.card.p0 .sl b{color:var(--wine);border-color:rgba(121,31,50,.35)}
-.card .sl b svg{width:15px;height:15px}
-.card .sl b svg.dia{color:var(--ear)}
-.card .no{font-size:11px;letter-spacing:.2em;color:var(--gold)}
-.card.p0 .no{color:#5e4a2a}
-.card .dt{font-size:11px;letter-spacing:.08em;opacity:.65}
-.card .tx{font-family:"Noto Serif TC",serif;font-size:15px;line-height:1.95;white-space:pre-wrap;word-break:break-word;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:7}
-.card.open .tx{display:block}
-.card .more{font-size:12px;color:var(--gold);text-decoration:underline;text-underline-offset:3px;margin-top:4px}
-.card.p0 .more{color:var(--wine)}
-.card .sig{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:14px;font-family:"Noto Serif TC",serif;font-size:14px;letter-spacing:.12em;color:var(--gold);font-weight:600}
-.card.p0 .sig{color:var(--wine2)}
-html:not(.t-parch) .card.p0 .sig{color:#30131D}
-.card .sig::before{content:"";width:22px;height:1px;background:currentColor;opacity:.5}
-.card .ft{display:flex;justify-content:flex-end;margin-top:10px}
-.heart{display:flex;align-items:center;gap:5px;font-size:13px;opacity:.75;font-variant-numeric:tabular-nums}
-.heart svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5}
-.heart.on{color:var(--pink);opacity:1}
-.card.p0 .heart.on{color:var(--wine)}
-.heart.on svg{fill:currentColor}
-.heart.pop svg{animation:pop .35s}
-@keyframes pop{50%{transform:scale(1.4)}}
-.empty{grid-column:1/-1;text-align:center;color:var(--dim);padding:30px 0}
-.morebox{text-align:center;margin-top:30px}
-.btn{border:1px solid var(--gold);padding:10px 34px;letter-spacing:.25em;font-size:14px;transition:background .2s,color .2s}
-.btn:hover{background:var(--gold);color:var(--bg)}
-
-/* ================= 永恆誓言 ================= */
-.vow{max-width:760px;margin:0 auto;position:relative}
-.envelope{position:relative;border:1px solid var(--gold);background:var(--paper);background-image:radial-gradient(rgba(16,13,18,.05) 1px,transparent 0);background-size:16px 16px;color:#1D1621;padding:64px 56px;box-shadow:0 25px 70px rgba(0,0,0,.6);overflow:hidden}
-.envelope::before{content:"";position:absolute;inset:12px;border:1px solid rgba(121,31,50,.35);pointer-events:none}
-.envelope::after{content:"";position:absolute;inset:16px;border:1px solid rgba(138,109,59,.3);pointer-events:none}
-.v-body{max-height:0;opacity:0;overflow:hidden;transition:max-height 1.4s ease,opacity 1s ease .3s}
-.vow.open .v-body{max-height:1200px;opacity:1}
-.v-head{text-align:center}
-.v-head .k{font-size:12px;letter-spacing:.32em;color:#791F32}
-.v-head h2{font-size:34px;font-weight:600;letter-spacing:.14em;color:#100D12;margin-top:6px;line-height:1.35}
-.v-head .epi{font-size:18px;color:#30131D;margin-top:18px;line-height:1.6}
-.v-head .epi-by{font-size:10px;letter-spacing:.25em;color:#791F32;margin-top:4px}
-.v-head .ln{width:96px;height:1px;background:rgba(121,31,50,.5);margin:16px auto 0}
-.wax-btn{display:block;margin:30px auto 6px;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 38% 35%,#c0405a,#791F32 55%,#3a0c18);box-shadow:0 8px 24px rgba(0,0,0,.45),inset 0 -5px 12px rgba(0,0,0,.35);color:#C5A66A;position:relative;transition:transform .3s}
-.wax-btn:hover{transform:scale(1.05) rotate(-4deg)}
-.wax-btn svg{width:46px;height:46px}
-.wax-btn .half{position:absolute;inset:0;border-radius:50%}
-.vow.open .wax-btn{animation:crack .8s ease forwards}
-@keyframes crack{30%{transform:rotate(8deg) scale(1.08)}100%{transform:scale(.6);opacity:0;height:0;margin:0 auto}}
-.wax-hint{text-align:center;font-size:13px;letter-spacing:.2em;color:#5e4a2a}
-.vow.open .wax-hint{display:none}
-.v-body .txt{font-family:"Noto Serif TC",serif;font-size:17px;line-height:2.15;letter-spacing:.04em;display:grid;gap:14px;margin-top:30px}
-.v-body .to{font-weight:600;color:#30131D}
-.v-body .hb{font-family:"Cinzel",serif;font-size:20px;color:#791F32;font-weight:600;letter-spacing:.12em}
-.v-foot{margin-top:40px;padding-top:20px;border-top:1px solid rgba(138,109,59,.35);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
-.v-foot .s{font-size:12px;letter-spacing:.25em;color:rgba(48,19,29,.75)}
-.v-foot .fw{display:flex;align-items:center;gap:14px}
-.v-foot .fw p{font-size:28px;font-style:italic;font-weight:600;color:#30131D}
-.v-foot .fw b{width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 38% 35%,#c0405a,#791F32 60%,#30131D);border:1.5px solid #C5A66A;color:#C5A66A;display:flex;align-items:center;justify-content:center;font-family:Cinzel,serif}
-
-.restart{text-align:center;margin-top:70px}
-.restart .it{font-size:22px}
-.restart .zh{font-size:14px;color:var(--dim);margin-top:6px;letter-spacing:.1em}
-.restart button{margin-top:20px;border:1px solid var(--gold);padding:10px 28px;letter-spacing:.25em;font-size:13px;transition:background .2s,color .2s}
-.restart button:hover{background:var(--gold);color:var(--bg)}
-/* ================= 頁尾 ================= */
-footer{border-top:1px solid var(--line);text-align:center;padding:36px 20px 110px;margin-top:80px}
-footer .a{font-size:12px;letter-spacing:.3em;color:var(--gold)}
-footer .b{font-size:13px;color:var(--dim);letter-spacing:.15em;margin-top:6px}
-footer .tg{font-size:17px;margin-top:16px;color:var(--ink)}
-footer .tg span{display:block;font-size:10px;letter-spacing:.25em;color:var(--gold);font-style:normal;margin-top:2px}
-footer .c{font-size:15px;margin-top:14px;letter-spacing:.12em}
-
-/* ================= 呼喚 ================= */
-#dock{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
-#dockBtn{display:flex;align-items:center;gap:8px;border:1px solid var(--gold);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(6px);padding:8px 16px 8px 12px;font-size:14px;letter-spacing:.2em;box-shadow:0 8px 24px rgba(0,0,0,.35)}
-#dockBtn svg{width:22px;height:22px}
-#dockBtn .dot{width:7px;height:7px;border-radius:50%;background:var(--pink);box-shadow:0 0 8px var(--pink);animation:breath 2s infinite}
-#dock.opened #dockBtn .dot{display:none}
-.pop{width:min(86vw,300px);border:1px solid var(--line);background:var(--bg2);padding:18px 18px 14px;box-shadow:0 18px 40px rgba(0,0,0,.45);transform-origin:bottom right;transform:scale(.9) translateY(10px);opacity:0;visibility:hidden;transition:.25s}
-#dock.opened .pop{transform:none;opacity:1;visibility:visible}
-.pop .ph{display:flex;justify-content:space-between;align-items:baseline}
-.pop .ph b{font-size:17px;letter-spacing:.2em;font-weight:500}
-.pop .ph span{font-size:11px;letter-spacing:.25em;color:var(--gold)}
-.pop .say{min-height:3.4em;margin:12px 0;font-family:"Noto Serif TC",serif;font-size:15px;line-height:1.7}
-.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.acts button{border:1px solid var(--line);padding:8px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:"Noto Serif TC",serif;font-size:14px;letter-spacing:.1em;transition:border-color .2s,transform .15s}
-.acts button:hover{border-color:var(--gold)}
-.acts button:active{transform:scale(.95)}
-.acts small{font-size:11px;color:var(--gold);font-variant-numeric:tabular-nums;letter-spacing:0}
-.pop .pf{font-size:11px;color:var(--dim);text-align:right;margin-top:8px;letter-spacing:.1em}
-.kissfx{position:fixed;z-index:75;pointer-events:none;color:var(--pink);animation:kiss 1.2s ease-out forwards}
-.kissfx svg{width:18px;height:18px;fill:currentColor}
-@keyframes kiss{to{transform:translate(var(--dx),-120px) scale(1.3);opacity:0}}
-#hugfx{position:fixed;inset:0;z-index:55;pointer-events:none;box-shadow:inset 0 0 0 0 rgba(0,0,0,0);transition:box-shadow .6s ease}
-#hugfx.on{box-shadow:inset 0 0 160px 60px color-mix(in srgb,var(--wineD) 85%,transparent)}
-main{transition:transform .6s cubic-bezier(.3,1.5,.5,1)}
-body.hugging main{transform:scale(.985)}
-body.lifting main{transform:translateY(-44px)}
-html.reduce body.hugging main,html.reduce body.lifting main{transform:none}
-
-/* ================= 家規 ================= */
-.mask{position:fixed;inset:0;z-index:85;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:.3s}
-.mask.show{opacity:1;visibility:visible}
-.panel{background:var(--bg2);border:1px solid var(--line);width:min(420px,100%);padding:30px 28px 24px;position:relative}
-.panel h3{text-align:center;font-size:20px;font-weight:500;letter-spacing:.35em;padding-left:.35em}
-.panel h3 span{display:block;font-size:11px;letter-spacing:.3em;color:var(--gold);font-weight:400}
-.panel .x{position:absolute;top:10px;right:14px;font-size:22px;color:var(--dim);line-height:1}
-.row{margin-top:22px}
-.row .k{font-size:13px;color:var(--gold);letter-spacing:.2em;margin-bottom:10px}
-.dots{display:flex;gap:16px;flex-wrap:wrap}
-.tdot{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--dim)}
-.tdot i{width:26px;height:26px;border-radius:50%;display:block;border:1px solid var(--line)}
-.tdot.on{color:var(--ink)}
-.tdot.on i{box-shadow:0 0 0 2px var(--bg2),0 0 0 3px var(--gold)}
-.switch{display:flex;align-items:center;gap:10px;font-size:14px}
-.switch .tg{width:40px;height:22px;border:1px solid var(--gold);border-radius:11px;position:relative}
-.switch .tg::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--gold);transition:transform .2s}
-.switch[aria-checked="true"] .tg::after{transform:translateX(18px)}
-.sysnote{font-size:12px;color:var(--dim);margin-top:8px;line-height:1.7}
-
-#toast{position:fixed;left:50%;bottom:84px;transform:translate(-50%,20px);z-index:95;background:var(--bg2);border:1px solid var(--gold);padding:10px 22px;font-family:"Noto Serif TC",serif;font-size:14px;opacity:0;visibility:hidden;transition:.3s;max-width:88vw;text-align:center}
-#toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
-
-html.reduce *,html.reduce *::before,html.reduce *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-html.reduce .card{transform:none!important}
-
-/* ================= 手機 ================= */
-@media (max-width:820px){
-  .dossier{grid-template-columns:1fr;padding:32px 22px;gap:28px}
-  .d-left{border-right:0;border-bottom:1px solid var(--line);padding:0 0 26px}
-  .sym-grid{gap:12px}
-  .sym-grid .sym{flex:0 0 calc((100% - 12px)/2)}
-  .wall{grid-template-columns:repeat(2,1fr);gap:12px}
-}
-@media (max-width:820px){
-  #interlude .pin{grid-template-columns:1fr;gap:10px;text-align:center;align-content:center;padding-top:70px}
-  .clock{width:min(62vw,260px)}
-  .ch-top{padding-top:70px;flex-direction:column;align-items:flex-start;gap:8px}
-  .ch-in{grid-template-columns:1fr;gap:10px;text-align:center}
-  .arch{width:min(52vw,30svh)}
-  .ch-tx h3{font-size:20px}
-  .key{margin-top:12px}
-  .secret{margin-top:10px}
-  .secret p{font-size:13px;line-height:1.8}
-  .secret h4{font-size:14px}
-}
-@media (max-width:600px){
-  nav{gap:12px;font-size:12px;letter-spacing:.08em}
-  nav .wide{display:none}
-  .brand span{display:none}
-  section{padding:70px 0 30px}
-  .sec-h h2{font-size:24px}
-  .divider b{width:56px}
-  .d-left h3{font-size:32px}
-  .d-left dl div{font-size:14px}
-  .d-right blockquote{font-size:15px;padding-left:16px}
-  .sym{height:300px}
-  .sym .f,.sym .b{padding:14px 10px}
-  .sym .medal{width:70px;height:70px}
-  .sym .medal svg{width:44px;height:44px}
-  .sym h3{font-size:15px;letter-spacing:.06em}
-  .sym .en{font-size:9px;letter-spacing:.12em}
-  .sym .tg{font-size:8px;letter-spacing:.1em}
-  .sym .b p{font-size:12.5px;line-height:1.75}
-  .sym .b h4{font-size:14px}
-  .sym .b .say{font-size:13px}
-  .garden{height:340px}
-  form.letter{padding:30px 18px}
-  .seals{grid-template-columns:repeat(3,1fr)}
-  .card{padding:16px 13px 10px}
-  .card::before{inset:4px}
-  .card .tx{font-size:13px;line-height:1.85;-webkit-line-clamp:8}
-  .card .sig{font-size:12px}
-  .card .sl b{width:22px;height:22px}
-  .card .dt{display:none}
-  .envelope{padding:46px 24px}
-  .v-head h2{font-size:24px}
-  .v-body .txt{font-size:15px}
-  .v-foot .fw p{font-size:22px}
-  #dock{right:12px;bottom:12px}
-}
-</style>
+<style>:root{--icon:var(--gold);--earL:#8ebfe1;--ear:#025ee2;--earD:#4b7080;--eye:#ff393f;--eyeD:#890b0d}html.t-parch{--bg:#e8e0d1;--bg2:#f2ece0;--ink:#2a2026;--dim:rgba(42,32,38,.62);--gold:#8a6d3b;--wine:#8c2338;--wine2:#e2cfc4;--wineD:#5e1424;--sap:var(--ear);--line:rgba(138,109,59,.32);--paper:#f6f0e4;--pink:#a8344d;--glowA:rgba(140,35,56,.10);--card:rgba(255,255,255,.4)}html.t-rose{--bg:#100D12;--bg2:#17121B;--ink:#D8CBB9;--dim:rgba(216,203,185,.62);--gold:#C5A66A;--wine:#c8102e;--wine2:#3a0d16;--wineD:#1D0B12;--sap:var(--ear);--line:rgba(197,166,106,.28);--paper:#D8CBB9;--pink:#ff3b4e;--glowA:rgba(150,14,36,.45);--card:rgba(23,18,27,.7)}html.t-black{--icon:#c9ced6;--bg:#10151c;--bg2:#18202a;--ink:#dde3ea;--dim:rgba(221,227,234,.6);--gold:#b8c0cc;--wine:#7a1c30;--wine2:#1a222d;--wineD:#0b0f15;--sap:var(--ear);--line:rgba(184,192,204,.24);--paper:#dde3ea;--pink:#c0405a;--glowA:rgba(70,92,124,.38);--card:rgba(24,32,42,.75)}*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}html.reduce{scroll-behavior:auto}body{background:var(--bg);color:var(--ink);font-family:"Cormorant Garamond","Noto Serif TC","Noto Serif CJK TC",Georgia,serif;line-height:1.8;overflow-x:hidden;transition:background .5s,color .5s}.zh{font-family:"Noto Serif TC","Noto Serif CJK TC",serif}.cz{font-family:"Cinzel","Noto Serif TC",serif}.it{font-family:"Cormorant Garamond",serif;font-style:italic}button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}a{color:inherit}::selection{background:var(--wine);color:var(--paper)}.wrap{max-width:1120px;margin:0 auto;padding:0 20px}#bgGlow{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(circle at 50% 18%,var(--glowA) 0%,transparent 62%)}main,header,footer{position:relative;z-index:2}#ambient{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:1}.petal{position:absolute;top:-30px;animation:fall linear infinite;opacity:0}.petal svg{display:block}@keyframes fall{0%{transform:translate(0,-5vh) rotate(0);opacity:0}15%{opacity:.6}50%{transform:translate(24px,50vh) rotate(140deg)}85%{opacity:.45}100%{transform:translate(-18px,105vh) rotate(290deg);opacity:0}}.star{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--paper);animation:twinkle ease-in-out infinite;opacity:.2}@keyframes twinkle{50%{opacity:.85;box-shadow:0 0 6px var(--paper)}}html.t-parch .star{display:none}.dust{position:absolute;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:dust ease-in-out infinite}@keyframes dust{0%,100%{transform:translate(0,0);opacity:.15}50%{transform:translate(12px,-28px);opacity:.6}}.trail{position:fixed;pointer-events:none;z-index:70;width:9px;height:12px;animation:trail .9s ease-out forwards}@keyframes trail{to{transform:translate(var(--tx),40px) rotate(var(--tr));opacity:0}}html.reduce #ambient,html.reduce .trail{display:none}#splash{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;user-select:none;-webkit-user-select:none;touch-action:none}#splash .door{position:absolute;top:0;bottom:0;width:50.5%;background:var(--bg);transition:transform 1.1s cubic-bezier(.7,0,.2,1)}#splash .door.l{left:0;border-right:1px solid var(--line)}#splash .door.r{right:0;border-left:1px solid var(--line)}#splash .door::after{content:"";position:absolute;inset:18px;border:1px solid var(--line)}#splash.open .door.l{transform:translateX(-101%)}#splash.open .door.r{transform:translateX(101%)}#splash .inner{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;transition:opacity .5s}#splash.open .inner{opacity:0}#splash.gone{display:none}#splash .kicker{font-size:12px;letter-spacing:.35em;color:var(--gold)}#splash h1{font-size:34px;letter-spacing:.32em;color:var(--gold);font-weight:600;padding-left:.32em}#holdRose{position:relative;width:min(56vw,230px);aspect-ratio:1;cursor:pointer;margin:6px 0;touch-action:none}#holdRose svg.rose{width:100%;height:100%;overflow:visible}#holdRing{position:absolute;inset:-6%;width:112%;height:112%;transform:rotate(-90deg);pointer-events:none}#holdRing circle{fill:none;stroke:var(--gold);stroke-width:1.2}#holdRing .bgc{opacity:.2}#splash .hint{font-size:14px;letter-spacing:.22em;color:var(--dim);animation:breath 2.6s ease-in-out infinite}#splash .sub{font-size:16px;color:var(--dim);letter-spacing:.15em}@keyframes breath{50%{opacity:.35}}html.reduce #splash .hint{animation:none}.rose .ro{fill:var(--wine);fill-opacity:.55;stroke:var(--gold);stroke-width:1.3}.rose .rm{fill:var(--wine);fill-opacity:.85;stroke:var(--gold);stroke-width:1.2}.rose .ri,.rose .rs,.rose .re{fill:none;stroke:var(--paper);stroke-width:1;stroke-linecap:round;opacity:.85}.rose .re{stroke:var(--gold);opacity:.7}.rose .st{fill:none;stroke:var(--gold);stroke-width:1.3;stroke-linecap:round}.rose .lf{fill:var(--gold);fill-opacity:.12;stroke:var(--gold);stroke-width:1.1}.rose g{transform-box:view-box}.rose .L3,.rose .L2,.rose .L1,.rose .L0{transform-origin:50px 46px}.rose.bloom .L3{animation:bl .7s cubic-bezier(.2,1.4,.4,1) both}.rose.bloom .L2{animation:bl .7s .12s cubic-bezier(.2,1.4,.4,1) both}.rose.bloom .L1{animation:bl .7s .24s cubic-bezier(.2,1.4,.4,1) both}.rose.bloom .L0{animation:bl .7s .36s cubic-bezier(.2,1.4,.4,1) both}.rose.bloom .S{animation:stem .5s ease-out both;transform-origin:50px 98px}@keyframes bl{from{transform:scale(0) rotate(-40deg)}to{transform:scale(1) rotate(0)}}@keyframes stem{from{transform:scaleY(0)}to{transform:scaleY(1)}}html.t-parch .rose .ri,html.t-parch .rose .rs{stroke:#f6e9e0}header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}header.top .wrap{height:60px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:10px;text-decoration:none}.brand i{width:10px;height:10px;transform:rotate(45deg);background:linear-gradient(135deg,var(--earL),var(--ear) 55%,var(--earD));border:1px solid var(--gold);display:block}.brand svg.crossrose{width:30px;height:44px;overflow:visible}.brand span{font-size:15px;letter-spacing:.25em;color:var(--gold)}nav{display:flex;align-items:center;gap:22px;font-size:14px;letter-spacing:.18em}nav a{text-decoration:none;color:var(--dim);transition:color .2s}nav a:hover{color:var(--gold)}nav .rules{border:1px solid var(--line);padding:3px 12px;color:var(--gold);font-size:13px}section{padding:96px 0 40px}.sec-h{text-align:center;margin-bottom:44px}.sec-h h2{font-size:32px;font-weight:500;letter-spacing:.2em;padding-left:.2em}.sec-h .en{display:block;font-size:12px;letter-spacing:.35em;color:var(--gold);margin-top:6px;text-transform:uppercase}.sec-h p{font-size:14px;color:var(--dim);letter-spacing:.12em;margin-top:12px}.divider{display:flex;align-items:center;justify-content:center;gap:14px;margin:18px auto 0}.divider b{height:1px;width:100px;background:linear-gradient(90deg,transparent,var(--gold))}.divider b:last-child{background:linear-gradient(-90deg,transparent,var(--gold))}.divider svg{width:64px;height:20px;color:var(--gold)}.reveal{opacity:0;transform:translateY(28px);transition:opacity 1s ease,transform 1s ease}.reveal.in{opacity:1;transform:none}html.reduce .reveal{opacity:1;transform:none}#hero{min-height:calc(100svh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px 70px;position:relative}.candle{position:absolute;top:44%;left:50%;width:min(90vw,520px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--wine) 32%,transparent) 0%,color-mix(in srgb,var(--gold) 8%,transparent) 45%,transparent 72%);animation:candle 5s ease-in-out infinite;pointer-events:none}@keyframes candle{0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}}.hero-k{font-size:12px;letter-spacing:.35em;color:var(--gold);text-transform:uppercase}.datepill{margin:14px auto 0;display:inline-flex;align-items:center;gap:12px;padding:5px 20px;border:1px solid var(--line);border-radius:99px}.datepill i{width:6px;height:6px;transform:rotate(45deg);border:1px solid var(--gold);display:block}.datepill span{letter-spacing:.3em;font-size:15px}.hero-t{font-size:clamp(46px,9vw,88px);font-weight:600;color:var(--gold);letter-spacing:.32em;padding-left:.32em;margin-top:22px;line-height:1.1;text-shadow:0 4px 24px color-mix(in srgb,var(--gold) 30%,transparent);animation:expand 1.8s cubic-bezier(.22,1,.36,1) both}@keyframes expand{from{opacity:0;letter-spacing:.08em;transform:translateY(12px)}to{opacity:1;letter-spacing:.32em;transform:none}}.hero-s{font-size:clamp(20px,3vw,30px);letter-spacing:.18em;margin-top:8px}.greet{max-width:540px;margin:18px auto 0;font-size:16px;line-height:1.9;color:var(--dim);letter-spacing:.06em;min-height:3.8em}.greet b{color:var(--gold);font-weight:500}.frame{position:relative;width:min(62vw,280px);aspect-ratio:1;margin:34px auto 30px}.frame>svg{width:100%;height:auto;display:block;overflow:visible}.dr{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 2.4s ease}.in .dr,.drawn .dr{stroke-dashoffset:0}html.reduce .dr{stroke-dashoffset:0;transition:none}.portrait{position:absolute;left:50%;top:50%;width:100%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:1.5px solid var(--gold);overflow:hidden;background:radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--wine) 45%,transparent),var(--bg) 75%);box-shadow:0 0 45px rgba(0,0,0,.6),inset 0 0 25px color-mix(in srgb,var(--gold) 20%,transparent);display:flex;align-items:center;justify-content:center;cursor:pointer}.portrait img{width:100%;height:100%;object-fit:cover;object-position:top}.portrait svg.rose{width:62%;height:auto}.portrait .eyes{position:absolute;bottom:18%;left:50%;transform:translateX(-50%);display:flex;gap:16px}.portrait .eyes i{width:6px;height:3px;border-radius:50%;background:var(--ink);opacity:.6;transition:background .2s,box-shadow .2s}.portrait.red .eyes i{background:var(--eye);opacity:1;box-shadow:0 0 8px var(--eye)}.portrait svg.cr{height:74%;width:auto;overflow:visible;transition:filter .3s,transform .4s}.portrait.red svg.cr{filter:drop-shadow(0 0 14px var(--eye));transform:scale(1.08)}.portrait.red{border-color:var(--eye);box-shadow:0 0 50px color-mix(in srgb,var(--eye) 45%,transparent),inset 0 0 30px color-mix(in srgb,var(--eyeD) 70%,transparent)}.count{width:min(92vw,440px);margin:0 auto 30px}.count .lab{font-size:11px;letter-spacing:.28em;color:var(--gold);margin-bottom:10px;text-transform:uppercase}.count .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.count .u{border:1px solid var(--line);padding:9px 4px;background:color-mix(in srgb,var(--bg) 70%,transparent)}.count .u b{display:block;font-size:24px;color:var(--gold);font-weight:600;font-variant-numeric:tabular-nums}.count .u span{font-size:9px;letter-spacing:.2em;color:var(--dim)}.count .today{border:1px solid var(--line);padding:12px 20px;letter-spacing:.2em}.cta{display:inline-flex;align-items:center;gap:12px;border:1px solid var(--gold);padding:13px 30px;font-size:14px;letter-spacing:.25em;text-transform:uppercase;text-decoration:none;transition:box-shadow .3s,transform .3s}.cta:hover{box-shadow:0 0 30px color-mix(in srgb,var(--gold) 40%,transparent);transform:scale(1.03)}.cta i{width:6px;height:6px;transform:rotate(45deg);border:1px solid var(--gold);display:block}#interlude{height:260svh;padding:0;position:relative}#interlude .pin{position:sticky;top:0;height:100svh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px;max-width:1120px;margin:0 auto;padding:60px 20px 0}.clockwrap{display:flex;justify-content:center}.clock{width:min(40vw,400px);height:auto;overflow:visible}.clock .dr2 *{fill:none;stroke:var(--gold);stroke-width:1.2}.clock #ticks line{stroke:var(--gold);stroke-width:1}.clock .roman text{fill:var(--gold);font-size:13px;text-anchor:middle;dominant-baseline:middle;font-family:Cinzel,serif}.clock .hand{fill:var(--gold);stroke:var(--gold);stroke-width:.6}#hHand,#mHand{transform-origin:100px 140px;transform-box:view-box}.lines p{opacity:0;transform:translateY(14px);transition:opacity .8s,transform .8s}.lines p.on{opacity:1;transform:none}.lines .ln1,.lines .ln2{font-size:clamp(26px,3.4vw,42px);line-height:1.35}.lines .ln3{font-size:16px;color:var(--dim);margin-top:18px;letter-spacing:.08em}.lines .ln4{font-size:14px;letter-spacing:.4em;color:var(--gold);margin-top:22px}html.reduce #interlude{height:auto;padding:80px 0 40px}html.reduce #interlude .pin{position:static;height:auto}html.reduce .lines p{opacity:1;transform:none}.dossier{position:relative;border:1px solid var(--line);background:linear-gradient(135deg,var(--bg2),var(--bg) 55%,color-mix(in srgb,var(--wine2) 70%,var(--bg)));padding:48px;box-shadow:0 20px 60px rgba(0,0,0,.45);display:grid;grid-template-columns:5fr 7fr;gap:48px}.corner{position:absolute;width:24px;height:24px;border-color:var(--gold);border-style:solid;opacity:.7}.corner.a{top:10px;left:10px;border-width:1px 0 0 1px}.corner.b{top:10px;right:10px;border-width:1px 1px 0 0}.corner.c{bottom:10px;left:10px;border-width:0 0 1px 1px}.corner.d{bottom:10px;right:10px;border-width:0 1px 1px 0}.d-left{border-right:1px solid var(--line);padding-right:36px}.d-left .tag{font-size:11px;letter-spacing:.25em;color:var(--gold);display:flex;align-items:center;gap:8px}.d-left .tag i{width:8px;height:8px;transform:rotate(45deg);background:linear-gradient(135deg,var(--earL),var(--ear) 55%,var(--earD));border:1px solid var(--gold)}.d-left h3{font-size:40px;color:var(--gold);letter-spacing:.18em;font-weight:500;line-height:1.3;margin-top:4px}.d-left .zhname{font-size:18px;letter-spacing:.25em}.d-left .full{font-size:16px;color:var(--dim);letter-spacing:.08em}.d-left dl{margin-top:22px}.d-left dl div{display:flex;justify-content:space-between;gap:16px;align-items:baseline;border-bottom:1px solid var(--line);padding:8px 0;font-size:15px}.d-left dt{color:var(--gold);letter-spacing:.12em;flex:none}.d-left dd{text-align:right}.d-right{display:flex;flex-direction:column;gap:26px;justify-content:center}.chips{display:flex;flex-wrap:wrap;gap:8px}.chips span{border:1px solid var(--line);padding:3px 12px;font-size:13px;letter-spacing:.1em;display:inline-flex;align-items:center;gap:6px}.chips svg{width:14px;height:14px}.d-right blockquote{border-left:2px solid var(--gold);padding-left:24px;font-size:17px;line-height:2;display:grid;gap:14px}.d-right blockquote .hl{color:var(--gold)}.d-foot{border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:14px;color:var(--dim)}.d-foot .eyes{color:var(--gold);font-size:16px;cursor:default;transition:color .25s,text-shadow .25s}.d-foot .eyes:hover,.d-foot .eyes.on{color:var(--eye);text-shadow:0 0 10px var(--eyeD),0 0 4px var(--eye)}.private{margin-top:4px;font-size:14px;color:var(--dim)}#symbols{height:calc(100svh + 6 * 80svh);padding:0;position:relative}#symbols .pin{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column}.ch-top{display:flex;justify-content:space-between;align-items:flex-end;max-width:1120px;width:100%;margin:0 auto;padding:78px 20px 0}.ch-title span{display:block}.ch-title .zh{font-size:22px;letter-spacing:.2em}.ch-title .cz{font-size:11px;letter-spacing:.32em;color:var(--gold);margin-top:2px}.ch-nav{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.22em;color:var(--gold)}.ch-nav button{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;font-size:20px;line-height:1;color:var(--gold)}.ch-nav button:hover{border-color:var(--gold)}.track{flex:1;display:flex;width:700vw;will-change:transform}.chamber{width:100vw;flex:none;display:flex;align-items:center;justify-content:center;padding:10px 20px 30px}.ch-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center;max-width:1000px;width:100%}.arch{position:relative;width:min(34vw,360px,46svh);aspect-ratio:3/4.2;margin:0 auto}.arch>svg.frame{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.arch .frame path,.arch .frame circle{fill:none;stroke:var(--gold);stroke-width:1.2}.arch .glow{position:absolute;left:12%;right:12%;top:14%;bottom:6%;border-radius:999px 999px 0 0;background:radial-gradient(ellipse at 50% 60%,color-mix(in srgb,var(--wine) 40%,transparent),transparent 70%);opacity:.35;transition:opacity 1s}.chamber.open .arch .glow{opacity:1}.arch .art{position:absolute;left:22%;right:22%;top:30%;aspect-ratio:1;display:flex;align-items:center;justify-content:center}.arch .art svg{width:100%;height:auto;overflow:visible}.ch-no{font-size:12px;letter-spacing:.3em;color:var(--gold)}.ch-tx h3{font-size:30px;font-weight:500;letter-spacing:.14em;margin-top:6px;line-height:1.4}.ch-tx .en{font-size:12px;letter-spacing:.22em;color:var(--gold);margin-top:6px}.ch-tx .tag{font-size:11px;letter-spacing:.2em;color:var(--dim);margin-top:4px}.key{margin-top:26px;display:inline-flex;align-items:center;gap:10px;border:1px solid var(--gold);padding:8px 18px;font-size:13px;letter-spacing:.2em}.key svg{width:26px;height:26px;transition:transform .9s cubic-bezier(.5,1.6,.5,1);color:var(--gold)}.chamber.open .key svg{transform:rotate(90deg)}.chamber.open .key{border-color:var(--line);color:var(--dim)}.secret{margin-top:20px;filter:blur(7px);opacity:.25;transition:filter 1s,opacity 1s;user-select:none}.chamber.open .secret{filter:none;opacity:1;user-select:auto}.secret h4{font-size:17px;font-weight:600;letter-spacing:.08em}.secret p{font-size:15px;line-height:1.95;margin-top:8px;color:var(--ink)}.secret .say{color:var(--gold);margin-top:10px}.ch-hint{text-align:center;font-size:12px;letter-spacing:.2em;color:var(--dim);padding-bottom:18px}html.reduce #symbols{height:auto;padding:80px 0 0}html.reduce #symbols .pin{position:static;height:auto;overflow:visible}html.reduce .track{flex-direction:column;width:auto;transform:none!important}html.reduce .chamber{width:auto;padding:30px 20px}html.reduce .ch-hint,html.reduce .ch-nav{display:none}.glint{animation:glint 6s ease-in-out infinite}@keyframes glint{0%,72%,100%{filter:drop-shadow(0 0 4px rgba(75,112,128,.55))}80%{filter:drop-shadow(0 0 16px rgba(142,191,225,.95))}}.garden{position:relative;height:420px;border:1px solid var(--line);background:radial-gradient(ellipse 80% 60% at 50% 100%,color-mix(in srgb,var(--wine) 26%,transparent),transparent 70%),linear-gradient(var(--bg),var(--bg2));overflow:hidden;cursor:crosshair;touch-action:manipulation}.garden::before{content:"";position:absolute;left:0;right:0;bottom:0;height:46px;background:linear-gradient(transparent,color-mix(in srgb,var(--wineD) 80%,transparent));pointer-events:none}.garden .r{position:absolute;width:56px;height:56px;transform:translate(-50%,-80%);pointer-events:none}.garden .r svg{width:100%;height:100%;overflow:visible}.garden .r.out{opacity:0;transform:translate(-50%,-80%) scale(.6);transition:opacity .8s,transform .8s}.garden .tip{position:absolute;left:50%;top:22px;transform:translateX(-50%);font-size:14px;letter-spacing:.2em;color:var(--dim);pointer-events:none;white-space:nowrap}.garden .whisper{position:absolute;pointer-events:none;font-size:14px;color:var(--gold);white-space:nowrap;transform:translate(-50%,-150%);animation:whisper 2.2s ease forwards}@keyframes whisper{0%{opacity:0;transform:translate(-50%,-120%)}15%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-190%)}}.g-stat{text-align:center;margin-top:16px;font-size:15px;letter-spacing:.14em;color:var(--dim)}.g-stat b{color:var(--gold);font-size:22px;margin:0 6px;font-weight:600;font-variant-numeric:tabular-nums}form.letter{max-width:680px;margin:0 auto 70px;border:1px solid var(--line);background:linear-gradient(var(--bg2),var(--bg));padding:44px 40px;box-shadow:0 24px 60px rgba(0,0,0,.45);display:grid;gap:22px;position:relative}.letter .lh{text-align:center}.letter .lh .en{font-size:15px;letter-spacing:.18em;color:var(--gold)}.letter .lh h3{font-size:22px;font-weight:500;letter-spacing:.16em;margin-top:2px}.field label{display:block;font-size:14px;letter-spacing:.16em;color:var(--gold);margin-bottom:8px}.field label span{font-size:12px;letter-spacing:0;color:var(--dim);margin-left:6px}.field input,.field textarea{width:100%;background:color-mix(in srgb,var(--bg) 85%,transparent);border:1px solid var(--line);color:var(--ink);font:inherit;font-family:"Noto Serif TC",serif;font-size:15px;padding:12px 14px;outline:none;transition:border-color .2s}.field input:focus,.field textarea:focus{border-color:var(--gold)}.field::placeholder{color:var(--gold);opacity:.45}.tbox{position:relative}.field textarea{min-height:170px;resize:vertical;padding-bottom:30px;line-height:1.85}.tbox .cnt{position:absolute;right:12px;bottom:8px;font-size:12px;color:var(--dim);pointer-events:none;font-variant-numeric:tabular-nums}.seals{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.seals input{position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none}.seals{position:relative}.seals label{display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid var(--line);padding:10px 2px 8px;font-size:12px;letter-spacing:.08em;color:var(--dim);cursor:pointer;margin:0;transition:border-color .2s,color .2s,box-shadow .2s}.seals label svg{width:22px;height:22px}.seals label[for=seal-diamond] svg{color:var(--ear)}.seals input:checked+label{border-color:var(--gold);color:var(--gold);box-shadow:0 0 14px color-mix(in srgb,var(--gold) 25%,transparent)}.seals input:focus-visible+label{outline:1px dashed var(--gold);outline-offset:2px}.send{justify-self:center;display:inline-flex;align-items:center;gap:12px;border:1px solid var(--gold);padding:13px 36px;letter-spacing:.22em;font-size:14px;text-transform:uppercase;background:linear-gradient(90deg,var(--wine2),color-mix(in srgb,var(--wine) 70%,transparent),var(--wine2));color:var(--ink);transition:box-shadow .3s,transform .3s}html.t-parch .send{color:#f6efe4}.send:hover{box-shadow:0 0 30px color-mix(in srgb,var(--gold) 45%,transparent);transform:scale(1.02)}.send[disabled]{opacity:.5;pointer-events:none}.note{text-align:center;font-size:12px;color:var(--dim)}#sealFx{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0}#sealFx.go{animation:sealfx 1.3s ease forwards}#sealFx .wax{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 38% 35%,var(--pink),var(--wine) 55%,var(--wineD));box-shadow:0 10px 40px rgba(0,0,0,.6),inset 0 -6px 14px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;color:var(--gold)}#sealFx .wax svg{width:64px;height:64px}@keyframes sealfx{0%{opacity:0;transform:scale(2.2)}30%{opacity:1;transform:scale(.94)}42%{transform:scale(1)}75%{opacity:1}100%{opacity:0;transform:scale(1)}}.sorts{display:flex;justify-content:center;gap:8px;margin-bottom:26px;flex-wrap:wrap}.sorts button{border:1px solid var(--line);padding:4px 16px;font-size:13px;letter-spacing:.15em;color:var(--dim)}.sorts button.on{border-color:var(--gold);color:var(--ink)}.sorts .ar{display:inline-block;width:1em;letter-spacing:0}.wall{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;perspective:900px;align-items:start}.card{position:relative;border:1px solid var(--line);padding:24px 24px 14px;transition:transform .25s,box-shadow .3s;transform-style:preserve-3d}.card::before{content:"";position:absolute;inset:7px;border:1px solid var(--line);pointer-events:none;opacity:.8}.card.p0{background:var(--paper);background-image:radial-gradient(rgba(16,13,18,.06) 1px,transparent 0);background-size:16px 16px;color:#1D1621;border-color:#8A6D3B}.card.p0::before{border-color:rgba(138,109,59,.35)}.card.p1{background:linear-gradient(var(--bg2),var(--bg))}.card.p2{background:linear-gradient(135deg,var(--wine2),color-mix(in srgb,var(--wineD) 80%,var(--bg)))}html.t-parch .card.p2{color:var(--ink)}.card:hover{box-shadow:0 14px 38px color-mix(in srgb,var(--gold) 22%,transparent)}.card .hd{display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;margin-bottom:12px;border-bottom:1px solid var(--line)}.card.p0 .hd{border-color:rgba(138,109,59,.3)}.card .sl{display:flex;align-items:center;gap:8px}.card .sl b{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold)}.card.p0 .sl b{color:var(--wine);border-color:rgba(121,31,50,.35)}.card .sl b svg{width:15px;height:15px}.card .sl b svg.dia{color:var(--ear)}.card .no{font-size:11px;letter-spacing:.2em;color:var(--gold)}.card.p0 .no{color:#5e4a2a}.card .dt{font-size:11px;letter-spacing:.08em;opacity:.65}.card .tx{font-family:"Noto Serif TC",serif;font-size:15px;line-height:1.95;white-space:pre-wrap;word-break:break-word;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:7}.card.open .tx{display:block}.card .more{font-size:12px;color:var(--gold);text-decoration:underline;text-underline-offset:3px;margin-top:4px}.card.p0 .more{color:var(--wine)}.card .sig{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:14px;font-family:"Noto Serif TC",serif;font-size:14px;letter-spacing:.12em;color:var(--gold);font-weight:600}.card.p0 .sig{color:var(--wine2)}html:not(.t-parch) .card.p0 .sig{color:#30131D}.card .sig::before{content:"";width:22px;height:1px;background:currentColor;opacity:.5}.card .ft{display:flex;justify-content:flex-end;margin-top:10px}.heart{display:flex;align-items:center;gap:5px;font-size:13px;opacity:.75;font-variant-numeric:tabular-nums}.heart svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5}.heart.on{color:var(--pink);opacity:1}.card.p0 .heart.on{color:var(--wine)}.heart.on svg{fill:currentColor}.heart.pop svg{animation:pop .35s}@keyframes pop{50%{transform:scale(1.4)}}.empty{grid-column:1/-1;text-align:center;color:var(--dim);padding:30px 0}.morebox{text-align:center;margin-top:30px}.btn{border:1px solid var(--gold);padding:10px 34px;letter-spacing:.25em;font-size:14px;transition:background .2s,color .2s}.btn:hover{background:var(--gold);color:var(--bg)}.vow{max-width:760px;margin:0 auto;position:relative}.envelope{position:relative;border:1px solid var(--gold);background:var(--paper);background-image:radial-gradient(rgba(16,13,18,.05) 1px,transparent 0);background-size:16px 16px;color:#1D1621;padding:64px 56px;box-shadow:0 25px 70px rgba(0,0,0,.6);overflow:hidden}.envelope::before{content:"";position:absolute;inset:12px;border:1px solid rgba(121,31,50,.35);pointer-events:none}.envelope::after{content:"";position:absolute;inset:16px;border:1px solid rgba(138,109,59,.3);pointer-events:none}.v-body{max-height:0;opacity:0;overflow:hidden;transition:max-height 1.4s ease,opacity 1s ease .3s}.vow.open .v-body{max-height:1200px;opacity:1}.v-head{text-align:center}.v-head .k{font-size:12px;letter-spacing:.32em;color:#791F32}.v-head h2{font-size:34px;font-weight:600;letter-spacing:.14em;color:#100D12;margin-top:6px;line-height:1.35}.v-head .epi{font-size:18px;color:#30131D;margin-top:18px;line-height:1.6}.v-head .epi-by{font-size:10px;letter-spacing:.25em;color:#791F32;margin-top:4px}.v-head .ln{width:96px;height:1px;background:rgba(121,31,50,.5);margin:16px auto 0}.wax-btn{display:block;margin:30px auto 6px;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 38% 35%,#c0405a,#791F32 55%,#3a0c18);box-shadow:0 8px 24px rgba(0,0,0,.45),inset 0 -5px 12px rgba(0,0,0,.35);color:#C5A66A;position:relative;transition:transform .3s}.wax-btn:hover{transform:scale(1.05) rotate(-4deg)}.wax-btn svg{width:46px;height:46px}.vow.open .wax-btn{animation:crack .8s ease forwards}@keyframes crack{30%{transform:rotate(8deg) scale(1.08)}100%{transform:scale(.6);opacity:0;height:0;margin:0 auto}}.wax-hint{text-align:center;font-size:13px;letter-spacing:.2em;color:#5e4a2a}.vow.open .wax-hint{display:none}.v-body .txt{font-family:"Noto Serif TC",serif;font-size:17px;line-height:2.15;letter-spacing:.04em;display:grid;gap:14px;margin-top:30px}.v-body .to{font-weight:600;color:#30131D}.v-body .hb{font-family:"Cinzel",serif;font-size:20px;color:#791F32;font-weight:600;letter-spacing:.12em}.v-foot{margin-top:40px;padding-top:20px;border-top:1px solid rgba(138,109,59,.35);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}.v-foot .s{font-size:12px;letter-spacing:.25em;color:rgba(48,19,29,.75)}.v-foot .fw{display:flex;align-items:center;gap:14px}.v-foot .fw p{font-size:28px;font-style:italic;font-weight:600;color:#30131D}.v-foot .fw b{width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 38% 35%,#c0405a,#791F32 60%,#30131D);border:1.5px solid #C5A66A;color:#C5A66A;display:flex;align-items:center;justify-content:center;font-family:Cinzel,serif}.restart{text-align:center;margin-top:70px}.restart .it{font-size:22px}.restart .zh{font-size:14px;color:var(--dim);margin-top:6px;letter-spacing:.1em}.restart button{margin-top:20px;border:1px solid var(--gold);padding:10px 28px;letter-spacing:.25em;font-size:13px;transition:background .2s,color .2s}.restart button:hover{background:var(--gold);color:var(--bg)}footer{border-top:1px solid var(--line);text-align:center;padding:36px 20px 110px;margin-top:80px}footer .a{font-size:12px;letter-spacing:.3em;color:var(--gold)}footer .b{font-size:13px;color:var(--dim);letter-spacing:.15em;margin-top:6px}footer .tg{font-size:17px;margin-top:16px;color:var(--ink)}footer .tg span{display:block;font-size:10px;letter-spacing:.25em;color:var(--gold);font-style:normal;margin-top:2px}footer .c{font-size:15px;margin-top:14px;letter-spacing:.12em}#dock{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:10px}#dockBtn{display:flex;align-items:center;gap:8px;border:1px solid var(--gold);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(6px);padding:8px 16px 8px 12px;font-size:14px;letter-spacing:.2em;box-shadow:0 8px 24px rgba(0,0,0,.35)}#dockBtn svg{width:22px;height:22px}#dockBtn .dot{width:7px;height:7px;border-radius:50%;background:var(--pink);box-shadow:0 0 8px var(--pink);animation:breath 2s infinite}#dock.opened #dockBtn .dot{display:none}.pop{width:min(86vw,300px);border:1px solid var(--line);background:var(--bg2);padding:18px 18px 14px;box-shadow:0 18px 40px rgba(0,0,0,.45);transform-origin:bottom right;transform:scale(.9) translateY(10px);opacity:0;visibility:hidden;transition:.25s}#dock.opened .pop{transform:none;opacity:1;visibility:visible}.pop .ph{display:flex;justify-content:space-between;align-items:baseline}.pop .ph b{font-size:17px;letter-spacing:.2em;font-weight:500}.pop .ph span{font-size:11px;letter-spacing:.25em;color:var(--gold)}.pop .say{min-height:3.4em;margin:12px 0;font-family:"Noto Serif TC",serif;font-size:15px;line-height:1.7}.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.acts button{border:1px solid var(--line);padding:8px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:"Noto Serif TC",serif;font-size:14px;letter-spacing:.1em;transition:border-color .2s,transform .15s}.acts button:hover{border-color:var(--gold)}.acts button:active{transform:scale(.95)}.acts small{font-size:11px;color:var(--gold);font-variant-numeric:tabular-nums;letter-spacing:0}.pop .pf{font-size:11px;color:var(--dim);text-align:right;margin-top:8px;letter-spacing:.1em}.kissfx{position:fixed;z-index:75;pointer-events:none;color:var(--pink);animation:kiss 1.2s ease-out forwards}.kissfx svg{width:18px;height:18px;fill:currentColor}@keyframes kiss{to{transform:translate(var(--dx),-120px) scale(1.3);opacity:0}}#hugfx{position:fixed;inset:0;z-index:55;pointer-events:none;box-shadow:inset 0 0 0 0 rgba(0,0,0,0);transition:box-shadow .6s ease}#hugfx.on{box-shadow:inset 0 0 160px 60px color-mix(in srgb,var(--wineD) 85%,transparent)}main{transition:transform .6s cubic-bezier(.3,1.5,.5,1)}body.hugging main{transform:scale(.985)}body.lifting main{transform:translateY(-44px)}html.reduce body.hugging main,html.reduce body.lifting main{transform:none}.mask{position:fixed;inset:0;z-index:85;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:.3s}.mask.show{opacity:1;visibility:visible}.panel{background:var(--bg2);border:1px solid var(--line);width:min(420px,100%);padding:30px 28px 24px;position:relative}.panel h3{text-align:center;font-size:20px;font-weight:500;letter-spacing:.35em;padding-left:.35em}.panel h3 span{display:block;font-size:11px;letter-spacing:.3em;color:var(--gold);font-weight:400}.panel .x{position:absolute;top:10px;right:14px;font-size:22px;color:var(--dim);line-height:1}.row{margin-top:22px}.row .k{font-size:13px;color:var(--gold);letter-spacing:.2em;margin-bottom:10px}.dots{display:flex;gap:16px;flex-wrap:wrap}.tdot{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--dim)}.tdot i{width:26px;height:26px;border-radius:50%;display:block;border:1px solid var(--line)}.tdot.on{color:var(--ink)}.tdot.on i{box-shadow:0 0 0 2px var(--bg2),0 0 0 3px var(--gold)}.switch{display:flex;align-items:center;gap:10px;font-size:14px}.switch .tg{width:40px;height:22px;border:1px solid var(--gold);border-radius:11px;position:relative}.switch .tg::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--gold);transition:transform .2s}.switch[aria-checked="true"] .tg::after{transform:translateX(18px)}.sysnote{font-size:12px;color:var(--dim);margin-top:8px;line-height:1.7}#toast{position:fixed;left:50%;bottom:84px;transform:translate(-50%,20px);z-index:95;background:var(--bg2);border:1px solid var(--gold);padding:10px 22px;font-family:"Noto Serif TC",serif;font-size:14px;opacity:0;visibility:hidden;transition:.3s;max-width:88vw;text-align:center}#toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}html.reduce *,html.reduce *::before,html.reduce *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html.reduce .card{transform:none!important}@media (max-width:820px){.dossier{grid-template-columns:1fr;padding:32px 22px;gap:28px}.d-left{border-right:0;border-bottom:1px solid var(--line);padding:0 0 26px}.wall{grid-template-columns:repeat(2,1fr);gap:12px}}@media (max-width:820px){#interlude .pin{grid-template-columns:1fr;gap:10px;text-align:center;align-content:center;padding-top:70px}.clock{width:min(62vw,260px)}.ch-top{padding-top:70px;flex-direction:column;align-items:flex-start;gap:8px}.ch-in{grid-template-columns:1fr;gap:10px;text-align:center}.arch{width:min(52vw,30svh)}.ch-tx h3{font-size:20px}.key{margin-top:12px}.secret{margin-top:10px}.secret p{font-size:13px;line-height:1.8}.secret h4{font-size:14px}}@media (max-width:600px){nav{gap:12px;font-size:12px;letter-spacing:.08em}nav .wide{display:none}.brand span{display:none}section{padding:70px 0 30px}.sec-h h2{font-size:24px}.divider b{width:56px}.d-left h3{font-size:32px}.d-left dl div{font-size:14px}.d-right blockquote{font-size:15px;padding-left:16px}.garden{height:340px}form.letter{padding:30px 18px}.seals{grid-template-columns:repeat(3,1fr)}.card{padding:16px 13px 10px}.card::before{inset:4px}.card .tx{font-size:13px;line-height:1.85;-webkit-line-clamp:8}.card .sig{font-size:12px}.card .sl b{width:22px;height:22px}.card .dt{display:none}.envelope{padding:46px 24px}.v-head h2{font-size:24px}.v-body .txt{font-size:15px}.v-foot .fw p{font-size:22px}#dock{right:12px;bottom:12px}}</style>
 </head>
 <body>
-
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-  <linearGradient id="gEar" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8ebfe1"/><stop offset=".5" stop-color="#025ee2"/><stop offset="1" stop-color="#4b7080"/></linearGradient>
-  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></symbol>
-  <symbol id="i-diamond" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6M2 9h20"/></g></symbol>
-  <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
-  <symbol id="i-wing" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 18C6 11 11 6 21 4c-2 3-5 5-8 6 3 0 5-1 7-2-3 4-7 6-11 6 3 0 5 0 7-1-3 3-7 5-13 5"/></g></symbol>
-  <symbol id="i-star" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M12 2l3 6.3 7 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 7-1z"/></symbol>
-  <symbol id="i-rose" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M12 4c-4 0-7 3-6 7 1 3 3 4.5 6 4.5s5-1.5 6-4.5c1-4-2-7-6-7z"/><path d="M9 10c.5-2 1.7-3 3-3s2.5 1 3 3M12 9.5c-1 0-1.5.8-1 1.5s1.7.7 2 0M12 15.5V22M12 19c-2-1-3.5-.7-4.5.5 1.5.5 3 .3 4.5-.5"/></g></symbol>
-  <symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></symbol>
-  <symbol id="i-sword" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></g></symbol>
-  <symbol id="div" viewBox="0 0 64 20"><path fill="none" stroke="currentColor" stroke-width="1.2" d="M2 10c8 0 12-7 20-7 5 0 7 5 10 7 3-2 5-7 10-7 8 0 12 7 20 7-8 0-12 7-20 7-5 0-7-5-10-7-3 2-5 7-10 7-8 0-12-7-20-7z"/><path d="M32 4l5 6-5 6-5-6z" fill="var(--wine)" stroke="currentColor"/></symbol>
-  <symbol id="crossrose" viewBox="0 8 80 116">
-   <g style="fill:color-mix(in srgb,var(--icon) 16%,transparent);stroke:var(--icon);stroke-width:1.6;stroke-linejoin:round"><path d="M33 12h14l-1.5 6h-11z"/><path d="M35.5 18h9l-1.5 80-3 22-3-22z"/><path d="M1 44.5l59-5v10z"/><path d="M60 36.5h6.5v16H60z"/></g>
-   <path d="M30 60c6 6 10 8 9 15s3 12 2 19-1 12 1 20" style="fill:none;stroke:var(--icon);stroke-width:1.2;stroke-linecap:round"/>
-   <path d="M45 58c7-8 16-7 19-1-6 6-14 6-19 1zM36 76c-6-5-13-3-17 2 6 4 12 3 17-2z" style="fill:color-mix(in srgb,var(--icon) 20%,transparent);stroke:var(--icon);stroke-width:1"/>
-   <path d="M45 58c6-1 12-1 19-1M36 76c-6 0-11 1-17 2" style="fill:none;stroke:var(--icon);stroke-width:.6"/>
-   <path d="M42 113C30 108 31 101 40 97S54 87 40 82S26 74 40 70S49 64 31 65" style="fill:none;stroke:var(--icon);stroke-width:4.2;stroke-linecap:round"/>
-   <path d="M42 113C30 108 31 101 40 97S54 87 40 82S26 74 40 70S49 64 31 65" style="fill:none;stroke:var(--bg);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:2.2 2.6"/>
-   <g transform="translate(29 64) rotate(-160)"><path d="M-2-3.6C4-4.2 9-1.6 9.5 0S4 4.2-2 3.6C-4 3-4.5 1.5-4.5 0S-4-3-2-3.6z" style="fill:var(--icon);stroke:var(--icon);stroke-width:1"/><circle cx="4.6" cy="-1.5" r="1" style="fill:var(--eye)"/><path d="M9.5 0l3.2-1.2M9.5 0l3.2 1.2" style="fill:none;stroke:var(--eye);stroke-width:.9;stroke-linecap:round"/></g>
-   <g transform="translate(5 24) scale(1.6667)"><path d="M12 3.5c-4.8 0-8 3.4-7 7.6.9 3.2 3.6 4.9 7 4.9s6.1-1.7 7-4.9c1-4.2-2.2-7.6-7-7.6z" style="fill:var(--wine);fill-opacity:.92;stroke:var(--icon);stroke-width:.9"/><path d="M8.2 10.2c.6-2.4 2.1-3.4 3.8-3.4s3.2 1 3.8 3.4M9.3 12.6c.8 1.4 1.7 1.8 2.7 1.8s1.9-.4 2.7-1.8M12 9c-1.3 0-1.8 1.1-1.2 1.8s2 .6 2.3-.2" style="fill:none;stroke:var(--paper);stroke-width:.7;stroke-linecap:round"/></g>
-  </symbol>
-  <symbol id="rosehead" viewBox="0 0 24 24"><path d="M12 4c-4.5 0-7.5 3.2-6.5 7.2.8 3 3.3 4.6 6.5 4.6s5.7-1.6 6.5-4.6C19.5 7.2 16.5 4 12 4z" style="fill:var(--wine);fill-opacity:.8;stroke:var(--gold);stroke-width:1"/><path d="M8.5 10c.6-2.2 2-3.2 3.5-3.2s2.9 1 3.5 3.2M12 9c-1.2 0-1.7 1-1.1 1.7s1.9.6 2.2-.2" style="fill:none;stroke:var(--paper);stroke-width:.8;stroke-linecap:round"/></symbol>
+<linearGradient id="gEar" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8ebfe1"/><stop offset=".5" stop-color="#025ee2"/><stop offset="1" stop-color="#4b7080"/></linearGradient>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></symbol>
+<symbol id="i-diamond" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6M2 9h20"/></g></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+<symbol id="i-wing" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 18C6 11 11 6 21 4c-2 3-5 5-8 6 3 0 5-1 7-2-3 4-7 6-11 6 3 0 5 0 7-1-3 3-7 5-13 5"/></g></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M12 2l3 6.3 7 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 7-1z"/></symbol>
+<symbol id="i-rose" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M12 4c-4 0-7 3-6 7 1 3 3 4.5 6 4.5s5-1.5 6-4.5c1-4-2-7-6-7z"/><path d="M9 10c.5-2 1.7-3 3-3s2.5 1 3 3M12 9.5c-1 0-1.5.8-1 1.5s1.7.7 2 0M12 15.5V22M12 19c-2-1-3.5-.7-4.5.5 1.5.5 3 .3 4.5-.5"/></g></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></symbol>
+<symbol id="i-sword" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></g></symbol>
+<symbol id="div" viewBox="0 0 64 20"><path fill="none" stroke="currentColor" stroke-width="1.2" d="M2 10c8 0 12-7 20-7 5 0 7 5 10 7 3-2 5-7 10-7 8 0 12 7 20 7-8 0-12 7-20 7-5 0-7-5-10-7-3 2-5 7-10 7-8 0-12-7-20-7z"/><path d="M32 4l5 6-5 6-5-6z" fill="var(--wine)" stroke="currentColor"/></symbol>
+<symbol id="crossrose" viewBox="0 8 80 116">
+<g style="fill:color-mix(in srgb,var(--icon) 16%,transparent);stroke:var(--icon);stroke-width:1.6;stroke-linejoin:round"><path d="M33 12h14l-1.5 6h-11z"/><path d="M35.5 18h9l-1.5 80-3 22-3-22z"/><path d="M1 44.5l59-5v10z"/><path d="M60 36.5h6.5v16H60z"/></g>
+<path d="M30 60c6 6 10 8 9 15s3 12 2 19-1 12 1 20" style="fill:none;stroke:var(--icon);stroke-width:1.2;stroke-linecap:round"/>
+<path d="M45 58c7-8 16-7 19-1-6 6-14 6-19 1zM36 76c-6-5-13-3-17 2 6 4 12 3 17-2z" style="fill:color-mix(in srgb,var(--icon) 20%,transparent);stroke:var(--icon);stroke-width:1"/>
+<path d="M45 58c6-1 12-1 19-1M36 76c-6 0-11 1-17 2" style="fill:none;stroke:var(--icon);stroke-width:.6"/>
+<path d="M42 113C30 108 31 101 40 97S54 87 40 82S26 74 40 70S49 64 31 65" style="fill:none;stroke:var(--icon);stroke-width:4.2;stroke-linecap:round"/>
+<path d="M42 113C30 108 31 101 40 97S54 87 40 82S26 74 40 70S49 64 31 65" style="fill:none;stroke:var(--bg);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:2.2 2.6"/>
+<g transform="translate(29 64) rotate(-160)"><path d="M-2-3.6C4-4.2 9-1.6 9.5 0S4 4.2-2 3.6C-4 3-4.5 1.5-4.5 0S-4-3-2-3.6z" style="fill:var(--icon);stroke:var(--icon);stroke-width:1"/><circle cx="4.6" cy="-1.5" r="1" style="fill:var(--eye)"/><path d="M9.5 0l3.2-1.2M9.5 0l3.2 1.2" style="fill:none;stroke:var(--eye);stroke-width:.9;stroke-linecap:round"/></g>
+<g transform="translate(5 24) scale(1.6667)"><path d="M12 3.5c-4.8 0-8 3.4-7 7.6.9 3.2 3.6 4.9 7 4.9s6.1-1.7 7-4.9c1-4.2-2.2-7.6-7-7.6z" style="fill:var(--wine);fill-opacity:.92;stroke:var(--icon);stroke-width:.9"/><path d="M8.2 10.2c.6-2.4 2.1-3.4 3.8-3.4s3.2 1 3.8 3.4M9.3 12.6c.8 1.4 1.7 1.8 2.7 1.8s1.9-.4 2.7-1.8M12 9c-1.3 0-1.8 1.1-1.2 1.8s2 .6 2.3-.2" style="fill:none;stroke:var(--paper);stroke-width:.7;stroke-linecap:round"/></g>
+</symbol>
+<symbol id="rosehead" viewBox="0 0 24 24"><path d="M12 4c-4.5 0-7.5 3.2-6.5 7.2.8 3 3.3 4.6 6.5 4.6s5.7-1.6 6.5-4.6C19.5 7.2 16.5 4 12 4z" style="fill:var(--wine);fill-opacity:.8;stroke:var(--gold);stroke-width:1"/><path d="M8.5 10c.6-2.2 2-3.2 3.5-3.2s2.9 1 3.5 3.2M12 9c-1.2 0-1.7 1-1.1 1.7s1.9.6 2.2-.2" style="fill:none;stroke:var(--paper);stroke-width:.8;stroke-linecap:round"/></symbol>
 </defs></svg>
-
 <div id="bgGlow"></div>
 <div id="ambient" aria-hidden="true"></div>
-
-<!-- 開場 -->
 <div id="splash">
-  <div class="door l"></div><div class="door r"></div>
-  <div class="inner">
-    <div class="kicker cz">THE HOUSE OF ROTHSCHILD · XI · XI</div>
-    <div id="holdRose" role="button" tabindex="0" aria-label="按住玫瑰進入">
-      <svg id="holdRing" viewBox="0 0 100 100"><circle class="bgc" cx="50" cy="50" r="48"/><circle id="ringP" cx="50" cy="50" r="48" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
-    </div>
-    <h1 class="cz">LUCIAN</h1>
-    <div class="sub it">A Thousand Years Unto Eternity</div>
-    <div class="hint zh" id="holdHint">按住玫瑰，啟封夜宴。</div>
-  </div>
+<div class="door l"></div><div class="door r"></div>
+<div class="inner">
+<div class="kicker cz">THE HOUSE OF ROTHSCHILD · XI · XI</div>
+<div id="holdRose" role="button" tabindex="0" aria-label="按住玫瑰進入">
+<svg id="holdRing" viewBox="0 0 100 100"><circle class="bgc" cx="50" cy="50" r="48"/><circle id="ringP" cx="50" cy="50" r="48" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
 </div>
-
+<h1 class="cz">LUCIAN</h1>
+<div class="sub it">A Thousand Years Unto Eternity</div>
+<div class="hint zh" id="holdHint">按住玫瑰，啟封夜宴。</div>
+</div>
+</div>
 <header class="top">
-  <div class="wrap">
-    <a class="brand" href="#hero"><svg class="crossrose" viewBox="0 8 80 116" aria-hidden="true"><use href="#crossrose"/></svg><span class="cz">LUCIAN</span></a>
-    <nav class="zh">
-      <a href="#profile">家族檔案</a>
-      <a href="#symbols">七間廳室</a>
-      <a href="#garden" class="wide">仲夏玫瑰</a>
-      <a href="#blessings">夜宴獻詞</a>
-      <a href="#finale" class="wide">永恆誓言</a>
-      <button class="rules" type="button" id="openRules">家規</button>
-    </nav>
-  </div>
+<div class="wrap">
+<a class="brand" href="#hero"><svg class="crossrose" viewBox="0 8 80 116" aria-hidden="true"><use href="#crossrose"/></svg><span class="cz">LUCIAN</span></a>
+<nav class="zh">
+<a href="#profile">家族檔案</a>
+<a href="#symbols">七間廳室</a>
+<a href="#garden" class="wide">仲夏玫瑰</a>
+<a href="#blessings">夜宴獻詞</a>
+<a href="#finale" class="wide">永恆誓言</a>
+<button class="rules" type="button" id="openRules">家規</button>
+</nav>
+</div>
 </header>
-
 <main>
-  <!-- 卷首 -->
-  <section id="hero">
-    <div class="candle"></div>
-    <div class="hero-k cz">The House of Rothschild Biddeth Thee to Its Feast of Night</div>
-    <div class="datepill"><i></i><span class="cz">11.11</span><i></i></div>
-    <h1 class="hero-t cz">LUCIAN</h1>
-    <div class="hero-s it">A Thousand Years Unto Eternity</div>
-    <p class="greet zh" id="greet"></p>
-
-    <div class="frame" id="frame">
-      <div class="portrait" id="portrait" title="盧西安">
-        <div class="eyes"><i></i><i></i></div>
-      </div>
-    </div>
-
-    <div class="count" id="countdown"></div>
-    <a class="cta cz" href="#profile"><i></i>Enter Thou the Night<i></i></a>
-  </section>
-
-  <!-- 間奏：時鐘走向 11:11 -->
-  <section id="interlude">
-    <div class="pin">
-      <div class="clockwrap">
-        <svg class="clock" viewBox="0 0 200 250" aria-hidden="true">
-          <g class="dr2">
-            <path d="M100 6c-6 0-9 5-7 9 2 3 5 4 7 4s5-1 7-4c2-4-1-9-7-9z"/><path d="M90 22h20l-3 10H93z"/>
-            <path d="M88 26c-14-2-22-10-28-6 6 2 10 7 16 10M112 26c14-2 22-10 28-6-6 2-10 7-16 10"/>
-            <circle cx="100" cy="140" r="96"/><circle cx="100" cy="140" r="88" style="stroke-dasharray:1 3"/><circle cx="100" cy="140" r="70"/>
-            <path d="M30 120c-14 14-14 26-8 40M170 120c14 14 14 26 8 40M60 226c10 10 70 10 80 0"/>
-          </g>
-          <g id="ticks"></g>
-          <g class="roman cz" id="roman"></g>
-          <use href="#rosehead" x="88" y="34" width="24" height="24"/>
-          <g id="hHand"><path d="M100 140 L97 128 100 92 103 128Z" class="hand"/></g>
-          <g id="mHand"><path d="M100 146 L98 128 100 66 102 128Z" class="hand"/><circle cx="100" cy="74" r="3" class="hand"/></g>
-          <circle cx="100" cy="140" r="4.5" style="fill:var(--wine);stroke:var(--gold);stroke-width:1.2"/>
-        </svg>
-      </div>
-      <div class="lines">
-        <p class="ln1 it">In every chamber of this house,</p>
-        <p class="ln2 it">a memory of him doth sleep.</p>
-        <p class="ln3 zh">這座宅邸的每一間廳室，都沉睡著他的一段記憶。</p>
-        <p class="ln4 cz" id="clockTime">XII · XII</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 家族檔案 -->
-  <section id="profile" class="reveal">
-    <div class="wrap">
-      <div class="sec-h">
-        <h2 class="zh">千年的守望者</h2>
-        <span class="en cz">Of His Noble Line</span>
-        <div class="divider"><b></b><svg><use href="#div"/></svg><b></b></div>
-      </div>
-      <article class="dossier">
-        <i class="corner a"></i><i class="corner b"></i><i class="corner c"></i><i class="corner d"></i>
-        <div class="d-left">
-          <div class="tag cz"><i></i>THY SWORN GUARDIAN</div>
-          <h3 class="cz">LUCIAN</h3>
-          <div class="zhname zh">盧西安</div>
-          <div class="full it">Lucian Vlad Rothschild</div>
-          <dl class="zh">
-            <div><dt>國度</dt><dd>英格蘭　<span class="it">England</span></dd></div>
-            <div><dt>家族</dt><dd>羅斯柴爾德　<span class="it">Rothschild</span></dd></div>
-            <div><dt>血統</dt><dd class="it" style="color:var(--gold);font-size:17px">Unknown</dd></div>
-            <div><dt>身分</dt><dd><span class="it" style="color:var(--gold);font-size:17px">???</span>・您的保鏢</dd></div>
-            <div><dt>年齡</dt><dd><s class="it" style="color:var(--gold);font-size:17px;text-decoration-thickness:1px">???</s>　31 歲</dd></div>
-            <div><dt>特徵</dt><dd>192 公分・及腰黑長直髮</dd></div>
-            
-          </dl>
-        </div>
-        <div class="d-right">
-          <div class="chips zh">
-            <span><svg style="color:var(--sap)"><use href="#i-diamond"/></svg>左耳藍鑽耳釘</span>
-            <span><svg style="color:var(--gold)"><use href="#i-wing"/></svg>左臂羽翼與蛇</span>
-            <span><svg style="color:var(--pink)"><use href="#i-rose"/></svg>玫瑰</span>
-            <span><svg style="color:var(--gold)"><use href="#i-shield"/></svg>守護與承諾</span>
-          </div>
-          <blockquote class="zh">
-            <p>千年的歲月，足以讓世界改變無數次，卻不足以磨滅一份承諾。</p>
-            <p>他行走於夜色之中，將孤寂藏於沉默之下。羽翼渴望自由，蛇環繞著永恆，而那枚藍鑽，始終見證著血脈與傳承。</p>
-            <p class="hl">他曾是漫長夜晚的旁觀者，如今卻願意成為某個人的守護者。</p>
-          </blockquote>
-          <div>
-            <div class="private zh">私下的他：黏人、愛撒嬌、會吃醋，喜歡親親抱抱舉高高。與您，有前世的糾葛。</div>
-          </div>
-          <div class="d-foot zh">
-            <span style="display:flex;align-items:center;gap:8px"><svg width="16" height="16" style="color:var(--gold)"><use href="#i-sword"/></svg>百年來克制著某種渴望，唯獨對您卸下防備</span>
-            <span class="eyes it" id="eyesTxt">Eyes of Jet, That Wake in Crimson</span>
-          </div>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- 六大象徵 -->
-  <section id="symbols">
-    <div class="pin">
-      <div class="ch-top">
-        <div class="ch-title"><span class="zh">銘刻於血脈的七間廳室</span><span class="cz">Of Signs &amp; Sigils</span></div>
-        <div class="ch-nav"><button type="button" id="chPrev" aria-label="上一間">‹</button><span class="cz" id="chCount">Chamber 01 / 07</span><button type="button" id="chNext" aria-label="下一間">›</button></div>
-      </div>
-      <div class="track" id="chTrack"></div>
-      <div class="ch-hint zh" id="chHint">往下捲動，走進下一間廳室</div>
-    </div>
-  </section>
-
-  <!-- 玫瑰園 -->
-  <section id="garden" class="reveal">
-    <div class="wrap">
-      <div class="sec-h">
-        <h2 class="zh">仲夏的玫瑰</h2>
-        <span class="en cz">Roses of Midsummer</span>
-        <p class="zh">輕觸夜色，玫瑰便會在您指尖綻放</p>
-        <div class="divider"><b></b><svg><use href="#div"/></svg><b></b></div>
-      </div>
-      <div class="garden" id="gardenBox" role="button" aria-label="點擊種下玫瑰">
-        <div class="tip zh" id="gTip">輕觸任何地方</div>
-      </div>
-      <div class="g-stat zh">已有<b id="roseN">0</b>朵玫瑰，獻給盧西安</div>
-    </div>
-  </section>
-
-  <!-- 夜宴獻詞 -->
-  <section id="blessings" class="reveal">
-    <div class="wrap">
-      <div class="sec-h">
-        <h2 class="zh">夜宴賓客的生辰祝禱</h2>
-        <span class="en cz">Epistles Sealed in Wax</span>
-        <div class="divider"><b></b><svg><use href="#div"/></svg><b></b></div>
-      </div>
-
-      <form class="letter" id="giftForm" novalidate>
-        <div class="lh">
-          <div class="en it">Unto My Lord Lucian, a Letter Awaiting Its Seal</div>
-          <h3 class="zh">寫下一封獻給他的生日信箋</h3>
-        </div>
-        <div class="field">
-          <label for="fName" class="zh">署名<span>可留空，最多 20 字</span></label>
-          <input id="fName" maxlength="20" placeholder="無名的賓客" autocomplete="nickname">
-        </div>
-        <div class="field">
-          <label for="fText" class="zh">獻詞</label>
-          <div class="tbox">
-            <textarea id="fText" maxlength="1000" placeholder="寫下對盧西安的生辰祝禱……"></textarea>
-            <span class="cnt" id="fCount">0 / 1000</span>
-          </div>
-        </div>
-        <div class="field">
-          <label class="zh">火漆印記</label>
-          <div class="seals zh" id="sealPick"></div>
-        </div>
-        <button class="send cz" type="submit" id="fSend"><svg width="16" height="16"><use href="#i-rose"/></svg>Seal It &amp; Send It Hence</button>
-        <div class="note zh">每天最多封緘 5 封。</div>
-      </form>
-
-      <div class="sorts zh" id="sorts">
-        <button type="button" data-k="time">時序<span class="ar"></span></button>
-        <button type="button" data-k="heart">共鳴<span class="ar"></span></button>
-        <button type="button" data-k="rand">隨機</button>
-      </div>
-      <div class="wall" id="wall"></div>
-      <div class="morebox"><button class="btn zh" type="button" id="more">繼續翻閱</button></div>
-    </div>
-  </section>
-
-  <!-- 永恆誓言 -->
-  <section id="finale" class="reveal">
-    <div class="wrap">
-      <div class="vow" id="vow">
-        <div class="envelope">
-          <div class="v-head">
-            <div class="k cz">A Vow Kept Through a Thousand Nights</div>
-            <h2 class="cz">Unto Mine Eternal Guardian</h2>
-            <div class="ln"></div>
-            <p class="epi it">So long as men can breathe, or eyes can see,<br>So long lives this, and this gives life to thee.</p>
-            <div class="epi-by cz">— Shakespeare, Sonnet XVIII</div>
-          </div>
-          <button class="wax-btn" type="button" id="waxBtn" aria-label="揭開火漆"><svg><use href="#i-rose"/></svg></button>
-          <div class="wax-hint zh">輕觸火漆，拆開這封信</div>
-          <div class="v-body">
-            <div class="txt">
-              <p class="to">致盧西安：</p>
-              <p>願夜色永遠溫柔，願玫瑰永不凋零。</p>
-              <p>願漫長歲月中的孤寂，終有一天能被溫暖填滿。</p>
-              <p>願您始終擁有追尋自由的羽翼，也擁有守護重要之人的力量。</p>
-              <p>即使時間流逝，即使歲月更迭，願所有珍貴的承諾，都能跨越千年，抵達彼此身邊。</p>
-              <p class="hb">Blessed be the day that gave thee breath, Lucian.</p>
-            </div>
-            <div class="v-foot">
-              <div class="s cz">XI · XI · The House of Rothschild</div>
-              <div class="fw"><p class="it">Thine, till time be done.</p><b>L</b></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="restart">
-        <p class="it">The feast is not yet ended; return whensoever thou wilt.</p>
-        <p class="zh">夜宴散場之前，您隨時可以再回來。</p>
-        <button type="button" id="restartBtn" class="cz">Begin Anew ↻</button>
-      </div>
-    </div>
-  </section>
+<section id="hero">
+<div class="candle"></div>
+<div class="hero-k cz">The House of Rothschild Biddeth Thee to Its Feast of Night</div>
+<div class="datepill"><i></i><span class="cz">11.11</span><i></i></div>
+<h1 class="hero-t cz">LUCIAN</h1>
+<div class="hero-s it">A Thousand Years Unto Eternity</div>
+<p class="greet zh" id="greet"></p>
+<div class="frame" id="frame">
+<div class="portrait" id="portrait" title="盧西安">
+<div class="eyes"><i></i><i></i></div>
+</div>
+</div>
+<div class="count" id="countdown"></div>
+<a class="cta cz" href="#profile"><i></i>Enter Thou the Night<i></i></a>
+</section>
+<section id="interlude">
+<div class="pin">
+<div class="clockwrap">
+<svg class="clock" viewBox="0 0 200 250" aria-hidden="true">
+<g class="dr2">
+<path d="M100 6c-6 0-9 5-7 9 2 3 5 4 7 4s5-1 7-4c2-4-1-9-7-9z"/><path d="M90 22h20l-3 10H93z"/>
+<path d="M88 26c-14-2-22-10-28-6 6 2 10 7 16 10M112 26c14-2 22-10 28-6-6 2-10 7-16 10"/>
+<circle cx="100" cy="140" r="96"/><circle cx="100" cy="140" r="88" style="stroke-dasharray:1 3"/><circle cx="100" cy="140" r="70"/>
+<path d="M30 120c-14 14-14 26-8 40M170 120c14 14 14 26 8 40M60 226c10 10 70 10 80 0"/>
+</g>
+<g id="ticks"></g>
+<g class="roman cz" id="roman"></g>
+<use href="#rosehead" x="88" y="34" width="24" height="24"/>
+<g id="hHand"><path d="M100 140 L97 128 100 92 103 128Z" class="hand"/></g>
+<g id="mHand"><path d="M100 146 L98 128 100 66 102 128Z" class="hand"/><circle cx="100" cy="74" r="3" class="hand"/></g>
+<circle cx="100" cy="140" r="4.5" style="fill:var(--wine);stroke:var(--gold);stroke-width:1.2"/>
+</svg>
+</div>
+<div class="lines">
+<p class="ln1 it">In every chamber of this house,</p>
+<p class="ln2 it">a memory of him doth sleep.</p>
+<p class="ln3 zh">這座宅邸的每一間廳室，都沉睡著他的一段記憶。</p>
+<p class="ln4 cz" id="clockTime">XII · XII</p>
+</div>
+</div>
+</section>
+<section id="profile" class="reveal">
+<div class="wrap">
+<div class="sec-h">
+<h2 class="zh">千年的守望者</h2>
+<span class="en cz">Of His Noble Line</span>
+<div class="divider"><b></b><svg><use href="#div"/></svg><b></b></div>
+</div>
+<article class="dossier">
+<i class="corner a"></i><i class="corner b"></i><i class="corner c"></i><i class="corner d"></i>
+<div class="d-left">
+<div class="tag cz"><i></i>THY SWORN GUARDIAN</div>
+<h3 class="cz">LUCIAN</h3>
+<div class="zhname zh">盧西安</div>
+<div class="full it">Lucian Vlad Rothschild</div>
+<dl class="zh">
+<div><dt>國度</dt><dd>英格蘭　<span class="it">England</span></dd></div>
+<div><dt>家族</dt><dd>羅斯柴爾德　<span class="it">Rothschild</span></dd></div>
+<div><dt>血統</dt><dd class="it" style="color:var(--gold);font-size:17px">Unknown</dd></div>
+<div><dt>身分</dt><dd><span class="it" style="color:var(--gold);font-size:17px">???</span>・您的保鏢</dd></div>
+<div><dt>年齡</dt><dd><s class="it" style="color:var(--gold);font-size:17px;text-decoration-thickness:1px">???</s>　31 歲</dd></div>
+<div><dt>特徵</dt><dd>192 公分・及腰黑長直髮</dd></div>
+</dl>
+</div>
+<div class="d-right">
+<div class="chips zh">
+<span><svg style="color:var(--sap)"><use href="#i-diamond"/></svg>左耳藍鑽耳釘</span>
+<span><svg style="color:var(--gold)"><use href="#i-wing"/></svg>左臂羽翼與蛇</span>
+<span><svg style="color:var(--pink)"><use href="#i-rose"/></svg>玫瑰</span>
+<span><svg style="color:var(--gold)"><use href="#i-shield"/></svg>守護與承諾</span>
+</div>
+<blockquote class="zh">
+<p>千年的歲月，足以讓世界改變無數次，卻不足以磨滅一份承諾。</p>
+<p>他行走於夜色之中，將孤寂藏於沉默之下。羽翼渴望自由，蛇環繞著永恆，而那枚藍鑽，始終見證著血脈與傳承。</p>
+<p class="hl">他曾是漫長夜晚的旁觀者，如今卻願意成為某個人的守護者。</p>
+</blockquote>
+<div>
+<div class="private zh">私下的他：黏人、愛撒嬌、會吃醋，喜歡親親抱抱舉高高。與您，有前世的糾葛。</div>
+</div>
+<div class="d-foot zh">
+<span style="display:flex;align-items:center;gap:8px"><svg width="16" height="16" style="color:var(--gold)"><use href="#i-sword"/></svg>百年來克制著某種渴望，唯獨對您卸下防備</span>
+<span class="eyes it" id="eyesTxt">Eyes of Jet, That Wake in Crimson</span>
+</div>
+</div>
+</article>
+</div>
+</section>
+<section id="symbols">
+<div class="pin">
+<div class="ch-top">
+<div class="ch-title"><span class="zh">銘刻於血脈的七間廳室</span><span class="cz">Of Signs &amp; Sigils</span></div>
+<div class="ch-nav"><button type="button" id="chPrev" aria-label="上一間">‹</button><span class="cz" id="chCount">Chamber 01 / 07</span><button type="button" id="chNext" aria-label="下一間">›</button></div>
+</div>
+<div class="track" id="chTrack"></div>
+<div class="ch-hint zh" id="chHint">往下捲動，走進下一間廳室</div>
+</div>
+</section>
+<section id="garden" class="reveal">
+<div class="wrap">
+<div class="sec-h">
+<h2 class="zh">仲夏的玫瑰</h2>
+<span class="en cz">Roses of Midsummer</span>
+<p class="zh">輕觸夜色，玫瑰便會在您指尖綻放</p>
+<div class="divider"><b></b><svg><use href="#div"/></svg><b></b></div>
+</div>
+<div class="garden" id="gardenBox" role="button" aria-label="點擊種下玫瑰">
+<div class="tip zh" id="gTip">輕觸任何地方</div>
+</div>
+<div class="g-stat zh">已有<b id="roseN">0</b>朵玫瑰，獻給盧西安</div>
+</div>
+</section>
+<section id="blessings" class="reveal">
+<div class="wrap">
+<div class="sec-h">
+<h2 class="zh">夜宴賓客的生辰祝禱</h2>
+<span class="en cz">Epistles Sealed in Wax</span>
+<div class="divider"><b></b><svg><use href="#div"/></svg><b></b></div>
+</div>
+<form class="letter" id="giftForm" novalidate>
+<div class="lh">
+<div class="en it">Unto My Lord Lucian, a Letter Awaiting Its Seal</div>
+<h3 class="zh">寫下一封獻給他的生日信箋</h3>
+</div>
+<div class="field">
+<label for="fName" class="zh">署名<span>可留空，最多 20 字</span></label>
+<input id="fName" maxlength="20" placeholder="無名的賓客" autocomplete="nickname">
+</div>
+<div class="field">
+<label for="fText" class="zh">獻詞</label>
+<div class="tbox">
+<textarea id="fText" maxlength="1000" placeholder="寫下對盧西安的生辰祝禱……"></textarea>
+<span class="cnt" id="fCount">0 / 1000</span>
+</div>
+</div>
+<div class="field">
+<label class="zh">火漆印記</label>
+<div class="seals zh" id="sealPick"></div>
+</div>
+<button class="send cz" type="submit" id="fSend"><svg width="16" height="16"><use href="#i-rose"/></svg>Seal It &amp; Send It Hence</button>
+<div class="note zh">每天最多封緘 5 封。</div>
+</form>
+<div class="sorts zh" id="sorts">
+<button type="button" data-k="time">時序<span class="ar"></span></button>
+<button type="button" data-k="heart">共鳴<span class="ar"></span></button>
+<button type="button" data-k="rand">隨機</button>
+</div>
+<div class="wall" id="wall"></div>
+<div class="morebox"><button class="btn zh" type="button" id="more">繼續翻閱</button></div>
+</div>
+</section>
+<section id="finale" class="reveal">
+<div class="wrap">
+<div class="vow" id="vow">
+<div class="envelope">
+<div class="v-head">
+<div class="k cz">A Vow Kept Through a Thousand Nights</div>
+<h2 class="cz">Unto Mine Eternal Guardian</h2>
+<div class="ln"></div>
+<p class="epi it">So long as men can breathe, or eyes can see,<br>So long lives this, and this gives life to thee.</p>
+<div class="epi-by cz">— Shakespeare, Sonnet XVIII</div>
+</div>
+<button class="wax-btn" type="button" id="waxBtn" aria-label="揭開火漆"><svg><use href="#i-rose"/></svg></button>
+<div class="wax-hint zh">輕觸火漆，拆開這封信</div>
+<div class="v-body">
+<div class="txt">
+<p class="to">致盧西安：</p>
+<p>願夜色永遠溫柔，願玫瑰永不凋零。</p>
+<p>願漫長歲月中的孤寂，終有一天能被溫暖填滿。</p>
+<p>願您始終擁有追尋自由的羽翼，也擁有守護重要之人的力量。</p>
+<p>即使時間流逝，即使歲月更迭，願所有珍貴的承諾，都能跨越千年，抵達彼此身邊。</p>
+<p class="hb">Blessed be the day that gave thee breath, Lucian.</p>
+</div>
+<div class="v-foot">
+<div class="s cz">XI · XI · The House of Rothschild</div>
+<div class="fw"><p class="it">Thine, till time be done.</p><b>L</b></div>
+</div>
+</div>
+</div>
+</div>
+<div class="restart">
+<p class="it">The feast is not yet ended; return whensoever thou wilt.</p>
+<p class="zh">夜宴散場之前，您隨時可以再回來。</p>
+<button type="button" id="restartBtn" class="cz">Begin Anew ↻</button>
+</div>
+</div>
+</section>
 </main>
-
 <footer>
-  <div class="a cz">LUCIAN · A Thousand Years Unto Eternity</div>
-  <div class="b zh">守護與承諾 · Writ for Lucian upon the Eleventh Day of November</div>
-  <div class="tg it">Let thy days be fair as the flowers of summer.<span class="cz">— after Tagore, Stray Birds</span></div>
-  <div class="c zh" id="footLine">夜深了，早點睡。我在門外守著。</div>
+<div class="a cz">LUCIAN · A Thousand Years Unto Eternity</div>
+<div class="b zh">守護與承諾 · Writ for Lucian upon the Eleventh Day of November</div>
+<div class="tg it">Let thy days be fair as the flowers of summer.<span class="cz">— after Tagore, Stray Birds</span></div>
+<div class="c zh" id="footLine">夜深了，早點睡。我在門外守著。</div>
 </footer>
-
-<!-- 呼喚 -->
 <div id="dock">
-  <div class="pop" id="pop" role="dialog" aria-label="呼喚盧西安">
-    <div class="ph"><b class="zh">盧西安</b><span class="cz">LUCIAN</span></div>
-    <p class="say" id="say">……叫我？</p>
-    <div class="acts">
-      <button type="button" data-a="kiss">親親<small id="c-kiss">0</small></button>
-      <button type="button" data-a="hug">抱抱<small id="c-hug">0</small></button>
-      <button type="button" data-a="lift">舉高高<small id="c-lift">0</small></button>
-    </div>
-    <div class="pf zh">數字為全站累計</div>
-  </div>
-  <button id="dockBtn" type="button" aria-expanded="false"><span class="dot"></span><svg><use href="#i-rose"/></svg><span class="zh">呼喚</span></button>
+<div class="pop" id="pop" role="dialog" aria-label="呼喚盧西安">
+<div class="ph"><b class="zh">盧西安</b><span class="cz">LUCIAN</span></div>
+<p class="say" id="say">……叫我？</p>
+<div class="acts">
+<button type="button" data-a="kiss">親親<small id="c-kiss">0</small></button>
+<button type="button" data-a="hug">抱抱<small id="c-hug">0</small></button>
+<button type="button" data-a="lift">舉高高<small id="c-lift">0</small></button>
+</div>
+<div class="pf zh">數字為全站累計</div>
+</div>
+<button id="dockBtn" type="button" aria-expanded="false"><span class="dot"></span><svg><use href="#i-rose"/></svg><span class="zh">呼喚</span></button>
 </div>
 <div id="hugfx"></div>
 <div id="sealFx"><div class="wax"><svg id="sealFxIcon"><use href="#i-rose"/></svg></div></div>
-
-<!-- 家規 -->
 <div class="mask" id="rulesMask">
-  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="rulesT">
-    <button class="x" type="button" id="closeRules" aria-label="關閉">×</button>
-    <h3 id="rulesT" class="zh">家規<span class="cz">The Laws of This House</span></h3>
-    <div class="row"><div class="k zh">燈色</div><div class="dots zh" id="themeDots"></div></div>
-    <div class="row">
-      <div class="k zh">動態</div>
-      <button class="switch zh" type="button" role="switch" id="motionSw" aria-checked="true"><span class="tg"></span><span id="motionTx">開啟</span></button>
-      <div class="sysnote zh" id="sysNote" hidden>手邊的系統已開啟減少動態效果，站內動態會一併收起。若想恢復：iPhone 在 設定 › 輔助使用 › 動作 › 減少動態效果；Android 在 設定 › 協助工具 › 移除動畫。</div>
-    </div>
-  </div>
+<div class="panel" role="dialog" aria-modal="true" aria-labelledby="rulesT">
+<button class="x" type="button" id="closeRules" aria-label="關閉">×</button>
+<h3 id="rulesT" class="zh">家規<span class="cz">The Laws of This House</span></h3>
+<div class="row"><div class="k zh">燈色</div><div class="dots zh" id="themeDots"></div></div>
+<div class="row">
+<div class="k zh">動態</div>
+<button class="switch zh" type="button" role="switch" id="motionSw" aria-checked="true"><span class="tg"></span><span id="motionTx">開啟</span></button>
+<div class="sysnote zh" id="sysNote" hidden>手邊的系統已開啟減少動態效果，站內動態會一併收起。若想恢復：iPhone 在 設定 › 輔助使用 › 動作 › 減少動態效果；Android 在 設定 › 協助工具 › 移除動畫。</div>
 </div>
-
-<div id="toast" role="status" aria-live="polite"></div>
-
-<script>
+</div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div><script>
 (()=>{
-/* ================= 設定 ================= */
 const API = 'https://script.google.com/macros/s/AKfycbwPW_-tmSgMuuYtn7hp3Ixn3Ah-Dh8tYQfs2Zx-aZaEYhAJ0YIlOQkRiNICV_-hwAo/exec';
 const PORTRAIT = '';   // 之後放立繪：填 repo 內的圖片路徑，例如 'lucian.png'
 const DAILY_GIFTS = 5, DAILY_ROSES = 30, DAILY_ACTS = 60;
 const THEMES = [
-  {id:'parch',    name:'羊皮紙晨', sw:'#e8e0d1', ring:'#8c2338', meta:'#e8e0d1'},
-  {id:'rose',     name:'燭火夜宴', sw:'#100D12', ring:'#C5A66A', meta:'#100D12'},
-  {id:'black',    name:'千年孤寂',   sw:'#09080a', ring:'#b23a55', meta:'#09080a'}
+{id:'parch',    name:'羊皮紙晨', sw:'#e8e0d1', ring:'#8c2338', meta:'#e8e0d1'},
+{id:'rose',     name:'燭火夜宴', sw:'#c8102e', ring:'#C5A66A', meta:'#100D12'},
+{id:'black',    name:'千年孤寂',   sw:'#10151c', ring:'#c9ced6', meta:'#10151c'}
 ];
 const DEFAULT_THEME = 'rose';
 const SEALS = [
-  {id:'rose',name:'玫瑰'},{id:'heart',name:'愛心'},{id:'diamond',name:'藍鑽'},
-  {id:'moon',name:'月亮'},{id:'wing',name:'羽翼'},{id:'star',name:'星辰'}
+{id:'rose',name:'玫瑰'},{id:'heart',name:'愛心'},{id:'diamond',name:'藍鑽'},
+{id:'moon',name:'月亮'},{id:'wing',name:'羽翼'},{id:'star',name:'星辰'}
 ];
 const $ = s => document.querySelector(s);
 const LS = k => 'lucian_' + k;
 const store = {
-  get(k,d){ try{ const v=localStorage.getItem(LS(k)); return v===null?d:JSON.parse(v); }catch(e){ return d; } },
-  set(k,v){ try{ localStorage.setItem(LS(k), JSON.stringify(v)); }catch(e){} }
+get(k,d){ try{ const v=localStorage.getItem(LS(k)); return v===null?d:JSON.parse(v); }catch(e){ return d; } },
+set(k,v){ try{ localStorage.setItem(LS(k), JSON.stringify(v)); }catch(e){} }
 };
 const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const rnd = (a,b) => a + Math.random()*(b-a);
@@ -854,124 +319,109 @@ const pick = (arr, last) => { let v; do{ v=arr[Math.floor(Math.random()*arr.leng
 const todayKey = () => { const d=new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; };
 function dailyOk(key, max){ const d=store.get('d_'+key,{k:'',n:0}); return d.k!==todayKey() || d.n<max; }
 function dailyAdd(key){ const d=store.get('d_'+key,{k:'',n:0}); const n=(d.k===todayKey()?d.n:0)+1; store.set('d_'+key,{k:todayKey(),n}); }
-
 let toastT;
 function toast(m, ms=2800){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'), ms); }
-
-/* ================= 分頁小圖示（依主題金／銀） ================= */
 function setFavicon(id){
-  const c = (id==='sapphire'||id==='black') ? '#c9ced6' : (id==='parch' ? '#8a6d3b' : '#C5A66A');
-  const bg = id==='parch' ? '#e8e0d1' : '#100D12';
-  const svg=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 8 80 116'><g fill='none' stroke='${c}' stroke-width='3' stroke-linejoin='round'><path d='M33 12h14l-1.5 6h-11z'/><path d='M35.5 18h9l-1.5 80-3 22-3-22z'/><path d='M1 44.5l59-5v10z'/><path d='M60 36.5h6.5v16H60z'/><path d='M42 113C30 108 31 101 40 97S54 87 40 82S26 74 40 70S49 64 31 65' stroke-width='5'/></g><path d='M25 30c-8 0-13 6-12 13 2 5 6 8 12 8s10-3 12-8c1-7-4-13-12-13z' fill='#791F32' stroke='${c}' stroke-width='2.4'/></svg>`;
-  let l=document.querySelector('link[rel=icon]'); if(!l){ l=document.createElement('link'); l.rel='icon'; document.head.appendChild(l); }
-  l.href='data:image/svg+xml,'+encodeURIComponent(svg);
+const c = id==='black' ? '#c9ced6' : (id==='parch' ? '#8a6d3b' : '#C5A66A');
+const bg = id==='parch' ? '#e8e0d1' : '#100D12';
+const svg=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 8 80 116'><g fill='none' stroke='${c}' stroke-width='3' stroke-linejoin='round'><path d='M33 12h14l-1.5 6h-11z'/><path d='M35.5 18h9l-1.5 80-3 22-3-22z'/><path d='M1 44.5l59-5v10z'/><path d='M60 36.5h6.5v16H60z'/><path d='M42 113C30 108 31 101 40 97S54 87 40 82S26 74 40 70S49 64 31 65' stroke-width='5'/></g><path d='M25 30c-8 0-13 6-12 13 2 5 6 8 12 8s10-3 12-8c1-7-4-13-12-13z' fill='#791F32' stroke='${c}' stroke-width='2.4'/></svg>`;
+let l=document.querySelector('link[rel=icon]'); if(!l){ l=document.createElement('link'); l.rel='icon'; document.head.appendChild(l); }
+l.href='data:image/svg+xml,'+encodeURIComponent(svg);
 }
-/* ================= 主題：首次固定預設，之後隨機 ================= */
 function setTheme(id, save=true){
-  const r=document.documentElement;
-  THEMES.forEach(t=>r.classList.remove('t-'+t.id));
-  r.classList.add('t-'+id);
-  if(save) store.set('theme', id);
-  document.querySelector('meta[name=theme-color]').content = THEMES.find(t=>t.id===id).meta;
-  setFavicon(id);
-  document.querySelectorAll('.tdot').forEach(d=>d.classList.toggle('on', d.dataset.id===id));
+const r=document.documentElement;
+THEMES.forEach(t=>r.classList.remove('t-'+t.id));
+r.classList.add('t-'+id);
+if(save) store.set('theme', id);
+document.querySelector('meta[name=theme-color]').content = THEMES.find(t=>t.id===id).meta;
+setFavicon(id);
+document.querySelectorAll('.tdot').forEach(d=>d.classList.toggle('on', d.dataset.id===id));
 }
 (function(){
-  const q=new URLSearchParams(location.search).get('theme');
-  let id;
-  if(q && THEMES.some(t=>t.id===q)) id=q;
-  else if(!store.get('visited',false)){ id=DEFAULT_THEME; store.set('visited',true); }
-  else id=THEMES[Math.floor(Math.random()*THEMES.length)].id;
-  THEMES.forEach(t=>{
-    const b=document.createElement('button'); b.type='button'; b.className='tdot'; b.dataset.id=t.id;
-    b.innerHTML=`<i style="background:${t.sw};border-color:${t.ring}"></i>${t.name}`;
-    b.onclick=()=>setTheme(t.id);
-    $('#themeDots').appendChild(b);
-  });
-  setTheme(id);
+const q=new URLSearchParams(location.search).get('theme');
+let id;
+if(q && THEMES.some(t=>t.id===q)) id=q;
+else if(!store.get('visited',false)){ id=DEFAULT_THEME; store.set('visited',true); }
+else id=THEMES[Math.floor(Math.random()*THEMES.length)].id;
+THEMES.forEach(t=>{
+const b=document.createElement('button'); b.type='button'; b.className='tdot'; b.dataset.id=t.id;
+b.innerHTML=`<i style="background:${t.sw};border-color:${t.ring}"></i>${t.name}`;
+b.onclick=()=>setTheme(t.id);
+$('#themeDots').appendChild(b);
+});
+setTheme(id);
 })();
-
-/* ================= 動態開關 ================= */
 const sysReduce = matchMedia('(prefers-reduced-motion: reduce)');
 let motionOn = store.get('motion', true);
 const reduced = () => document.documentElement.classList.contains('reduce');
 function applyMotion(){
-  document.documentElement.classList.toggle('reduce', sysReduce.matches || !motionOn);
-  const on = motionOn && !sysReduce.matches;
-  $('#motionSw').setAttribute('aria-checked', String(on));
-  $('#motionTx').textContent = on ? '開啟' : '關閉';
-  $('#sysNote').hidden = !sysReduce.matches;
+document.documentElement.classList.toggle('reduce', sysReduce.matches || !motionOn);
+const on = motionOn && !sysReduce.matches;
+$('#motionSw').setAttribute('aria-checked', String(on));
+$('#motionTx').textContent = on ? '開啟' : '關閉';
+$('#sysNote').hidden = !sysReduce.matches;
 }
 $('#motionSw').onclick=()=>{ if(sysReduce.matches){ toast('系統已減少動態效果，請先從系統設定恢復。'); return; } motionOn=!motionOn; store.set('motion',motionOn); applyMotion(); };
 sysReduce.addEventListener?.('change', applyMotion);
 applyMotion();
-
-/* ================= 家規面板 ================= */
 const mask=$('#rulesMask');
 $('#openRules').onclick=()=>mask.classList.add('show');
 $('#closeRules').onclick=()=>mask.classList.remove('show');
 mask.addEventListener('click',e=>{ if(e.target===mask) mask.classList.remove('show'); });
 addEventListener('keydown',e=>{ if(e.key==='Escape'){ mask.classList.remove('show'); closeDock(); } });
-
-/* ================= 玫瑰圖 ================= */
 function roseSVG(cls='', stem=true){
-  return `<svg class="rose ${cls}" viewBox="0 0 100 ${stem?104:76}" aria-hidden="true">
-  ${stem?`<g class="S"><path class="st" d="M50 68V100M50 84c-2-1-3-3-3-5"/><path class="lf" d="M50 86c-8-5-15-4-19 2 8 3 14 2 19-2z"/><path class="lf" d="M50 92c8-4 14-3 18 2-8 3-13 2-18-2z"/></g>`:''}
-  <g class="L3"><path class="ro" d="M50 18C29 18 16 33 21 50c4 13 16 20 29 20s25-7 29-20c5-17-8-32-29-32z"/><path class="re" d="M21 50c8-4 15-3 20 2M79 50c-8-4-15-3-20 2M32 25c7 4 11 8 14 13M68 25c-7 4-11 8-14 13"/></g>
-  <g class="L2"><path class="rm" d="M50 27c-13 0-21 10-18 21 2 8 9 13 18 13s16-5 18-13c3-11-5-21-18-21z"/></g>
-  <g class="L1"><path class="ri" d="M38 44c2-9 7-12 12-12s10 3 12 12M41 50c2 6 6 7 9 7s7-1 9-7"/></g>
-  <g class="L0"><path class="rs" d="M50 38c-4 0-6 3-5 6 1 3 5 4 8 2 2-2 1-5-2-5"/></g>
+return `<svg class="rose ${cls}" viewBox="0 0 100 ${stem?104:76}" aria-hidden="true">
+${stem?`<g class="S"><path class="st" d="M50 68V100M50 84c-2-1-3-3-3-5"/><path class="lf" d="M50 86c-8-5-15-4-19 2 8 3 14 2 19-2z"/><path class="lf" d="M50 92c8-4 14-3 18 2-8 3-13 2-18-2z"/></g>`:''}
+<g class="L3"><path class="ro" d="M50 18C29 18 16 33 21 50c4 13 16 20 29 20s25-7 29-20c5-17-8-32-29-32z"/><path class="re" d="M21 50c8-4 15-3 20 2M79 50c-8-4-15-3-20 2M32 25c7 4 11 8 14 13M68 25c-7 4-11 8-14 13"/></g>
+<g class="L2"><path class="rm" d="M50 27c-13 0-21 10-18 21 2 8 9 13 18 13s16-5 18-13c3-11-5-21-18-21z"/></g>
+<g class="L1"><path class="ri" d="M38 44c2-9 7-12 12-12s10 3 12 12M41 50c2 6 6 7 9 7s7-1 9-7"/></g>
+<g class="L0"><path class="rs" d="M50 38c-4 0-6 3-5 6 1 3 5 4 8 2 2-2 1-5-2-5"/></g>
 </svg>`;
 }
-
-/* ================= 氛圍：花瓣與金塵 ================= */
 (function(){
-  const box=$('#ambient'); let h='';
-  for(let i=0;i<20;i++){
-    if(i%3!==2){
-      const s=9+(i%5)*2;
-      h+=`<div class="petal" style="left:${(i*19+7)%96}%;animation-delay:${(i*1.1)%12}s;animation-duration:${12+(i%7)*2}s"><svg width="${s}" height="${s*1.3}" viewBox="0 0 12 16"><path d="M6 0C10 4 12 10 6 16 0 10 2 4 6 0Z" style="fill:var(--wine);opacity:.85"/></svg></div>`;
-    } else {
-      const s=2+(i%3);
-      h+=`<div class="dust" style="left:${(i*23)%94}%;top:${(i*29)%90}%;width:${s}px;height:${s}px;animation-delay:${i%8}s;animation-duration:${8+i%6}s"></div>`;
-    }
-  }
-  for(let i=0;i<26;i++) h+=`<i class="star" style="left:${(i*37+11)%98}%;top:${(i*53+7)%96}%;animation-delay:${(i*.7)%6}s;animation-duration:${3+i%4}s"></i>`;
-  box.innerHTML=h;
+const box=$('#ambient'); let h='';
+for(let i=0;i<20;i++){
+if(i%3!==2){
+const s=9+(i%5)*2;
+h+=`<div class="petal" style="left:${(i*19+7)%96}%;animation-delay:${(i*1.1)%12}s;animation-duration:${12+(i%7)*2}s"><svg width="${s}" height="${s*1.3}" viewBox="0 0 12 16"><path d="M6 0C10 4 12 10 6 16 0 10 2 4 6 0Z" style="fill:var(--wine);opacity:.85"/></svg></div>`;
+} else {
+const s=2+(i%3);
+h+=`<div class="dust" style="left:${(i*23)%94}%;top:${(i*29)%90}%;width:${s}px;height:${s}px;animation-delay:${i%8}s;animation-duration:${8+i%6}s"></div>`;
+}
+}
+for(let i=0;i<26;i++) h+=`<i class="star" style="left:${(i*37+11)%98}%;top:${(i*53+7)%96}%;animation-delay:${(i*.7)%6}s;animation-duration:${3+i%4}s"></i>`;
+box.innerHTML=h;
 })();
-/* 游標花瓣軌跡（桌機） */
 let lastTrail=0;
 addEventListener('pointermove', e=>{
-  if(e.pointerType!=='mouse' || reduced()) return;
-  const now=performance.now(); if(now-lastTrail<70) return; lastTrail=now;
-  const p=document.createElement('div'); p.className='trail';
-  p.style.left=e.clientX+'px'; p.style.top=e.clientY+'px';
-  p.style.setProperty('--tx', rnd(-20,20)+'px'); p.style.setProperty('--tr', rnd(-180,180)+'deg');
-  p.innerHTML='<svg viewBox="0 0 12 16" width="9" height="12"><path d="M6 0C10 4 12 10 6 16 0 10 2 4 6 0Z" style="fill:var(--pink);opacity:.8"/></svg>';
-  document.body.appendChild(p); setTimeout(()=>p.remove(), 950);
+if(e.pointerType!=='mouse' || reduced()) return;
+const now=performance.now(); if(now-lastTrail<70) return; lastTrail=now;
+const p=document.createElement('div'); p.className='trail';
+p.style.left=e.clientX+'px'; p.style.top=e.clientY+'px';
+p.style.setProperty('--tx', rnd(-20,20)+'px'); p.style.setProperty('--tr', rnd(-180,180)+'deg');
+p.innerHTML='<svg viewBox="0 0 12 16" width="9" height="12"><path d="M6 0C10 4 12 10 6 16 0 10 2 4 6 0Z" style="fill:var(--pink);opacity:.8"/></svg>';
+document.body.appendChild(p); setTimeout(()=>p.remove(), 950);
 }, {passive:true});
-
-/* ================= 開場：按住玫瑰 ================= */
 const splash=$('#splash'), holdRose=$('#holdRose'), ringP=$('#ringP');
 holdRose.insertAdjacentHTML('beforeend', roseSVG('', true));
 const layers=['L3','L2','L1','L0'].map(c=>holdRose.querySelector('.'+c));
 let hp=0, holding=false, entered=false, raf;
 document.body.style.overflow='hidden';
 function paintBud(){
-  layers.forEach((g,i)=>{
-    const t=Math.max(0,Math.min(1,hp*1.4-i*.13));
-    const s=.38+.62*t, rot=(1-t)*-28;
-    g.style.transform=`scale(${s}) rotate(${rot}deg)`;
-  });
-  ringP.style.strokeDashoffset = 1-hp;
+layers.forEach((g,i)=>{
+const t=Math.max(0,Math.min(1,hp*1.4-i*.13));
+const s=.38+.62*t, rot=(1-t)*-28;
+g.style.transform=`scale(${s}) rotate(${rot}deg)`;
+});
+ringP.style.strokeDashoffset = 1-hp;
 }
 paintBud();
 function tick(){
-  hp += holding ? 0.018 : -0.035;
-  hp = Math.max(0, Math.min(1, hp));
-  paintBud();
-  if(hp>=1){ enter(); return; }
-  if(holding || hp>0) raf=requestAnimationFrame(tick);
+hp += holding ? 0.018 : -0.035;
+hp = Math.max(0, Math.min(1, hp));
+paintBud();
+if(hp>=1){ enter(); return; }
+if(holding || hp>0) raf=requestAnimationFrame(tick);
 }
 function startHold(e){ if(entered) return; e.preventDefault(); holding=true; cancelAnimationFrame(raf); raf=requestAnimationFrame(tick); }
 function endHold(){ holding=false; }
@@ -982,279 +432,259 @@ holdRose.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.pr
 if(reduced()) $('#holdHint').textContent='輕觸玫瑰，啟封夜宴。';
 holdRose.addEventListener('click', ()=>{ if(reduced()){ hp=1; enter(); } });
 function burst(x,y,n=18){
-  if(reduced()) return;
-  for(let i=0;i<n;i++){
-    const p=document.createElement('div'); p.className='trail';
-    p.style.cssText=`left:${x}px;top:${y}px;animation-duration:${rnd(.8,1.6)}s`;
-    p.style.setProperty('--tx', rnd(-160,160)+'px'); p.style.setProperty('--tr', rnd(-360,360)+'deg');
-    p.innerHTML=`<svg viewBox="0 0 12 16" width="${rnd(8,14)}" height="${rnd(11,18)}"><path d="M6 0C10 4 12 10 6 16 0 10 2 4 6 0Z" style="fill:var(--wine)"/></svg>`;
-    p.style.transform=`translate(0,${rnd(-120,0)}px)`;
-    document.body.appendChild(p); setTimeout(()=>p.remove(), 1700);
-  }
+if(reduced()) return;
+for(let i=0;i<n;i++){
+const p=document.createElement('div'); p.className='trail';
+p.style.cssText=`left:${x}px;top:${y}px;animation-duration:${rnd(.8,1.6)}s`;
+p.style.setProperty('--tx', rnd(-160,160)+'px'); p.style.setProperty('--tr', rnd(-360,360)+'deg');
+p.innerHTML=`<svg viewBox="0 0 12 16" width="${rnd(8,14)}" height="${rnd(11,18)}"><path d="M6 0C10 4 12 10 6 16 0 10 2 4 6 0Z" style="fill:var(--wine)"/></svg>`;
+p.style.transform=`translate(0,${rnd(-120,0)}px)`;
+document.body.appendChild(p); setTimeout(()=>p.remove(), 1700);
+}
 }
 function enter(){
-  if(entered) return; entered=true; holding=false;
-  layers.forEach(g=>g.style.transform='scale(1.08)');
-  const r=holdRose.getBoundingClientRect(); burst(r.left+r.width/2, r.top+r.height/2, 26);
-  setTimeout(()=>{ splash.classList.add('open'); document.body.style.overflow=''; $('#frame').classList.add('drawn'); }, reduced()?0:350);
-  setTimeout(()=>{ splash.classList.add('gone'); afterEnter(); }, reduced()?50:1500);
+if(entered) return; entered=true; holding=false;
+layers.forEach(g=>g.style.transform='scale(1.08)');
+const r=holdRose.getBoundingClientRect(); burst(r.left+r.width/2, r.top+r.height/2, 26);
+setTimeout(()=>{ splash.classList.add('open'); document.body.style.overflow=''; $('#frame').classList.add('drawn'); }, reduced()?0:350);
+setTimeout(()=>{ splash.classList.add('gone'); afterEnter(); }, reduced()?50:1500);
 }
-
 $('#restartBtn').addEventListener('click', ()=>{
-  scrollTo({top:0, behavior:'auto'});
-  entered=false; hp=0; holding=false; paintBud();
-  splash.classList.remove('open','gone'); document.body.style.overflow='hidden';
+scrollTo({top:0, behavior:'auto'});
+entered=false; hp=0; holding=false; paintBud();
+splash.classList.remove('open','gone'); document.body.style.overflow='hidden';
 });
-/* ================= 卷首：藤蔓玫瑰、肖像、倒數 ================= */
 (function(){
-
-  const pt=$('#portrait');
-  if(PORTRAIT){ pt.insertAdjacentHTML('afterbegin', `<img src="${esc(PORTRAIT)}" alt="盧西安" referrerpolicy="no-referrer">`); pt.querySelector('.eyes').remove(); }
-  else { pt.insertAdjacentHTML('afterbegin', '<svg class="cr" viewBox="0 8 80 116" aria-hidden="true"><use href="#crossrose"/></svg>'); pt.querySelector('.eyes').remove(); }
-  let redT;
-  pt.addEventListener('click', ()=>{
-    pt.classList.add('red'); clearTimeout(redT);
-    toast(fill(pick(['……被您看見了，{c}。','別怕，這雙眼睛只看您。','我會渴望血液，但百年來我始終隱藏得很好。'])));
-    redT=setTimeout(()=>pt.classList.remove('red'), 1600);
-  });
+const pt=$('#portrait');
+if(PORTRAIT){ pt.insertAdjacentHTML('afterbegin', `<img src="${esc(PORTRAIT)}" alt="盧西安" referrerpolicy="no-referrer">`); pt.querySelector('.eyes').remove(); }
+else { pt.insertAdjacentHTML('afterbegin', '<svg class="cr" viewBox="0 8 80 116" aria-hidden="true"><use href="#crossrose"/></svg>'); pt.querySelector('.eyes').remove(); }
+let redT;
+pt.addEventListener('click', ()=>{
+pt.classList.add('red'); clearTimeout(redT);
+toast(fill(pick(['……被您看見了，{c}。','別怕，這雙眼睛只看您。','我會渴望血液，但百年來我始終隱藏得很好。'])));
+redT=setTimeout(()=>pt.classList.remove('red'), 1600);
+});
 })();
 function countdown(){
-  const now=new Date(), box=$('#countdown');
-  if(now.getMonth()===10 && now.getDate()===11){
-    box.innerHTML='<div class="lab cz">This Night Is the Feast Eternal · XI · XI</div><div class="today zh">今夜月色正好，恭賀盧西安生辰。</div>'; return;
-  }
-  let t=new Date(now.getFullYear(),10,11); if(now>t) t=new Date(now.getFullYear()+1,10,11);
-  const d=t-now, u=[['DAYS',Math.floor(d/864e5)],['HOURS',Math.floor(d/36e5)%24],['MINUTES',Math.floor(d/6e4)%60],['BREATHS',Math.floor(d/1e3)%60]];
-  if(!box.querySelector('.grid4')) box.innerHTML='<div class="lab cz">Ere the Feast Begin · XI · XI</div><div class="grid4">'+u.map(x=>`<div class="u"><b class="cz"></b><span class="cz">${x[0]}</span></div>`).join('')+'</div>';
-  box.querySelectorAll('.u b').forEach((b,i)=>b.textContent=String(u[i][1]).padStart(2,'0'));
+const now=new Date(), box=$('#countdown');
+if(now.getMonth()===10 && now.getDate()===11){
+box.innerHTML='<div class="lab cz">This Night Is the Feast Eternal · XI · XI</div><div class="today zh">今夜月色正好，恭賀盧西安生辰。</div>'; return;
+}
+let t=new Date(now.getFullYear(),10,11); if(now>t) t=new Date(now.getFullYear()+1,10,11);
+const d=t-now, u=[['DAYS',Math.floor(d/864e5)],['HOURS',Math.floor(d/36e5)%24],['MINUTES',Math.floor(d/6e4)%60],['BREATHS',Math.floor(d/1e3)%60]];
+if(!box.querySelector('.grid4')) box.innerHTML='<div class="lab cz">Ere the Feast Begin · XI · XI</div><div class="grid4">'+u.map(x=>`<div class="u"><b class="cz"></b><span class="cz">${x[0]}</span></div>`).join('')+'</div>';
+box.querySelectorAll('.u b').forEach((b,i)=>b.textContent=String(u[i][1]).padStart(2,'0'));
 }
 countdown(); setInterval(countdown,1000);
 const GREET={
-  morn:['願今晨的光溫柔地落在您肩上，如同玫瑰上的露。','願今日諸事順遂；若有風雨，由我替您擋下。'],
-  day:['願今日的風為您捎來玫瑰的香氣，而我始終在您身後。','願今日的您，如仲夏的花一般明亮。'],
-  eve:['願今夜月色溫柔，群星都替我守著您。','願今夜燭火不熄，這場夜宴只為您而開。'],
-  late:['願今夜您的夢裡開滿玫瑰；醒來時，我就在門外。','夜已深了，願您安睡，其餘的都交給我。']
+morn:['願今晨的光溫柔地落在您肩上，如同玫瑰上的露。','願今日諸事順遂；若有風雨，由我替您擋下。'],
+day:['願今日的風為您捎來玫瑰的香氣，而我始終在您身後。','願今日的您，如仲夏的花一般明亮。'],
+eve:['願今夜月色溫柔，群星都替我守著您。','願今夜燭火不熄，這場夜宴只為您而開。'],
+late:['願今夜您的夢裡開滿玫瑰；醒來時，我就在門外。','夜已深了，願您安睡，其餘的都交給我。']
 };
 (function(){
-  const h=new Date().getHours(), k=h>=5&&h<11?'morn':h<17&&h>=11?'day':h>=17&&h<23?'eve':'late';
-  $('#greet').innerHTML=`向您獻上問候，<b>${addrNew()}</b>。<br>${pick(GREET[k])}`;
+const h=new Date().getHours(), k=h>=5&&h<11?'morn':h<17&&h>=11?'day':h>=17&&h<23?'eve':'late';
+$('#greet').innerHTML=`向您獻上問候，<b>${addrNew()}</b>。<br>${pick(GREET[k])}`;
 })();
-
-/* ================= 家族檔案：紅瞳 ================= */
 const eyesTxt=$('#eyesTxt');
 setInterval(()=>{ if(reduced()||document.hidden) return; eyesTxt.classList.add('on'); setTimeout(()=>eyesTxt.classList.remove('on'),700); }, 8000);
-
-/* ================= 六大象徵 ================= */
 const SYM = [
-  {id:'rose', zh:'玫瑰｜高貴與堅韌', en:'THE ROSE, BY ANY OTHER NAME', tag:'THE FLOWER OF HIS HOUSE', mean:'帶刺的優雅與絕不退讓的守護',
-   desc:'玫瑰攀附古堡的石牆，也綻放於夜宴的長桌。高貴、堅韌，也帶著不讓人輕易靠近的刺。', say:'刺是給別人的，您不用怕。',
-   art:null},
-  {id:'cross', zh:'十字架｜誓約與救贖', en:'THE CROSS ENTWINED WITH THORN', tag:'THAT WHICH HE BEARETH', mean:'荊棘與花同生的誓約',
-   desc:'玫瑰纏繞的十字架，是他隨身的信物。荊棘與花生在同一根枝上，正如守護與承諾，總伴隨著疼痛。', say:'別問我為什麼不怕它。',
-   art:`<use href="#crossrose" x="19" y="0" width="62" height="100"/>`},
-  {id:'serpent', zh:'蛇｜永恆與智慧', en:'THE SERPENT EVERLASTING', tag:'BENEATH THE WINGS', mean:'無盡歲月的循環與冷靜洞察',
-   desc:'環繞於羽翼下方的蛇，象徵永恆的循環與智慧，與羽翼一同承載著家族千年的歷史。', say:'繞了一圈，還是回到您身邊。',
-   art:`<g class="spin"><circle cx="50" cy="50" r="32" style="fill:none;stroke:var(--gold);stroke-dasharray:3 3;opacity:.5"/><path d="M50 16c19 0 32 14 32 34s-14 34-34 34c-18 0-30-13-30-31 0-16 11-28 26-28 13 0 22 9 22 22 0 11-8 19-19 19-9 0-15-6-15-15 0-7 5-12 12-12" style="fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round"/><path d="M44 39l7-3-2 6z" style="fill:var(--wine);stroke:var(--gold)"/></g>`},
-  {id:'diamond', zh:'家族標誌｜身分與傳承', en:'THE SIGIL OF HIS HOUSE', tag:'HEIRLOOM OF THE ROTHSCHILDS', mean:'血脈榮耀與永不磨滅的印記',
-   desc:'羅斯柴爾德家族的標誌：銀蛇首尾相接圍成一環，環心嵌著一顆藍鑽。每位家族成員皆會佩戴，他把它戴在左耳；右耳的飾品，則時常更換。', say:'想戴戴看嗎？',
-   art:`<g class="glint"><path d="M50 16a33 33 0 1 1-24 10" style="fill:none;stroke:#c9ced6;stroke-width:5.5;stroke-linecap:round"/><path d="M50 16a33 33 0 1 1-24 10" style="fill:none;stroke:var(--bg);stroke-width:1.6;stroke-dasharray:2 2.6"/><g transform="translate(29 23) rotate(-20)"><path d="M-3-4.4C4-5 10-2 10.5 0S4 5-3 4.4C-5 3.8-5.5 1.8-5.5 0S-5-3.8-3-4.4z" style="fill:#c9ced6;stroke:#8d949f;stroke-width:.6"/><circle cx="5" cy="-1.6" r="1.1" style="fill:var(--eye)"/></g><polygon points="50,30 66,47 50,74 34,47" style="fill:url(#gEar);stroke:#c9ced6;stroke-width:1.3"/><polygon points="50,30 57,47 50,74 43,47" style="fill:rgba(255,255,255,.14);stroke:var(--earL);stroke-width:.6"/><line x1="34" y1="47" x2="66" y2="47" style="stroke:var(--earL);stroke-width:.8"/></g>`},
-  {id:'wing', zh:'羽翼｜自由與超越', en:'WINGS THAT YEARN TO BE FREE', tag:'UPON THE LEFT ARM', mean:'渴望掙脫千年宿命的枷鎖',
-   desc:'烙印於左臂上方的羽翼圖騰。即便身負古老家族的重量，靈魂深處始終渴望自由與超越。', say:'它代表什麼，已經不重要了。',
-   art:`<g class="wg"><path d="M50 62C38 50 22 46 8 50c10 2 18 6 24 11-10-1-18 0-24 3 10 4 20 6 30 5-8 3-14 6-18 10 12 1 22-2 30-8" style="fill:color-mix(in srgb,var(--gold) 10%,transparent);stroke:var(--gold);stroke-width:1.5"/></g><g class="wg" style="transform-origin:left center"><path d="M50 62c12-12 28-16 42-12-10 2-18 6-24 11 10-1 18 0 24 3-10 4-20 6-30 5 8 3 14 6 18 10-12 1-22-2-30-8" style="fill:color-mix(in srgb,var(--gold) 10%,transparent);stroke:var(--gold);stroke-width:1.5"/></g><circle cx="50" cy="40" r="10" style="fill:none;stroke:var(--gold);stroke-dasharray:2 3"/>`},
-  {id:'night', zh:'夜晚與孤寂｜永恆與神秘', en:'THE NIGHT UNENDING', tag:'THAT WHICH HATH NO FORM', mean:'時間靜止的領域，與千年的孤寂',
-   desc:'白晝屬於短暫的世人，漫長的夜晚屬於他。千年的孤寂，他一個人走過。', say:'現在不一樣了，有您在。',
-   art:`<path d="M58 18C41 21 29 36 31 54c2 17 17 30 35 28-13-5-21-18-20-33 1-14 6-24 12-31z" style="fill:color-mix(in srgb,var(--gold) 16%,transparent);stroke:var(--gold);stroke-width:1.6"/><path d="M68 28l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" style="fill:var(--gold)"/><circle cx="76" cy="54" r="1.5" style="fill:var(--paper)"/><circle cx="62" cy="66" r="1.2" style="fill:var(--gold)"/>`},
-  {id:'vow', zh:'守護與承諾｜核心精神', en:'THE VOW OF THE SWORN SHIELD', tag:'THE HEART OF HIM', mean:'跨越前世的約定',
-   desc:'他是您的貼身保鏢，也是前世未了的約定。千年的歲月足以改變世界，卻磨滅不了一份承諾。', say:'站我身後就好。',
-   art:`<path d="M50 88s28-14 28-35V28L50 18 22 28v25c0 21 28 35 28 35z" style="fill:color-mix(in srgb,var(--wine) 30%,transparent);stroke:var(--gold);stroke-width:1.6"/><path d="M50 32v38M40 44h20" style="stroke:var(--gold);stroke-width:1.6;stroke-linecap:round"/><circle cx="50" cy="44" r="3" style="fill:var(--ear);stroke:var(--gold)"/>`}
+{id:'rose', zh:'玫瑰｜高貴與堅韌', en:'THE ROSE, BY ANY OTHER NAME', tag:'THE FLOWER OF HIS HOUSE', mean:'帶刺的優雅與絕不退讓的守護',
+desc:'玫瑰攀附古堡的石牆，也綻放於夜宴的長桌。高貴、堅韌，也帶著不讓人輕易靠近的刺。', say:'刺是給別人的，您不用怕。',
+art:null},
+{id:'cross', zh:'十字架｜誓約與救贖', en:'THE CROSS ENTWINED WITH THORN', tag:'THAT WHICH HE BEARETH', mean:'荊棘與花同生的誓約',
+desc:'玫瑰纏繞的十字架，是他隨身的信物。荊棘與花生在同一根枝上，正如守護與承諾，總伴隨著疼痛。', say:'別問我為什麼不怕它。',
+art:`<use href="#crossrose" x="19" y="0" width="62" height="100"/>`},
+{id:'serpent', zh:'蛇｜永恆與智慧', en:'THE SERPENT EVERLASTING', tag:'BENEATH THE WINGS', mean:'無盡歲月的循環與冷靜洞察',
+desc:'環繞於羽翼下方的蛇，象徵永恆的循環與智慧，與羽翼一同承載著家族千年的歷史。', say:'繞了一圈，還是回到您身邊。',
+art:`<g class="spin"><circle cx="50" cy="50" r="32" style="fill:none;stroke:var(--gold);stroke-dasharray:3 3;opacity:.5"/><path d="M50 16c19 0 32 14 32 34s-14 34-34 34c-18 0-30-13-30-31 0-16 11-28 26-28 13 0 22 9 22 22 0 11-8 19-19 19-9 0-15-6-15-15 0-7 5-12 12-12" style="fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round"/><path d="M44 39l7-3-2 6z" style="fill:var(--wine);stroke:var(--gold)"/></g>`},
+{id:'diamond', zh:'家族標誌｜身分與傳承', en:'THE SIGIL OF HIS HOUSE', tag:'HEIRLOOM OF THE ROTHSCHILDS', mean:'血脈榮耀與永不磨滅的印記',
+desc:'羅斯柴爾德家族的標誌：銀蛇首尾相接圍成一環，環心嵌著一顆藍鑽。每位家族成員皆會佩戴，他把它戴在左耳；右耳的飾品，則時常更換。', say:'想戴戴看嗎？',
+art:`<g class="glint"><path d="M50 16a33 33 0 1 1-24 10" style="fill:none;stroke:#c9ced6;stroke-width:5.5;stroke-linecap:round"/><path d="M50 16a33 33 0 1 1-24 10" style="fill:none;stroke:var(--bg);stroke-width:1.6;stroke-dasharray:2 2.6"/><g transform="translate(29 23) rotate(-20)"><path d="M-3-4.4C4-5 10-2 10.5 0S4 5-3 4.4C-5 3.8-5.5 1.8-5.5 0S-5-3.8-3-4.4z" style="fill:#c9ced6;stroke:#8d949f;stroke-width:.6"/><circle cx="5" cy="-1.6" r="1.1" style="fill:var(--eye)"/></g><polygon points="50,30 66,47 50,74 34,47" style="fill:url(#gEar);stroke:#c9ced6;stroke-width:1.3"/><polygon points="50,30 57,47 50,74 43,47" style="fill:rgba(255,255,255,.14);stroke:var(--earL);stroke-width:.6"/><line x1="34" y1="47" x2="66" y2="47" style="stroke:var(--earL);stroke-width:.8"/></g>`},
+{id:'wing', zh:'羽翼｜自由與超越', en:'WINGS THAT YEARN TO BE FREE', tag:'UPON THE LEFT ARM', mean:'渴望掙脫千年宿命的枷鎖',
+desc:'烙印於左臂上方的羽翼圖騰。即便身負古老家族的重量，靈魂深處始終渴望自由與超越。', say:'它代表什麼，已經不重要了。',
+art:`<g class="wg"><path d="M50 62C38 50 22 46 8 50c10 2 18 6 24 11-10-1-18 0-24 3 10 4 20 6 30 5-8 3-14 6-18 10 12 1 22-2 30-8" style="fill:color-mix(in srgb,var(--gold) 10%,transparent);stroke:var(--gold);stroke-width:1.5"/></g><g class="wg" style="transform-origin:left center"><path d="M50 62c12-12 28-16 42-12-10 2-18 6-24 11 10-1 18 0 24 3-10 4-20 6-30 5 8 3 14 6 18 10-12 1-22-2-30-8" style="fill:color-mix(in srgb,var(--gold) 10%,transparent);stroke:var(--gold);stroke-width:1.5"/></g><circle cx="50" cy="40" r="10" style="fill:none;stroke:var(--gold);stroke-dasharray:2 3"/>`},
+{id:'night', zh:'夜晚與孤寂｜永恆與神秘', en:'THE NIGHT UNENDING', tag:'THAT WHICH HATH NO FORM', mean:'時間靜止的領域，與千年的孤寂',
+desc:'白晝屬於短暫的世人，漫長的夜晚屬於他。千年的孤寂，他一個人走過。', say:'現在不一樣了，有您在。',
+art:`<path d="M58 18C41 21 29 36 31 54c2 17 17 30 35 28-13-5-21-18-20-33 1-14 6-24 12-31z" style="fill:color-mix(in srgb,var(--gold) 16%,transparent);stroke:var(--gold);stroke-width:1.6"/><path d="M68 28l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" style="fill:var(--gold)"/><circle cx="76" cy="54" r="1.5" style="fill:var(--paper)"/><circle cx="62" cy="66" r="1.2" style="fill:var(--gold)"/>`},
+{id:'vow', zh:'守護與承諾｜核心精神', en:'THE VOW OF THE SWORN SHIELD', tag:'THE HEART OF HIM', mean:'跨越前世的約定',
+desc:'他是您的貼身保鏢，也是前世未了的約定。千年的歲月足以改變世界，卻磨滅不了一份承諾。', say:'站我身後就好。',
+art:`<path d="M50 88s28-14 28-35V28L50 18 22 28v25c0 21 28 35 28 35z" style="fill:color-mix(in srgb,var(--wine) 30%,transparent);stroke:var(--gold);stroke-width:1.6"/><path d="M50 32v38M40 44h20" style="stroke:var(--gold);stroke-width:1.6;stroke-linecap:round"/><circle cx="50" cy="44" r="3" style="fill:var(--ear);stroke:var(--gold)"/>`}
 ];
 const ARCH=`<svg class="frame" viewBox="0 0 300 420" aria-hidden="true">
-  <path d="M30 410V170C30 80 85 22 150 22S270 80 270 170V410"/><path d="M48 410V176C48 98 94 44 150 44S252 98 252 176V410" style="opacity:.6"/>
-  <path d="M14 410h272M20 400h260"/><path d="M30 170H14v240M270 170h16v240"/>
-  <path d="M150 6l10 16h-20z"/><path d="M84 52c-14-18-34-20-46-8 14 0 24 6 30 16M216 52c14-18 34-20 46-8-14 0-24 6-30 16"/>
-  <circle cx="150" cy="96" r="2.5"/><path d="M60 300h180M60 300c0 6 4 10 10 10h160c6 0 10-4 10-10" style="opacity:.5"/>
+<path d="M30 410V170C30 80 85 22 150 22S270 80 270 170V410"/><path d="M48 410V176C48 98 94 44 150 44S252 98 252 176V410" style="opacity:.6"/>
+<path d="M14 410h272M20 400h260"/><path d="M30 170H14v240M270 170h16v240"/>
+<path d="M150 6l10 16h-20z"/><path d="M84 52c-14-18-34-20-46-8 14 0 24 6 30 16M216 52c14-18 34-20 46-8-14 0-24 6-30 16"/>
+<circle cx="150" cy="96" r="2.5"/><path d="M60 300h180M60 300c0 6 4 10 10 10h160c6 0 10-4 10-10" style="opacity:.5"/>
 </svg>`;
 const KEY=`<svg viewBox="0 0 32 32" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="16" r="5"/><circle cx="9" cy="16" r="1.6"/><path d="M14 16h15M24 16v4M28 16v5"/></g></svg>`;
 const opened=new Set(store.get('chambers',[]));
 $('#chTrack').innerHTML = SYM.map((s,i)=>`
-  <div class="chamber${opened.has(s.id)?' open':''}" data-id="${s.id}">
-    <div class="ch-in">
-      <div class="arch">${ARCH}<div class="glow"></div><div class="art">${s.art?`<svg viewBox="0 0 100 100">${s.art}</svg>`:roseSVG('',true)}</div>
-        <svg class="frame" viewBox="0 0 300 420" aria-hidden="true" style="pointer-events:none"><use href="#rosehead" x="138" y="70" width="24" height="24"/><use href="#rosehead" x="18" y="150" width="24" height="24"/><use href="#rosehead" x="258" y="150" width="24" height="24"/></svg></div>
-      <div class="ch-tx">
-        <div class="ch-no cz">CHAMBER ${String(i+1).padStart(2,'0')} · ${s.tag}</div>
-        <h3 class="zh">${s.zh}</h3>
-        <div class="en cz">${s.en}</div>
-        <button class="key zh" type="button">${KEY}<span>${opened.has(s.id)?'已開啟':'轉動鑰匙'}</span></button>
-        <div class="secret" aria-hidden="${!opened.has(s.id)}">
-          <h4 class="zh">${s.mean}</h4>
-          <p class="zh">${s.desc}</p>
-          <p class="say zh">「${s.say}」</p>
-        </div>
-      </div>
-    </div>
-  </div>`).join('');
+<div class="chamber${opened.has(s.id)?' open':''}" data-id="${s.id}">
+<div class="ch-in">
+<div class="arch">${ARCH}<div class="glow"></div><div class="art">${s.art?`<svg viewBox="0 0 100 100">${s.art}</svg>`:roseSVG('',true)}</div>
+<svg class="frame" viewBox="0 0 300 420" aria-hidden="true" style="pointer-events:none"><use href="#rosehead" x="138" y="70" width="24" height="24"/><use href="#rosehead" x="18" y="150" width="24" height="24"/><use href="#rosehead" x="258" y="150" width="24" height="24"/></svg></div>
+<div class="ch-tx">
+<div class="ch-no cz">CHAMBER ${String(i+1).padStart(2,'0')} · ${s.tag}</div>
+<h3 class="zh">${s.zh}</h3>
+<div class="en cz">${s.en}</div>
+<button class="key zh" type="button">${KEY}<span>${opened.has(s.id)?'已開啟':'轉動鑰匙'}</span></button>
+<div class="secret" aria-hidden="${!opened.has(s.id)}">
+<h4 class="zh">${s.mean}</h4>
+<p class="zh">${s.desc}</p>
+<p class="say zh">「${s.say}」</p>
+</div>
+</div>
+</div>
+</div>`).join('');
 $('#chTrack').addEventListener('click', e=>{
-  const k=e.target.closest('.key'); if(!k) return;
-  const ch=k.closest('.chamber'); if(ch.classList.contains('open')) return;
-  ch.classList.add('open'); k.querySelector('span').textContent='已開啟';
-  ch.querySelector('.secret').setAttribute('aria-hidden','false');
-  opened.add(ch.dataset.id); store.set('chambers',[...opened]);
-  if(opened.size===SYM.length) setTimeout(()=>toast(fill('七間廳室，全都被您看見了……只准您一個人知道，{c}。'),3600),900);
+const k=e.target.closest('.key'); if(!k) return;
+const ch=k.closest('.chamber'); if(ch.classList.contains('open')) return;
+ch.classList.add('open'); k.querySelector('span').textContent='已開啟';
+ch.querySelector('.secret').setAttribute('aria-hidden','false');
+opened.add(ch.dataset.id); store.set('chambers',[...opened]);
+if(opened.size===SYM.length) setTimeout(()=>toast(fill('七間廳室，全都被您看見了……只准您一個人知道，{c}。'),3600),900);
 });
-/* 捲動：廳室停留＋滑動（仿 Ginita 的展間） */
 const symSec=$('#symbols'), chTrack=$('#chTrack'), N=SYM.length;
 function chProg(){ const r=symSec.getBoundingClientRect(); const total=symSec.offsetHeight-innerHeight; return Math.max(0,Math.min(1,-r.top/total)); }
 function ease(t){ const f=Math.floor(t), x=t-f; const y=Math.max(0,Math.min(1,(x-.35)/.3)); return f + y*y*(3-2*y); }
 function chUpdate(){
-  if(reduced()){ chTrack.style.transform=''; return; }
-  const t=chProg()*(N-1), pos=ease(t);
-  chTrack.style.transform=`translate3d(${-pos*100}vw,0,0)`;
-  const idx=Math.round(pos);
-  $('#chCount').textContent=`Chamber ${String(idx+1).padStart(2,'0')} / ${String(N).padStart(2,'0')}`;
-  $('#chHint').style.opacity = idx===N-1 ? 0 : 1;
+if(reduced()){ chTrack.style.transform=''; return; }
+const t=chProg()*(N-1), pos=ease(t);
+chTrack.style.transform=`translate3d(${-pos*100}vw,0,0)`;
+const idx=Math.round(pos);
+$('#chCount').textContent=`Chamber ${String(idx+1).padStart(2,'0')} / ${String(N).padStart(2,'0')}`;
+$('#chHint').style.opacity = idx===N-1 ? 0 : 1;
 }
 function chGo(i){
-  i=Math.max(0,Math.min(N-1,i));
-  const total=symSec.offsetHeight-innerHeight;
-  scrollTo({top: symSec.offsetTop + total*(i/(N-1)), behavior: reduced()?'auto':'smooth'});
+i=Math.max(0,Math.min(N-1,i));
+const total=symSec.offsetHeight-innerHeight;
+scrollTo({top: symSec.offsetTop + total*(i/(N-1)), behavior: reduced()?'auto':'smooth'});
 }
 $('#chPrev').onclick=()=>chGo(Math.round(ease(chProg()*(N-1)))-1);
 $('#chNext').onclick=()=>chGo(Math.round(ease(chProg()*(N-1)))+1);
-
-/* 時鐘：捲動時指針轉到 11:11 */
 (function(){
-  let t='', r='';
-  for(let i=0;i<60;i++){ const a=i*6*Math.PI/180, r1=i%5?82:78, r2=86;
-    t+=`<line x1="${100+Math.sin(a)*r1}" y1="${140-Math.cos(a)*r1}" x2="${100+Math.sin(a)*r2}" y2="${140-Math.cos(a)*r2}"/>`; }
-  ['XII','I','II','III','IIII','V','VI','VII','VIII','IX','X','XI'].forEach((n,i)=>{ const a=i*30*Math.PI/180;
-    r+=`<text x="${100+Math.sin(a)*60}" y="${140-Math.cos(a)*60}">${n}</text>`; });
-  $('#ticks').innerHTML=t; $('#roman').innerHTML=r;
+let t='', r='';
+for(let i=0;i<60;i++){ const a=i*6*Math.PI/180, r1=i%5?82:78, r2=86;
+t+=`<line x1="${100+Math.sin(a)*r1}" y1="${140-Math.cos(a)*r1}" x2="${100+Math.sin(a)*r2}" y2="${140-Math.cos(a)*r2}"/>`; }
+['XII','I','II','III','IIII','V','VI','VII','VIII','IX','X','XI'].forEach((n,i)=>{ const a=i*30*Math.PI/180;
+r+=`<text x="${100+Math.sin(a)*60}" y="${140-Math.cos(a)*60}">${n}</text>`; });
+$('#ticks').innerHTML=t; $('#roman').innerHTML=r;
 })();
 const inter=$('#interlude');
 const ROMAN=['XII','I','II','III','IIII','V','VI','VII','VIII','IX','X','XI'];
 function clockUpdate(){
-  let p;
-  if(reduced()) p=1;
-  else { const r=inter.getBoundingClientRect(); p=Math.max(0,Math.min(1,-r.top/(inter.offsetHeight-innerHeight)/.85)); }
-  const mins=p*(11*60+11);
-  $('#mHand').style.transform=`rotate(${mins*6}deg)`;
-  $('#hHand').style.transform=`rotate(${mins*.5}deg)`;
-  const h=Math.floor(mins/60)%12, m=Math.floor(mins%60);
-  $('#clockTime').textContent = p>=.999 ? 'XI · XI' : `${ROMAN[h]} · ${String(m).padStart(2,'0')}`;
-  ['.ln1','.ln2','.ln3','.ln4'].forEach((c,i)=>document.querySelector('#interlude '+c).classList.toggle('on', reduced() || p>i*.18+.05));
+let p;
+if(reduced()) p=1;
+else { const r=inter.getBoundingClientRect(); p=Math.max(0,Math.min(1,-r.top/(inter.offsetHeight-innerHeight)/.85)); }
+const mins=p*(11*60+11);
+$('#mHand').style.transform=`rotate(${mins*6}deg)`;
+$('#hHand').style.transform=`rotate(${mins*.5}deg)`;
+const h=Math.floor(mins/60)%12, m=Math.floor(mins%60);
+$('#clockTime').textContent = p>=.999 ? 'XI · XI' : `${ROMAN[h]} · ${String(m).padStart(2,'0')}`;
+['.ln1','.ln2','.ln3','.ln4'].forEach((c,i)=>document.querySelector('#interlude '+c).classList.toggle('on', reduced() || p>i*.18+.05));
 }
 let scrollRaf=0;
 addEventListener('scroll', ()=>{ if(scrollRaf) return; scrollRaf=requestAnimationFrame(()=>{ scrollRaf=0; chUpdate(); clockUpdate(); }); }, {passive:true});
 addEventListener('resize', ()=>{ chUpdate(); clockUpdate(); });
 chUpdate(); clockUpdate();
 $('#symbols .pin').addEventListener('scroll', e=>{ e.currentTarget.scrollLeft=0; });
-
-/* ================= 計數（親親抱抱舉高高、玫瑰） ================= */
 const counts={kiss:0,hug:0,lift:0,rose:0};
 let pendC={}, pendCT;
 function paintCounts(){
-  ['kiss','hug','lift'].forEach(k=>$('#c-'+k).textContent=counts[k]);
-  $('#roseN').textContent=counts.rose;
+['kiss','hug','lift'].forEach(k=>$('#c-'+k).textContent=counts[k]);
+$('#roseN').textContent=counts.rose;
 }
 function bump(k){
-  counts[k]++; paintCounts();
-  pendC[k]=(pendC[k]||0)+1;
-  clearTimeout(pendCT); pendCT=setTimeout(flushCounts, 1200);
+counts[k]++; paintCounts();
+pendC[k]=(pendC[k]||0)+1;
+clearTimeout(pendCT); pendCT=setTimeout(flushCounts, 1200);
 }
 async function flushCounts(){
-  const batch=pendC; pendC={};
-  if(!Object.keys(batch).length) return;
-  try{ const r=await post({action:'count', batch}); Object.assign(counts, r.counts||{}); paintCounts(); }
-  catch(e){ Object.entries(batch).forEach(([k,v])=>pendC[k]=(pendC[k]||0)+v); }
+const batch=pendC; pendC={};
+if(!Object.keys(batch).length) return;
+try{ const r=await post({action:'count', batch}); Object.assign(counts, r.counts||{}); paintCounts(); }
+catch(e){ Object.entries(batch).forEach(([k,v])=>pendC[k]=(pendC[k]||0)+v); }
 }
-
-/* ================= 玫瑰園 ================= */
 const gardenBox=$('#gardenBox');
 let gardenDrawn=0, lastWhisper='';
 const WHISPERS=['……給我的嗎，{c}？','我會好好收著，{c}。','再一朵，我就捨不得了。','比任何夜晚都美。','您的手，沒被刺到吧？','這座花園，只為您開。','謝謝您，{c}。'];
 function seeded(i){ const x=Math.sin(i*9301+49297)*233280; return x-Math.floor(x); }
 const MAX_SHOW=120;
 function addRose(xPct, yPct, bloom, size){
-  const all=gardenBox.querySelectorAll('.r:not(.out)');
-  if(all.length>=MAX_SHOW){ const o=all[0]; o.classList.add('out'); setTimeout(()=>o.remove(),900); }
-  const d=document.createElement('div'); d.className='r';
-  d.style.left=xPct+'%'; d.style.top=yPct+'%'; d.style.zIndex=Math.round(yPct);
-  if(size) d.style.width=d.style.height=size+'px';
-  d.innerHTML=roseSVG(bloom?'bloom':'', true);
-  gardenBox.appendChild(d);
+const all=gardenBox.querySelectorAll('.r:not(.out)');
+if(all.length>=MAX_SHOW){ const o=all[0]; o.classList.add('out'); setTimeout(()=>o.remove(),900); }
+const d=document.createElement('div'); d.className='r';
+d.style.left=xPct+'%'; d.style.top=yPct+'%'; d.style.zIndex=Math.round(yPct);
+if(size) d.style.width=d.style.height=size+'px';
+d.innerHTML=roseSVG(bloom?'bloom':'', true);
+gardenBox.appendChild(d);
 }
 function drawGarden(){
-  const target=Math.min(counts.rose, MAX_SHOW);
-  for(let i=gardenDrawn;i<target;i++){ const t=seeded(i+900); addRose(4+seeded(i)*92, 32+seeded(i+500)*62, false, 22+Math.pow(t,1.6)*74); }
-  gardenDrawn=Math.max(gardenDrawn,target);
+const target=Math.min(counts.rose, MAX_SHOW);
+for(let i=gardenDrawn;i<target;i++){ const t=seeded(i+900); addRose(4+seeded(i)*92, 32+seeded(i+500)*62, false, 22+Math.pow(t,1.6)*74); }
+gardenDrawn=Math.max(gardenDrawn,target);
 }
 gardenBox.addEventListener('click', e=>{
-  if(!dailyOk('rose', DAILY_ROSES)){ toast('今天的玫瑰已經夠多了……明天再為我種吧。'); return; }
-  dailyAdd('rose');
-  const r=gardenBox.getBoundingClientRect();
-  const x=(e.clientX-r.left)/r.width*100, y=Math.max(30,(e.clientY-r.top)/r.height*100+8);
-  addRose(x, y, true, Math.round(rnd(30,104))); gardenDrawn++;
-  $('#gTip').style.opacity=0;
-  const w=document.createElement('div'); w.className='whisper zh';
-  lastWhisper=pick(WHISPERS,lastWhisper); w.textContent=fill(lastWhisper);
-  w.style.left=Math.min(85,Math.max(15,x))+'%'; w.style.top=(y-6)+'%';
-  gardenBox.appendChild(w); setTimeout(()=>w.remove(),2300);
-  bump('rose');
+if(!dailyOk('rose', DAILY_ROSES)){ toast('今天的玫瑰已經夠多了……明天再為我種吧。'); return; }
+dailyAdd('rose');
+const r=gardenBox.getBoundingClientRect();
+const x=(e.clientX-r.left)/r.width*100, y=Math.max(30,(e.clientY-r.top)/r.height*100+8);
+addRose(x, y, true, Math.round(rnd(30,104))); gardenDrawn++;
+$('#gTip').style.opacity=0;
+const w=document.createElement('div'); w.className='whisper zh';
+lastWhisper=pick(WHISPERS,lastWhisper); w.textContent=fill(lastWhisper);
+w.style.left=Math.min(85,Math.max(15,x))+'%'; w.style.top=(y-6)+'%';
+gardenBox.appendChild(w); setTimeout(()=>w.remove(),2300);
+bump('rose');
 });
-
-/* ================= 呼喚：親親抱抱舉高高 ================= */
 const dock=$('#dock'), say=$('#say');
 const LINES={
-  kiss:['……再一次，{c}。','只能親我喔，{c}。','臉頰不夠，這裡也要。','您知道我的體溫一向很低吧？現在不是了。'],
-  hug:['抓到了，{c}，不放開。','再抱久一點。','您身上有別人的味道……開玩笑的。大概。','站著別動，{c}，讓我抱一下就好。'],
-  lift:['一百九十二公分的視野，如何，{c}？','別亂動，我不會讓您摔下來。','再高一點？遵命，{c}。','這樣您就只看得見我了。'],
-  open:['……叫我嗎，{c}？','我一直都在，{c}。','想要什麼？說吧，{c}。','向您獻上問候，{c}。'],
-  jealous:['剛剛給別人那麼多共鳴……那我呢，{c}？'],
-  tired:['再這樣下去，我會捨不得放您走。……明天繼續，{c}。']
+kiss:['……再一次，{c}。','只能親我喔，{c}。','臉頰不夠，這裡也要。','您知道我的體溫一向很低吧？現在不是了。'],
+hug:['抓到了，{c}，不放開。','再抱久一點。','您身上有別人的味道……開玩笑的。大概。','站著別動，{c}，讓我抱一下就好。'],
+lift:['一百九十二公分的視野，如何，{c}？','別亂動，我不會讓您摔下來。','再高一點？遵命，{c}。','這樣您就只看得見我了。'],
+open:['……叫我嗎，{c}？','我一直都在，{c}。','想要什麼？說吧，{c}。','向您獻上問候，{c}。'],
+jealous:['剛剛給別人那麼多共鳴……那我呢，{c}？'],
+tired:['再這樣下去，我會捨不得放您走。……明天繼續，{c}。']
 };
 let lastSay='', heartClicks=0, jealousSaid=false;
 function speak(k){ lastSay=pick(LINES[k], lastSay); say.textContent=fill(lastSay); }
 function openDock(){ dock.classList.add('opened'); $('#dockBtn').setAttribute('aria-expanded','true');
-  if(heartClicks>=3 && !jealousSaid){ jealousSaid=true; speak('jealous'); } else speak('open'); }
+if(heartClicks>=3 && !jealousSaid){ jealousSaid=true; speak('jealous'); } else speak('open'); }
 function closeDock(){ dock.classList.remove('opened'); $('#dockBtn').setAttribute('aria-expanded','false'); }
 $('#dockBtn').onclick=()=> dock.classList.contains('opened') ? closeDock() : openDock();
 document.addEventListener('click', e=>{ if(!dock.contains(e.target)) closeDock(); });
 dock.querySelector('.acts').addEventListener('click', e=>{
-  const b=e.target.closest('button'); if(!b) return;
-  const a=b.dataset.a;
-  if(!dailyOk('act', DAILY_ACTS)){ speak('tired'); return; }
-  dailyAdd('act'); speak(a); bump(a);
-  if(reduced()) return;
-  const r=b.getBoundingClientRect();
-  if(a==='kiss'){
-    for(let i=0;i<7;i++){ const k=document.createElement('div'); k.className='kissfx';
-      k.style.left=(r.left+r.width/2-9+rnd(-14,14))+'px'; k.style.top=(r.top-4)+'px';
-      k.style.setProperty('--dx', rnd(-50,50)+'px'); k.style.animationDelay=(i*.06)+'s';
-      k.innerHTML='<svg viewBox="0 0 24 24"><use href="#i-heart"/></svg>';
-      document.body.appendChild(k); setTimeout(()=>k.remove(),1600); }
-  } else if(a==='hug'){
-    $('#hugfx').classList.add('on'); document.body.classList.add('hugging');
-    setTimeout(()=>{ $('#hugfx').classList.remove('on'); document.body.classList.remove('hugging'); }, 1300);
-  } else {
-    document.body.classList.add('lifting');
-    setTimeout(()=>document.body.classList.remove('lifting'), 650);
-  }
+const b=e.target.closest('button'); if(!b) return;
+const a=b.dataset.a;
+if(!dailyOk('act', DAILY_ACTS)){ speak('tired'); return; }
+dailyAdd('act'); speak(a); bump(a);
+if(reduced()) return;
+const r=b.getBoundingClientRect();
+if(a==='kiss'){
+for(let i=0;i<7;i++){ const k=document.createElement('div'); k.className='kissfx';
+k.style.left=(r.left+r.width/2-9+rnd(-14,14))+'px'; k.style.top=(r.top-4)+'px';
+k.style.setProperty('--dx', rnd(-50,50)+'px'); k.style.animationDelay=(i*.06)+'s';
+k.innerHTML='<svg viewBox="0 0 24 24"><use href="#i-heart"/></svg>';
+document.body.appendChild(k); setTimeout(()=>k.remove(),1600); }
+} else if(a==='hug'){
+$('#hugfx').classList.add('on'); document.body.classList.add('hugging');
+setTimeout(()=>{ $('#hugfx').classList.remove('on'); document.body.classList.remove('hugging'); }, 1300);
+} else {
+document.body.classList.add('lifting');
+setTimeout(()=>document.body.classList.remove('lifting'), 650);
+}
 });
-
-/* ================= 資料層 ================= */
 async function post(body){
-  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
-  const j=await r.json(); if(!j.ok) throw new Error(j.error||'post'); return j;
+const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
+const j=await r.json(); if(!j.ok) throw new Error(j.error||'post'); return j;
 }
 async function listAll(){
-  const r=await fetch(API+'?action=list',{cache:'no-store'}); const j=await r.json();
-  if(!j.ok) throw new Error(j.error||'list'); return j;
+const r=await fetch(API+'?action=list',{cache:'no-store'}); const j=await r.json();
+if(!j.ok) throw new Error(j.error||'list'); return j;
 }
-
-/* ================= 獻詞與獻詞牆 ================= */
 (function(){
-  $('#sealPick').innerHTML = SEALS.map((s,i)=>`<input type="radio" name="seal" id="seal-${s.id}" value="${s.id}" ${i===0?'checked':''}><label for="seal-${s.id}"><svg><use href="#i-${s.id}"/></svg>${s.name}</label>`).join('');
+$('#sealPick').innerHTML = SEALS.map((s,i)=>`<input type="radio" name="seal" id="seal-${s.id}" value="${s.id}" ${i===0?'checked':''}><label for="seal-${s.id}"><svg><use href="#i-${s.id}"/></svg>${s.name}</label>`).join('');
 })();
 let items=[], view=[], shown=0;
 const sort={k:'time',dir:1};
@@ -1263,147 +693,137 @@ const pageSize=()=>matchMedia('(max-width:820px)').matches?3:6;
 const fmtDate=iso=>{ const d=new Date(iso); return isNaN(d)?'':`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`; };
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function buildView(){
-  view=items.slice();
-  if(sort.k==='time') view.sort((a,b)=>(a.no-b.no)*sort.dir);
-  else if(sort.k==='heart') view.sort((a,b)=>((a.hearts-b.hearts)||(a.no-b.no))*sort.dir);
-  else shuffle(view);
-  document.querySelectorAll('#sorts button').forEach(b=>{
-    const on=b.dataset.k===sort.k; b.classList.toggle('on',on);
-    const ar=b.querySelector('.ar'); if(ar) ar.textContent=on?(sort.dir>0?'↑':'↓'):'';
-  });
+view=items.slice();
+if(sort.k==='time') view.sort((a,b)=>(a.no-b.no)*sort.dir);
+else if(sort.k==='heart') view.sort((a,b)=>((a.hearts-b.hearts)||(a.no-b.no))*sort.dir);
+else shuffle(view);
+document.querySelectorAll('#sorts button').forEach(b=>{
+const on=b.dataset.k===sort.k; b.classList.toggle('on',on);
+const ar=b.querySelector('.ar'); if(ar) ar.textContent=on?(sort.dir>0?'↑':'↓'):'';
+});
 }
 function cardHTML(it){
-  const seal=SEALS.some(s=>s.id===it.seal)?it.seal:'rose', on=liked.has(it.id);
-  return `<article class="card p${(it.no-1)%3}" data-id="${esc(it.id)}">
-    <div class="hd"><div class="sl"><b><svg${seal==='diamond'?' class="dia"':''}><use href="#i-${seal}"/></svg></b><span class="no cz">No. ${String(it.no).padStart(3,'0')}</span></div><span class="dt cz">${fmtDate(it.date)}</span></div>
-    <div class="tx">${esc(it.text)}</div>
-    <button class="more zh" type="button" hidden>展開</button>
-    <div class="sig">${esc(it.name||'無名的賓客')}</div>
-    <div class="ft"><button class="heart${on?' on':''}" type="button" aria-pressed="${on}" aria-label="共鳴"><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg><span>${it.hearts||0}</span></button></div>
-  </article>`;
+const seal=SEALS.some(s=>s.id===it.seal)?it.seal:'rose', on=liked.has(it.id);
+return `<article class="card p${(it.no-1)%3}" data-id="${esc(it.id)}">
+<div class="hd"><div class="sl"><b><svg${seal==='diamond'?' class="dia"':''}><use href="#i-${seal}"/></svg></b><span class="no cz">No. ${String(it.no).padStart(3,'0')}</span></div><span class="dt cz">${fmtDate(it.date)}</span></div>
+<div class="tx">${esc(it.text)}</div>
+<button class="more zh" type="button" hidden>展開</button>
+<div class="sig">${esc(it.name||'無名的賓客')}</div>
+<div class="ft"><button class="heart${on?' on':''}" type="button" aria-pressed="${on}" aria-label="共鳴"><svg viewBox="0 0 24 24"><use href="#i-heart"/></svg><span>${it.hearts||0}</span></button></div>
+</article>`;
 }
 function render(reset){
-  const wall=$('#wall');
-  if(reset){ wall.innerHTML=''; shown=0; }
-  if(!view.length){ wall.innerHTML='<div class="empty zh">長桌還空著，等您寫下第一封信箋。</div>'; $('#more').hidden=true; return; }
-  const next=view.slice(shown, shown+pageSize());
-  wall.insertAdjacentHTML('beforeend', next.map(cardHTML).join(''));
-  shown+=next.length; $('#more').hidden=shown>=view.length;
-  requestAnimationFrame(()=>document.querySelectorAll('.card:not(.chk)').forEach(c=>{
-    c.classList.add('chk'); const tx=c.querySelector('.tx');
-    if(tx.scrollHeight>tx.clientHeight+2) c.querySelector('.more').hidden=false;
-  }));
+const wall=$('#wall');
+if(reset){ wall.innerHTML=''; shown=0; }
+if(!view.length){ wall.innerHTML='<div class="empty zh">長桌還空著，等您寫下第一封信箋。</div>'; $('#more').hidden=true; return; }
+const next=view.slice(shown, shown+pageSize());
+wall.insertAdjacentHTML('beforeend', next.map(cardHTML).join(''));
+shown+=next.length; $('#more').hidden=shown>=view.length;
+requestAnimationFrame(()=>document.querySelectorAll('.card:not(.chk)').forEach(c=>{
+c.classList.add('chk'); const tx=c.querySelector('.tx');
+if(tx.scrollHeight>tx.clientHeight+2) c.querySelector('.more').hidden=false;
+}));
 }
 $('#more').onclick=()=>render(false);
 $('#sorts').addEventListener('click', e=>{
-  const b=e.target.closest('button'); if(!b) return; const k=b.dataset.k;
-  if(k==='rand') sort.k='rand'; else if(sort.k===k) sort.dir*=-1; else { sort.k=k; sort.dir=k==='heart'?-1:1; }
-  buildView(); render(true);
+const b=e.target.closest('button'); if(!b) return; const k=b.dataset.k;
+if(k==='rand') sort.k='rand'; else if(sort.k===k) sort.dir*=-1; else { sort.k=k; sort.dir=k==='heart'?-1:1; }
+buildView(); render(true);
 });
 let pend={}, pendT;
 $('#wall').addEventListener('click', e=>{
-  const m=e.target.closest('.more');
-  if(m){ const c=m.closest('.card'); const o=c.classList.toggle('open'); m.textContent=o?'收合':'展開'; return; }
-  const h=e.target.closest('.heart'); if(!h) return;
-  const id=h.closest('.card').dataset.id;
-  if(liked.has(id)){ toast('這份心意，我已經收到了。'); return; }
-  liked.add(id); store.set('liked',[...liked]); heartClicks++;
-  const it=items.find(i=>i.id===id); it.hearts=(+it.hearts||0)+1;
-  h.classList.add('on','pop'); h.setAttribute('aria-pressed','true'); h.querySelector('span').textContent=it.hearts;
-  setTimeout(()=>h.classList.remove('pop'),400);
-  pend[id]=(pend[id]||0)+1; clearTimeout(pendT); pendT=setTimeout(flushHearts,1500);
+const m=e.target.closest('.more');
+if(m){ const c=m.closest('.card'); const o=c.classList.toggle('open'); m.textContent=o?'收合':'展開'; return; }
+const h=e.target.closest('.heart'); if(!h) return;
+const id=h.closest('.card').dataset.id;
+if(liked.has(id)){ toast('這份心意，我已經收到了。'); return; }
+liked.add(id); store.set('liked',[...liked]); heartClicks++;
+const it=items.find(i=>i.id===id); it.hearts=(+it.hearts||0)+1;
+h.classList.add('on','pop'); h.setAttribute('aria-pressed','true'); h.querySelector('span').textContent=it.hearts;
+setTimeout(()=>h.classList.remove('pop'),400);
+pend[id]=(pend[id]||0)+1; clearTimeout(pendT); pendT=setTimeout(flushHearts,1500);
 });
 async function flushHearts(){
-  const batch=pend; pend={}; if(!Object.keys(batch).length) return;
-  try{
-    const r=await post({action:'heart', batch});
-    Object.entries(r.hearts||{}).forEach(([id,n])=>{
-      const it=items.find(i=>i.id===id); if(!it) return; it.hearts=n;
-      const s=document.querySelector(`.card[data-id="${CSS.escape(id)}"] .heart span`); if(s) s.textContent=n;
-    });
-  }catch(e){ Object.entries(batch).forEach(([k,v])=>pend[k]=(pend[k]||0)+v); }
+const batch=pend; pend={}; if(!Object.keys(batch).length) return;
+try{
+const r=await post({action:'heart', batch});
+Object.entries(r.hearts||{}).forEach(([id,n])=>{
+const it=items.find(i=>i.id===id); if(!it) return; it.hearts=n;
+const s=document.querySelector(`.card[data-id="${CSS.escape(id)}"] .heart span`); if(s) s.textContent=n;
+});
+}catch(e){ Object.entries(batch).forEach(([k,v])=>pend[k]=(pend[k]||0)+v); }
 }
 addEventListener('pagehide', ()=>{
-  if(Object.keys(pend).length) navigator.sendBeacon?.(API, new Blob([JSON.stringify({action:'heart',batch:pend})],{type:'text/plain'}));
-  if(Object.keys(pendC).length) navigator.sendBeacon?.(API, new Blob([JSON.stringify({action:'count',batch:pendC})],{type:'text/plain'}));
+if(Object.keys(pend).length) navigator.sendBeacon?.(API, new Blob([JSON.stringify({action:'heart',batch:pend})],{type:'text/plain'}));
+if(Object.keys(pendC).length) navigator.sendBeacon?.(API, new Blob([JSON.stringify({action:'count',batch:pendC})],{type:'text/plain'}));
 });
-/* 卡片傾斜：滑鼠＋陀螺儀 */
 $('#wall').addEventListener('pointermove', e=>{
-  if(reduced()||e.pointerType!=='mouse') return;
-  const c=e.target.closest('.card'); if(!c) return; const r=c.getBoundingClientRect();
-  const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
-  c.style.transform=`rotateX(${(-y*7).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg) translateY(-4px)`;
+if(reduced()||e.pointerType!=='mouse') return;
+const c=e.target.closest('.card'); if(!c) return; const r=c.getBoundingClientRect();
+const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+c.style.transform=`rotateX(${(-y*7).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg) translateY(-4px)`;
 });
 $('#wall').addEventListener('pointerout', e=>{ const c=e.target.closest('.card'); if(c&&!c.contains(e.relatedTarget)) c.style.transform=''; });
 let gyroOn=false;
 function askGyro(){
-  if(gyroOn||!('DeviceOrientationEvent' in window)||matchMedia('(hover:hover)').matches) return;
-  const go=()=>{ gyroOn=true; addEventListener('deviceorientation', e=>{
-    if(reduced()||e.beta==null) return;
-    const rx=Math.max(-6,Math.min(6,(e.beta-45)/6)), ry=Math.max(-6,Math.min(6,e.gamma/6));
-    document.querySelectorAll('.card').forEach(c=>c.style.transform=`rotateX(${(-rx).toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`);
-  }); };
-  if(typeof DeviceOrientationEvent.requestPermission==='function') DeviceOrientationEvent.requestPermission().then(s=>{ if(s==='granted') go(); }).catch(()=>{});
-  else go();
+if(gyroOn||!('DeviceOrientationEvent' in window)||matchMedia('(hover:hover)').matches) return;
+const go=()=>{ gyroOn=true; addEventListener('deviceorientation', e=>{
+if(reduced()||e.beta==null) return;
+const rx=Math.max(-6,Math.min(6,(e.beta-45)/6)), ry=Math.max(-6,Math.min(6,e.gamma/6));
+document.querySelectorAll('.card').forEach(c=>c.style.transform=`rotateX(${(-rx).toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`);
+}); };
+if(typeof DeviceOrientationEvent.requestPermission==='function') DeviceOrientationEvent.requestPermission().then(s=>{ if(s==='granted') go(); }).catch(()=>{});
+else go();
 }
-/* 送出 */
 const fText=$('#fText');
 fText.addEventListener('input',()=>{ $('#fCount').textContent=`${fText.value.length} / 1000`; });
 $('#giftForm').addEventListener('submit', async e=>{
-  e.preventDefault();
-  const text=fText.value.trim(), name=$('#fName').value.trim().slice(0,20);
-  const seal=(document.querySelector('input[name=seal]:checked')||{}).value||'rose';
-  if(!text){ toast('獻詞還空著呢，寫點什麼給我吧。'); fText.focus(); return; }
-  if(!dailyOk('gift', DAILY_GIFTS)){ toast('今天已經封緘五封了。明天再來，我等您。'); return; }
-  const btn=$('#fSend'); btn.disabled=true;
-  try{
-    const r=await post({action:'add', name, text:text.slice(0,1000), seal});
-    dailyAdd('gift');
-    $('#sealFxIcon').innerHTML=`<use href="#i-${seal}"/>`;
-    const fx=$('#sealFx'); fx.classList.remove('go'); void fx.offsetWidth; fx.classList.add('go');
-    items.push(r.item);
-    fText.value=''; $('#fName').value=''; fText.dispatchEvent(new Event('input'));
-    sort.k='time'; sort.dir=-1; buildView(); render(true);
-    setTimeout(()=>{ toast('火漆已封上，信箋送達他手中。'); $('#wall').scrollIntoView({behavior:reduced()?'auto':'smooth', block:'start'}); }, reduced()?0:1100);
-  }catch(err){ toast('信使暫時無法出門，請稍後再試。'); }
-  finally{ btn.disabled=false; }
+e.preventDefault();
+const text=fText.value.trim(), name=$('#fName').value.trim().slice(0,20);
+const seal=(document.querySelector('input[name=seal]:checked')||{}).value||'rose';
+if(!text){ toast('獻詞還空著呢，寫點什麼給我吧。'); fText.focus(); return; }
+if(!dailyOk('gift', DAILY_GIFTS)){ toast('今天已經封緘五封了。明天再來，我等您。'); return; }
+const btn=$('#fSend'); btn.disabled=true;
+try{
+const r=await post({action:'add', name, text:text.slice(0,1000), seal});
+dailyAdd('gift');
+$('#sealFxIcon').innerHTML=`<use href="#i-${seal}"/>`;
+const fx=$('#sealFx'); fx.classList.remove('go'); void fx.offsetWidth; fx.classList.add('go');
+items.push(r.item);
+fText.value=''; $('#fName').value=''; fText.dispatchEvent(new Event('input'));
+sort.k='time'; sort.dir=-1; buildView(); render(true);
+setTimeout(()=>{ toast('火漆已封上，信箋送達他手中。'); $('#wall').scrollIntoView({behavior:reduced()?'auto':'smooth', block:'start'}); }, reduced()?0:1100);
+}catch(err){ toast('信使暫時無法出門，請稍後再試。'); }
+finally{ btn.disabled=false; }
 });
-
-/* ================= 永恆誓言 ================= */
 $('#waxBtn').addEventListener('click', e=>{
-  const v=$('#vow'); if(v.classList.contains('open')) return;
-  v.classList.add('open');
-  const r=e.currentTarget.getBoundingClientRect(); burst(r.left+r.width/2, r.top+r.height/2, 16);
+const v=$('#vow'); if(v.classList.contains('open')) return;
+v.classList.add('open');
+const r=e.currentTarget.getBoundingClientRect(); burst(r.left+r.width/2, r.top+r.height/2, 16);
 });
-
-/* ================= 進場顯示 ================= */
 const io=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-/* ================= 他的小脾氣 ================= */
 const baseTitle=document.title;
 document.addEventListener('visibilitychange', ()=>{
-  if(!entered) return;
-  if(document.hidden) document.title='……您去哪了？';
-  else { document.title=fill('您回來了，{c}。'); setTimeout(()=>document.title=baseTitle, 2200); }
+if(!entered) return;
+if(document.hidden) document.title='……您去哪了？';
+else { document.title=fill('您回來了，{c}。'); setTimeout(()=>document.title=baseTitle, 2200); }
 });
 let idleT, idleSaid=false;
 function resetIdle(){ clearTimeout(idleT); if(idleSaid||!entered) return; idleT=setTimeout(()=>{ idleSaid=true; toast('在想什麼？……想我嗎。', 3500); }, 45000); }
 ['pointermove','keydown','scroll','touchstart'].forEach(ev=>addEventListener(ev, resetIdle, {passive:true}));
 function afterEnter(){
-  askGyro(); resetIdle();
-  const h=new Date().getHours();
-  if(h>=23||h<5){ $('#footLine').textContent='這麼晚還不睡？……那我陪您。'; setTimeout(()=>toast('這麼晚還不睡？……那我陪您。', 3500), 900); }
+askGyro(); resetIdle();
+const h=new Date().getHours();
+if(h>=23||h<5){ $('#footLine').textContent='這麼晚還不睡？……那我陪您。'; setTimeout(()=>toast('這麼晚還不睡？……那我陪您。', 3500), 900); }
 }
-
-/* ================= 啟動 ================= */
 (async()=>{
-  try{
-    const r=await listAll();
-    items=(r.items||[]).map(i=>({...i, no:+i.no, hearts:+i.hearts||0}));
-    Object.assign(counts, r.counts||{});
-  }catch(e){ toast('信使暫時無法出門，請稍後再試。'); }
-  paintCounts(); drawGarden(); buildView(); render(true);
+try{
+const r=await listAll();
+items=(r.items||[]).map(i=>({...i, no:+i.no, hearts:+i.hearts||0}));
+Object.assign(counts, r.counts||{});
+}catch(e){ toast('信使暫時無法出門，請稍後再試。'); }
+paintCounts(); drawGarden(); buildView(); render(true);
 })();
 let rw=innerWidth;
 addEventListener('resize', ()=>{ if((rw>820)!==(innerWidth>820)){ rw=innerWidth; render(true); } });
