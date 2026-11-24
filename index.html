@@ -861,7 +861,7 @@ const L=130, maxW=W-260, top=290, bottom=H-250;
 let qL=[], qfs=24;
 if(it.orig){ x.font=`italic ${qfs}px ${serif}`; qL=cardWrap(x,'「'+it.orig.text+'」',maxW); if(qL.length>3){ qL=qL.slice(0,3); qL[2]=qL[2].slice(0,-1)+'…'; } }
 const qH=qL.length?qL.length*qfs*1.7+36:0;
-const greet=it.reply?('致 '+(it.orig&&it.orig.name?it.orig.name:'親愛的您')+'：'):'此致 可愛的、親愛的盧西安：';
+const greet=it.reply?('致 '+(it.orig&&it.orig.name?it.orig.name:'親愛的您')+'：'):'致 盧西安：';
 let fs=46, lines, lh, avail;
 for(;fs>=24;fs-=2){ x.font=`${fs}px ${serif}`; lines=cardWrap(x,it.text,maxW); lh=fs*1.85; avail=bottom-top-qH-fs*1.9-fs*2.4; if(lines.length*lh<=avail) break; }
 x.font=`${fs}px ${serif}`; lines=cardWrap(x,it.text,maxW); lh=fs*1.85; avail=bottom-top-qH-fs*1.9-fs*2.4;
