@@ -963,7 +963,7 @@ $('#giftForm').addEventListener('submit', async e=>{
 e.preventDefault();
 const text=fText.value.trim(), name=$('#fName').value.trim().slice(0,20);
 const seal=(document.querySelector('input[name=seal]:checked')||{}).value||'rose';
-if(!text){ toast(fill('祝福還空著呢，{c}。願意為我寫幾句嗎？')); fText.focus(); return; }
+if(!text){ toast('不想和他說說話嗎？'); fText.focus(); return; }
 if(!dailyOk('gift', DAILY_GIFTS)){ toast('今日已收下您五封信了。明日，我仍在這裡等您。'); return; }
 const btn=$('#fSend'); btn.disabled=true;
 try{
